@@ -143,7 +143,7 @@ BSD-style license that can be found in the LICENSE file.
 `Batch` was designed and implemented by **_Kato Shinya_**.
 
 - [Creator Profile](https://github.com/myConsciousness)
-- [License](https://github.com/myConsciousness/batch/blob/main/LICENSE)
+- [License](https://github.com/myConsciousness/batch.dart/blob/main/LICENSE)
 - [API Document](https://pub.dev/documentation/text_divider/latest/batch/batch-library.html)
-- [Release Note](https://github.com/myConsciousness/batch/releases)
-- [Bug Report](https://github.com/myConsciousness/batch/issues)
+- [Release Note](https://github.com/myConsciousness/batch.dart/releases)
+- [Bug Report](https://github.com/myConsciousness/batch.dart/issues)
