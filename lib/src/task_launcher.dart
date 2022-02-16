@@ -16,7 +16,7 @@ class TaskLauncher {
   final List<Task> tasks;
 
   /// Runs all tasks.
-  void execute() {
+  Future<void> execute() async {
     if (tasks.isEmpty) {
       throw Exception(
         'Register the task to be launched is required.',
@@ -26,7 +26,7 @@ class TaskLauncher {
     for (final task in tasks) {
       RepeatStatus repeatStatus = RepeatStatus.continuable;
       do {
-        repeatStatus = task.execute();
+        repeatStatus = await task.execute();
       } while (repeatStatus.isContinuable);
     }
   }

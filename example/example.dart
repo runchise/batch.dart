@@ -36,7 +36,7 @@ class TestTask extends Task {
   static int count = 0;
 
   @override
-  RepeatStatus execute() {
+  Future<RepeatStatus> execute() async {
     if (count == 5) {
       print('Finish.');
       return RepeatStatus.finished;
@@ -51,7 +51,7 @@ class TestTask extends Task {
 
 class SayHelloTask extends Task {
   @override
-  RepeatStatus execute() {
+  Future<RepeatStatus> execute() async {
     print('Hello,');
     return RepeatStatus.finished;
   }
@@ -59,7 +59,7 @@ class SayHelloTask extends Task {
 
 class SayWorldTask extends Task {
   @override
-  RepeatStatus execute() {
+  Future<RepeatStatus> execute() async {
     print('World!');
     return RepeatStatus.finished;
   }

@@ -16,7 +16,7 @@ class StepLauncher {
   final List<Step> steps;
 
   /// Runs all steps.
-  void execute() {
+  Future<void> execute() async {
     if (steps.isEmpty) {
       throw Exception(
         'Register the step to be launched is required.',
@@ -24,7 +24,7 @@ class StepLauncher {
     }
 
     for (final step in steps) {
-      TaskLauncher.from(tasks: step.tasks).execute();
+      await TaskLauncher.from(tasks: step.tasks).execute();
     }
   }
 }

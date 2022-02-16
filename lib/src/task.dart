@@ -18,5 +18,5 @@ abstract class Task {
   /// until [RepeatStatus.finished] is returned. This will result in an infinite loop,
   /// so be sure to consider the case where RepeatStatus.finished is returned
   /// when using RepeatStatus.continue.
-  RepeatStatus execute();
+  Future<RepeatStatus> execute();
 }

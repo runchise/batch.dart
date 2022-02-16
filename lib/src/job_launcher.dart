@@ -9,6 +9,7 @@ import 'package:cron/cron.dart';
 import 'package:batch/src/job.dart';
 import 'package:batch/src/step_launcher.dart';
 
+/// This class provides the feature to securely execute registered jobs.
 class JobLauncher {
   /// Returns the new instance of [JobLauncher].
   JobLauncher.newInstance();
@@ -45,8 +46,8 @@ class JobLauncher {
 
     try {
       for (final job in _jobs) {
-        _cron.schedule(Schedule.parse(job.cron), () {
-          StepLauncher.from(steps: job.steps).execute();
+        _cron.schedule(Schedule.parse(job.cron), () async {
+          await StepLauncher.from(steps: job.steps).execute();
         });
       }
     } catch (e) {
