@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
+import 'package:batch/src/banner.dart';
+import 'package:batch/src/log/logger.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
@@ -44,12 +46,27 @@ class JobLauncher {
       );
     }
 
+    Logger.info(
+      '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
+    );
+
     try {
+      Logger.info('The job schedule is being configured...');
+
       for (final job in _jobs) {
         _cron.schedule(Schedule.parse(job.cron), () async {
-          await StepLauncher.from(steps: job.steps).execute();
+          Logger.info('STARTED JOB (${job.name})');
+
+          await StepLauncher.from(
+            parentJobName: job.name,
+            steps: job.steps,
+          ).execute();
+
+          Logger.info('FINISHED JOB (${job.name})');
         });
       }
+
+      Logger.info('The job schedule has configured!');
     } catch (e) {
       throw Exception(e);
     }
