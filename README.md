@@ -26,7 +26,7 @@ A lightweight and powerful batch library written in Dart.
 
 # 1. About
 
-The `batch` library was created to make it easier to develop `CLI program` in the Dart language. It supports scheduling using `Cron` and it is a very lightweight and powerful.
+The `batch` library was created to make it easier to develop `CLI program` in Dart language. It supports scheduling using `Cron` and it is a very lightweight and powerful.
 
 ## 1.1. Concepts
 
@@ -105,7 +105,7 @@ void main() {
 
 class SayHelloTask extends Task {
   @override
-  RepeatStatus execute() {
+  Future<RepeatStatus> execute() async {
     print('Hello,');
     return RepeatStatus.finished;
   }
@@ -113,7 +113,7 @@ class SayHelloTask extends Task {
 
 class SayWorldTask extends Task {
   @override
-  RepeatStatus execute() {
+  Future<RepeatStatus> execute() async {
     print('World!');
     return RepeatStatus.finished;
   }
@@ -144,6 +144,6 @@ BSD-style license that can be found in the LICENSE file.
 
 - [Creator Profile](https://github.com/myConsciousness)
 - [License](https://github.com/myConsciousness/batch.dart/blob/main/LICENSE)
-- [API Document](https://pub.dev/documentation/text_divider/latest/batch/batch-library.html)
+- [API Document](https://pub.dev/documentation/batch/latest/batch/batch-library.html)
 - [Release Note](https://github.com/myConsciousness/batch.dart/releases)
 - [Bug Report](https://github.com/myConsciousness/batch.dart/issues)
