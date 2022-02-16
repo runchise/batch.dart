@@ -1,6 +1,6 @@
 name: batch
-description: A lightweight and powerful batch library written in Dart.
-version: 0.0.1
+description: A lightweight and powerful batch library written in Dart. You can easily create a CLI batch program in Dart with this library.
+version: 0.1.0
 homepage: https://github.com/myConsciousness/batch.dart
 
 environment:
