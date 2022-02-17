@@ -27,7 +27,8 @@ A lightweight and powerful batch library written in Dart.
   - [1.2. Introduction](#12-introduction)
     - [1.2.1. Install Library](#121-install-library)
     - [1.2.2. Import It](#122-import-it)
-    - [1.2.3. Use Batch](#123-use-batch)
+    - [1.2.3. Use Batch library](#123-use-batch-library)
+    - [1.2.4. Logging](#124-logging)
   - [1.3. Contribution](#13-contribution)
   - [1.4. License](#14-license)
   - [1.5. More Information](#15-more-information)
@@ -42,7 +43,7 @@ The `batch` library was created to make it easier to develop `CLI program` in Da
 
 The processing of the `batch` library is mainly performed using the following elements.
 
-|          | Remarks                                                                                                                                                              |
+|          | Description                                                                                                                                                          |
 | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Job**  | `Job` is defined as the largest unit in a batch execution process in `batch` library. `Job` has a unique name and manages multiple `Step`.                           |
 | **Step** | `Step` is defined as middle unit in a batch execution process in `batch` library. `Step` has a unique name and manages multiple `Task`.                              |
@@ -72,7 +73,7 @@ The concepts in the table above are in hierarchical order, with the top concepts
 import 'package:batch/batch.dart';
 ```
 
-### 1.2.3. Use Batch
+### 1.2.3. Use Batch library
 
 The easiest way to use the `batch` library is to create a class that implements `Task` and register it to Step and Job in the order you want to execute.
 
@@ -116,7 +117,9 @@ void main() {
 class SayHelloTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
-    print('Hello,');
+    // Logging output is possible at any log level.
+    // Task class provides verbose, debug, info, warning and error log.
+    super.info('Hello,');
     return RepeatStatus.finished;
   }
 }
@@ -124,7 +127,7 @@ class SayHelloTask extends Task {
 class SayWorldTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
-    print('World!');
+    super.info('World!');
     return RepeatStatus.finished;
   }
 }
@@ -132,7 +135,51 @@ class SayWorldTask extends Task {
 
 Also `RepeatStatus` is an important factor when defining `Task` processing.
 
-A `Task` should always return `RepeatStatus`,　 and `RepeatStatus.finished` to finish the process of the `Task`. Another option to return in `Task` processing is `RepeatStatus.continuable`, but if this is returned, the same Task processing will be repeated over and over until `RepeatStatus.finished` is returned.
+A `Task` should always return `RepeatStatus`, and `RepeatStatus.finished` to finish the process of the `Task`. Another option to return in `Task` processing is `RepeatStatus.continuable`, but if this is returned, the same Task processing will be repeated over and over until `RepeatStatus.finished` is returned.
+
+### 1.2.4. Logging
+
+The `batch` library supports logging since version `0.2.0`.
+
+The logging provided by the `batch` library can be used by classes that extend from the `Task` class. The `Task` class provides following logging methods.
+
+|             | Description                                                                                                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **trace**   | A log level describing events showing step by step execution of your code that can be ignored during the standard operation, but may be useful during extended debugging sessions. |
+| **debug**   | A log level used for events considered to be useful during software debugging when more granular information is needed.                                                            |
+| **info**    | An event happened, the event is purely informative and can be ignored during normal operations.                                                                                    |
+| **warning** | Unexpected behavior happened inside the application, but it is continuing its work and the key business features are operating as expected.                                        |
+| **error**   | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
+| **fatal**   | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |
+
+The easiest way to do log output in a class that extends from the `Task` class is to pass the message you want to output to the logging method that is provided for the log level, as shown in the following example.
+
+```dart
+class TestLogTask extends Task {
+  @override
+  Future<RepeatStatus> execute() async {
+    super.trace('Test trace');
+    super.debug('Test debug');
+    super.info('Test info');
+    super.warning('Test warning');
+    super.error('Test error');
+    super.fatal('Test fatal');
+    return RepeatStatus.finished;
+  }
+}
+```
+
+For example, if you run [sample code](#123-use-batch-library) as described earlier, you will see the following log output.
+
+```terminal
+yyyy-MM-dd 15:03:46.523299 [info   ] :: The job schedule is being configured...
+yyyy-MM-dd 15:03:46.532843 [info   ] :: The job schedule has configured!
+yyyy-MM-dd 15:04:00.016205 [info   ] :: STARTED JOB (Job1)
+yyyy-MM-dd 15:04:00.017023 [info   ] :: STARTED STEP (Job1 -> Step1)
+yyyy-MM-dd 15:04:00.021285 [info   ] :: Hello,
+yyyy-MM-dd 15:04:00.021510 [info   ] :: World!
+yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
+```
 
 ## 1.3. Contribution
 

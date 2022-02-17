@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 class Banner {
+  /// Set it to private because there is no need to create an instance.
   Banner._();
 
   /// The banner layout
@@ -31,7 +32,13 @@ class Banner {
          ~~                       \\/____/                                       \\/____/                  \\/____/
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-                      | Version: 0.1.1 | Produced By: Kato Shinya (https://github.com/myConsciousness) |
+                                      A lightweight and powerful batch library written in Dart.
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+  Version: 0.2.0
+  License: BSD 3-Clause
+  Author : Kato Shinya (https://github.com/myConsciousness)
+
 -------------------------------------------------------------------------------------------------------------------------------------------
 ''';
 }

@@ -38,13 +38,13 @@ class TestTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
     if (count == 5) {
-      print('Finish.');
+      super.trace('Finish.');
       return RepeatStatus.finished;
     }
 
     count++;
 
-    print('Continue.');
+    super.info('Continue.');
     return RepeatStatus.continuable;
   }
 }
@@ -52,7 +52,7 @@ class TestTask extends Task {
 class SayHelloTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
-    print('Hello,');
+    super.debug('Hello,');
     return RepeatStatus.finished;
   }
 }
@@ -60,7 +60,7 @@ class SayHelloTask extends Task {
 class SayWorldTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
-    print('World!');
+    super.info('World!');
     return RepeatStatus.finished;
   }
 }

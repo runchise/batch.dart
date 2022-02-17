@@ -3,12 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
-import 'package:batch/src/banner.dart';
-import 'package:batch/src/log/logger.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
+import 'package:batch/src/banner.dart';
 import 'package:batch/src/job.dart';
+import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
