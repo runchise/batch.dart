@@ -147,7 +147,7 @@ The logging provided by the `batch` library can be used by classes that extend f
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **trace**   | A log level describing events showing step by step execution of your code that can be ignored during the standard operation, but may be useful during extended debugging sessions. |
 | **debug**   | A log level used for events considered to be useful during software debugging when more granular information is needed.                                                            |
-| **info**    | An event happened, the event is purely informative and can be ignored during normal operations.                                                                                    |
+| **info**    | An event happened, and the event is purely informative and can be ignored during normal operations.                                                                                |
 | **warning** | Unexpected behavior happened inside the application, but it is continuing its work and the key business features are operating as expected.                                        |
 | **error**   | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
 | **fatal**   | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |

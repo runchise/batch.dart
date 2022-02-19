@@ -3,12 +3,14 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
+import 'package:batch/src/log/logger.dart';
+import 'package:batch/src/log/logger_provider.dart';
+import 'package:batch/src/log_configuration.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
 import 'package:batch/src/banner.dart';
 import 'package:batch/src/job.dart';
-import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
@@ -16,11 +18,19 @@ class JobLauncher {
   /// Returns the new instance of [JobLauncher].
   JobLauncher.newInstance();
 
+  /// Returns the new instance of [JobLauncher] based on configuration.
+  JobLauncher.withConfig({
+    this.logConfig,
+  });
+
   /// The jobs
   final _jobs = <Job>[];
 
   /// Cron
   final _cron = Cron();
+
+  /// The configuration for logging
+  LogConfiguration? logConfig;
 
   /// Adds [Job].
   ///
@@ -29,7 +39,7 @@ class JobLauncher {
   JobLauncher addJob(final Job job) {
     for (final registeredJob in _jobs) {
       if (registeredJob.name == job.name) {
-        throw Exception('The job name "${job.name}" is already registred.');
+        throw Exception('The job name "${job.name}" is already registered.');
       }
     }
 
@@ -46,27 +56,31 @@ class JobLauncher {
       );
     }
 
-    Logger.info(
-      '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
-    );
+    //! The logging functionality provided by the batch library
+    //! will be available when this loading process is complete.
+    //! Also an instance of the Logger is held as a static field in LoggerInstance.
+    Logger.loadFrom(config: logConfig);
+
+    info(
+        '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}');
 
     try {
-      Logger.info('The job schedule is being configured...');
+      info('The job schedule is being configured...');
 
       for (final job in _jobs) {
         _cron.schedule(Schedule.parse(job.cron), () async {
-          Logger.info('STARTED JOB (${job.name})');
+          info('STARTED JOB (${job.name})');
 
           await StepLauncher.from(
             parentJobName: job.name,
             steps: job.steps,
           ).execute();
 
-          Logger.info('FINISHED JOB (${job.name})');
+          info('FINISHED JOB (${job.name})');
         });
       }
 
-      Logger.info('The job schedule has configured!');
+      info('The job schedule has configured!');
     } catch (e) {
       throw Exception(e);
     }

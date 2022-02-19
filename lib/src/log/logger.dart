@@ -3,42 +3,98 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
-import 'package:logger/logger.dart' as logger;
+import 'package:batch/src/log/default_log_filter.dart';
+import 'package:batch/src/log/default_log_output.dart';
+import 'package:batch/src/log/default_log_printer.dart';
+import 'package:batch/src/log/log_filter.dart';
+import 'package:batch/src/log/log_input_event.dart';
+import 'package:batch/src/log/log_level.dart';
+import 'package:batch/src/log/log_output.dart';
+import 'package:batch/src/log/log_output_event.dart';
+import 'package:batch/src/log/log_printer.dart';
 
 // Project imports:
-import 'package:batch/src/log/printer.dart';
+import 'package:batch/src/log/logger_instance.dart';
+import 'package:batch/src/log_configuration.dart';
 
-/// The custom logger based on [logger.Logger].
 class Logger {
-  /// Access to Logger methods is done in static form,
-  /// so the constructor is made private to prevent instantiation.
-  Logger._();
+  /// Returns the new instance of [Logger].
+  Logger.loadFrom({
+    LogConfiguration? config,
+  })  : _filter = config?.filter ?? DefaultLogFilter(),
+        _printer = config?.printer ?? DefaultLogPrinter(),
+        _output = config?.output ?? DefaultLogOutput() {
+    _filter.level = config?.level ?? LogLevel.trace;
+    LoggerInstance.instance = this;
+  }
 
-  /// The logger
-  static final _logger = logger.Logger(printer: Printer());
+  /// The filter
+  final LogFilter _filter;
+
+  /// The printer
+  final LogPrinter _printer;
+
+  /// The output
+  final LogOutput _output;
 
   /// Log a message at trace level.
-  static void trace(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _logger.v(message, error, stackTrace);
+  void trace(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.trace, message, error, stackTrace);
 
   /// Log a message at debug level.
-  static void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _logger.d(message, error, stackTrace);
+  void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.debug, message, error, stackTrace);
 
   /// Log a message at info level.
-  static void info(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _logger.i(message, error, stackTrace);
+  void info(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.info, message, error, stackTrace);
 
   /// Log a message at warning level.
-  static void warning(dynamic message,
-          [dynamic error, StackTrace? stackTrace]) =>
-      _logger.w(message, error, stackTrace);
+  void warning(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.warning, message, error, stackTrace);
 
   /// Log a message at error level.
-  static void error(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _logger.e(message, error, stackTrace);
+  void error(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.error, message, error, stackTrace);
 
   /// Log a message at fatal level.
-  static void fatal(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _logger.wtf(message, error, stackTrace);
+  void fatal(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.fatal, message, error, stackTrace);
+
+  /// Log a message with [level].
+  void _log(
+    LogLevel level,
+    dynamic message, [
+    dynamic error,
+    StackTrace? stackTrace,
+  ]) {
+    if (error != null && error is StackTrace) {
+      throw ArgumentError('Error parameter cannot take a StackTrace!');
+    }
+
+    final inputEvent = LogInputEvent.from(
+      level: level,
+      message: message,
+      error: error,
+      stackTrace: stackTrace,
+    );
+
+    if (_filter.shouldLog(inputEvent)) {
+      final output = _printer.log(inputEvent);
+
+      if (output.isNotEmpty) {
+        final outputEvent = LogOutputEvent.from(
+          level: level,
+          lines: output,
+        );
+
+        try {
+          _output.output(outputEvent);
+        } catch (error, stackTrace) {
+          print(error);
+          print(stackTrace);
+        }
+      }
+    }
+  }
 }

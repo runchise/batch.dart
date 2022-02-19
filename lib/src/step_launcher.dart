@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/log/logger.dart';
+import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/step.dart';
 import 'package:batch/src/task_launcher.dart';
 
@@ -29,11 +29,11 @@ class StepLauncher {
     }
 
     for (final step in steps) {
-      Logger.info('STARTED STEP ($parentJobName -> ${step.name})');
+      info('STARTED STEP ($parentJobName -> ${step.name})');
 
       await TaskLauncher.from(tasks: step.tasks).execute();
 
-      Logger.info('FINISHED STEP ($parentJobName -> ${step.name})');
+      info('FINISHED STEP ($parentJobName -> ${step.name})');
     }
   }
 }

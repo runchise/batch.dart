@@ -2,13 +2,13 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Package imports:
-import 'package:logger/logger.dart' as logger;
+import 'package:batch/src/log/log_input_event.dart';
+import 'package:batch/src/log/log_printer.dart';
 
 /// The custom printer.
-class Printer extends logger.LogPrinter {
+class DefaultLogPrinter extends LogPrinter {
   @override
-  List<String> log(logger.LogEvent event) => [
+  List<String> log(final LogInputEvent event) => [
         '${DateTime.now()} [${event.level.name.padRight(7, ' ')}] :: ${event.message}'
       ];
 }

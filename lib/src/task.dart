@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/repeat_status.dart';
 
 /// This abstract class represents the smallest unit of processing that is
@@ -12,24 +11,6 @@ import 'package:batch/src/repeat_status.dart';
 /// The processing of each step of the job should be defined by overriding
 /// [execute] in a class that inherits from this [Task].
 abstract class Task {
-  /// Logger function for trace level.
-  final trace = Logger.trace;
-
-  /// Logger function for debug level.
-  final debug = Logger.debug;
-
-  /// Logger function for info level.
-  final info = Logger.info;
-
-  /// Logger function for warning level.
-  final warning = Logger.warning;
-
-  /// Logger function for error level.
-  final error = Logger.error;
-
-  /// Logger function for fatal level.
-  final fatal = Logger.fatal;
-
   /// Runs this [Task] and returns the [RepeatStatus].
   ///
   /// Be sure to return [RepeatStatus.finished] to complete the process.
