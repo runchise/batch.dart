@@ -111,11 +111,17 @@ void main() {
         ..nextTask(SayWorldTask()),
     );
 
-  // Add jobs and execute.
-  JobLauncher()
+  // Add jobs and run.
+ BatchApplication(
+    logConfig: LogConfiguration(
+      level: LogLevel.debug,
+      filter: DevelopmentLogFilter(),
+      output: ConsoleLogOutput(),
+    ),
+  )
     ..addJob(job1)
     ..addJob(job2)
-    ..execute();
+    ..run();
 }
 
 class SayHelloTask implements Task {
@@ -195,9 +201,9 @@ yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
 ```
 
 > Note:
-> The setup of the logger is done when executing the method `execute` in `JobLauncher`.
+> The setup of the logger is done when executing the method `run` in `BatchApplication`.
 > If you want to use the logging feature outside the life cycle of the `batch` library,
-> be sure to do so after executing the `execute` method of the `JobLauncher`.
+> be sure to do so after executing the `run` method of the `BatchApplication`.
 
 ### 1.3.1. Customize Log Configuration
 
@@ -205,7 +211,7 @@ It is very easy to change the configuration of the Logger provided by the `batch
 Just pass the `LogConfiguration` object to the constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
 
 ```dart
-JobLauncher(
+BatchApplication(
   logConfig: LogConfiguration(
     level: LogLevel.debug,
   ),
@@ -232,7 +238,7 @@ Also, the `batch` library provides several classes that implement these abstract
 **_Example_**
 
 ```dart
-JobLauncher(
+BatchApplication(
   logConfig: LogConfiguration(
     filter: ProductionLogFilter(),
   ),
@@ -249,7 +255,7 @@ JobLauncher(
 **_Example_**
 
 ```dart
-JobLauncher(
+BatchApplication(
   logConfig: LogConfiguration(
     output: ConsoleLogOutput(),
   ),
