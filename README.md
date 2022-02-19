@@ -24,7 +24,7 @@ A lightweight and powerful batch library written in Dart.
 <!-- TOC -->
 
 - [1. About](#1-about)
-  - [1.1. Concepts](#11-concepts)
+  - [1.1. Basic Concepts](#11-basic-concepts)
   - [1.2. Introduction](#12-introduction)
     - [1.2.1. Install Library](#121-install-library)
     - [1.2.2. Import It](#122-import-it)
@@ -43,7 +43,7 @@ A lightweight and powerful batch library written in Dart.
 
 The `batch` library was created to make it easier to develop `CLI program` in Dart language. It supports scheduling using `Cron` and it is a very lightweight and powerful.
 
-## 1.1. Concepts
+## 1.1. Basic Concepts
 
 The processing of the `batch` library is mainly performed using the following elements.
 
@@ -90,48 +90,48 @@ import 'package:batch/batch.dart';
 
 void main() {
   // The name of the Job must be unique.
-  final job1 = Job.from(name: 'Job1', cron: '*/1 * * * *')
+  final job1 = Job(name: 'Job1', cron: '*/1 * * * *')
     // The name of the Step must be unique in this Job.
     ..nextStep(
-      Step.from(name: 'Step1')
+      Step(name: 'Step1')
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     )
     ..nextStep(
-      Step.from(name: 'Step2')
+      Step(name: 'Step2')
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
 
-  final job2 = Job.from(name: 'Job2', cron: '*/3 * * * *')
+  final job2 = Job(name: 'Job2', cron: '*/3 * * * *')
     ..nextStep(
       // You can reuse the Step name for another Job.
-      Step.from(name: 'Step1')
+      Step(name: 'Step1')
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
 
   // Add jobs and execute.
-  JobLauncher.newInstance()
+  JobLauncher()
     ..addJob(job1)
     ..addJob(job2)
     ..execute();
 }
 
-class SayHelloTask extends Task {
+class SayHelloTask implements Task {
   @override
   Future<RepeatStatus> execute() async {
     // Logging output is possible at any log level.
-    // Task class provides verbose, debug, info, warning and error log.
-    super.info('Hello,');
+    // This library provides trace, debug, info, warning, error and fatal.
+    info('Hello,');
     return RepeatStatus.finished;
   }
 }
 
-class SayWorldTask extends Task {
+class SayWorldTask implements Task {
   @override
   Future<RepeatStatus> execute() async {
-    super.info('World!');
+    info('World!');
     return RepeatStatus.finished;
   }
 }
@@ -167,7 +167,7 @@ See the sample code below for the simplest usage.
 ```dart
 import 'package:batch/batch.dart';
 
-class TestLogTask extends Task {
+class TestLogTask implements Task {
   @override
   Future<RepeatStatus> execute() async {
     trace('Test trace');
@@ -202,11 +202,11 @@ yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
 ### 1.3.1. Customize Log Configuration
 
 It is very easy to change the configuration of the Logger provided by the `batch` library to suit your preferences.
-Just pass the `LogConfiguration` object to the `withConfig` constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
+Just pass the `LogConfiguration` object to the constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
 
 ```dart
-JobLauncher.withConfig(
-  logConfig: LogConfiguration.from(
+JobLauncher(
+  logConfig: LogConfiguration(
     level: LogLevel.debug,
   ),
 );
@@ -232,8 +232,8 @@ Also, the `batch` library provides several classes that implement these abstract
 **_Example_**
 
 ```dart
-JobLauncher.withConfig(
-  logConfig: LogConfiguration.from(
+JobLauncher(
+  logConfig: LogConfiguration(
     filter: ProductionLogFilter(),
   ),
 );
@@ -246,9 +246,11 @@ JobLauncher.withConfig(
 | **ConsoleLogOutput** | Provides features to output log to console. This filter is used by default. |
 | **FileLogOutput**    | Provides features to output the log to the specified file.                  |
 
+**_Example_**
+
 ```dart
-JobLauncher.withConfig(
-  logConfig: LogConfiguration.from(
+JobLauncher(
+  logConfig: LogConfiguration(
     output: ConsoleLogOutput(),
   ),
 );
