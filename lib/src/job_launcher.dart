@@ -57,7 +57,7 @@ class JobLauncher {
     //! The logging functionality provided by the batch library
     //! will be available when this loading process is complete.
     //! Also an instance of the Logger is held as a static field in LoggerInstance.
-    Logger.loadFrom(config: logConfig);
+    Logger.loadFrom(config: logConfig ?? LogConfiguration());
 
     info(
         '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}');

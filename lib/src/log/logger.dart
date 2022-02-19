@@ -18,18 +18,23 @@ import 'package:batch/src/log_configuration.dart';
 class Logger {
   /// Returns the new instance of [Logger].
   Logger.loadFrom({
-    LogConfiguration? config,
-  })  : _filter = config?.filter ?? DevelopmentLogFilter(),
-        _printer = config?.printer ?? DefaultLogPrinter(),
-        _output = config?.output ?? ConsoleLogOutput() {
+    required LogConfiguration config,
+  })  : _level = config.level ?? LogLevel.trace,
+        _filter = config.filter ?? DevelopmentLogFilter(),
+        _printer = config.printer ?? DefaultLogPrinter(),
+        _output = config.output ?? ConsoleLogOutput() {
     _filter.init();
-    _filter.level = config?.level ?? LogLevel.trace;
     _printer.init();
     _output.init();
+
+    _filter.level = config.level ?? LogLevel.trace;
 
     // Holds the Logger instance.
     LoggerInstance.instance = this;
   }
+
+  /// The base log level
+  final LogLevel _level;
 
   /// The filter
   final LogFilter _filter;
@@ -81,6 +86,11 @@ class Logger {
     dynamic error,
     StackTrace? stackTrace,
   ]) {
+    if (_level == LogLevel.off) {
+      /// Do nothing when log output is disabled.
+      return;
+    }
+
     if (!_active) {
       throw ArgumentError('Logger has already been disposed.');
     }

@@ -28,28 +28,4 @@ class LogConfiguration {
 
   /// The custom log output
   final LogOutput? output;
-
-  @override
-  String toString() {
-    return 'LogConfiguration(level: $level, filter: $filter, printer: $printer, output: $output)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is LogConfiguration &&
-        other.level == level &&
-        other.filter == filter &&
-        other.printer == printer &&
-        other.output == output;
-  }
-
-  @override
-  int get hashCode {
-    return level.hashCode ^
-        filter.hashCode ^
-        printer.hashCode ^
-        output.hashCode;
-  }
 }

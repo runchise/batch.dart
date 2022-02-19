@@ -32,7 +32,7 @@ void main() {
     ..execute();
 }
 
-class TestTask extends Task {
+class TestTask implements Task {
   static int count = 0;
 
   @override
@@ -49,7 +49,7 @@ class TestTask extends Task {
   }
 }
 
-class SayHelloTask extends Task {
+class SayHelloTask implements Task {
   @override
   Future<RepeatStatus> execute() async {
     debug('Hello,');
@@ -57,7 +57,7 @@ class SayHelloTask extends Task {
   }
 }
 
-class SayWorldTask extends Task {
+class SayWorldTask implements Task {
   @override
   Future<RepeatStatus> execute() async {
     info('World!');

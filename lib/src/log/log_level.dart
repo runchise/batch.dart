@@ -28,4 +28,10 @@ enum LogLevel {
   /// One or more key business functionalities are not working
   /// and the whole system doesn’t fulfill the business functionalities.
   fatal,
+
+  /// This is a special element to disable the log output.
+  ///
+  /// It is not used for log output, but you can disable log output
+  /// by setting the log level to [off] when initializing the Logger.
+  off,
 }
