@@ -12,7 +12,7 @@ import 'package:batch/src/step.dart';
 /// the [nextStep] method to register the [Step] to be executed.
 class Job {
   /// Returns the new instance of [Job].
-  Job.from({
+  Job({
     required this.name,
     required this.cron,
   });
@@ -33,9 +33,9 @@ class Job {
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
   Job nextStep(final Step step) {
-    for (final registredStep in steps) {
-      if (registredStep.name == step.name) {
-        throw Exception('The step name "${step.name}" is already registred.');
+    for (final registeredStep in steps) {
+      if (registeredStep.name == step.name) {
+        throw Exception('The step name "${step.name}" is already registered.');
       }
     }
 

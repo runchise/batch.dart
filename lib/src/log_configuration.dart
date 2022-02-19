@@ -10,7 +10,7 @@ import 'package:batch/src/log/printer/log_printer.dart';
 
 class LogConfiguration {
   /// Returns the new instance of [LogConfiguration].
-  LogConfiguration.from({
+  LogConfiguration({
     this.level,
     this.filter,
     this.printer,

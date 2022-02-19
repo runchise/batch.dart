@@ -10,7 +10,7 @@ import 'package:batch/batch.dart';
 
 class OutputLogEvent {
   /// Returns the new instance of [OutputLogEvent].
-  OutputLogEvent.from({
+  OutputLogEvent({
     required this.level,
     required this.lines,
   });

@@ -5,23 +5,23 @@
 import 'package:batch/batch.dart';
 
 void main() {
-  final job1 = Job.from(name: 'Job1', cron: '*/1 * * * *')
+  final job1 = Job(name: 'Job1', cron: '*/1 * * * *')
     ..nextStep(
-      Step.from(name: 'Step1')
+      Step(name: 'Step1')
         ..nextTask(TestTask())
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     )
     ..nextStep(
-      Step.from(name: 'Step2')
+      Step(name: 'Step2')
         ..nextTask(TestTask())
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
 
-  final job2 = Job.from(name: 'Job2', cron: '*/3 * * * *')
+  final job2 = Job(name: 'Job2', cron: '*/3 * * * *')
     ..nextStep(
-      Step.from(name: 'Step1')
+      Step(name: 'Step1')
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );

@@ -89,7 +89,7 @@ class Logger {
       throw ArgumentError('The "error" parameter cannot take a StackTrace.');
     }
 
-    final inputEvent = InputLogEvent.from(
+    final inputEvent = InputLogEvent(
       level: level,
       message: message,
       error: error,
@@ -100,7 +100,7 @@ class Logger {
       final output = _printer.log(inputEvent);
 
       if (output.isNotEmpty) {
-        final outputEvent = OutputLogEvent.from(
+        final outputEvent = OutputLogEvent(
           level: level,
           lines: output,
         );

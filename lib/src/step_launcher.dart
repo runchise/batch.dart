@@ -9,7 +9,7 @@ import 'package:batch/src/task_launcher.dart';
 
 class StepLauncher {
   /// Returns the new instance of [StepLauncher].
-  StepLauncher.from({
+  StepLauncher({
     required this.parentJobName,
     required this.steps,
   }) : assert(parentJobName.isNotEmpty);
@@ -31,7 +31,7 @@ class StepLauncher {
     for (final step in steps) {
       info('STARTED STEP ($parentJobName -> ${step.name})');
 
-      await TaskLauncher.from(tasks: step.tasks).execute();
+      await TaskLauncher(tasks: step.tasks).execute();
 
       info('FINISHED STEP ($parentJobName -> ${step.name})');
     }

@@ -69,7 +69,7 @@ class JobLauncher {
         _cron.schedule(Schedule.parse(job.cron), () async {
           info('STARTED JOB (${job.name})');
 
-          await StepLauncher.from(
+          await StepLauncher(
             parentJobName: job.name,
             steps: job.steps,
           ).execute();

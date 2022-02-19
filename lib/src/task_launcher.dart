@@ -8,7 +8,7 @@ import 'package:batch/src/task.dart';
 
 class TaskLauncher {
   /// Returns the new instance of [TaskLauncher].
-  TaskLauncher.from({
+  TaskLauncher({
     required this.tasks,
   });
 

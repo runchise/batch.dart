@@ -8,7 +8,7 @@ import 'package:batch/src/task.dart';
 /// This class represents the processing of each step that constitutes a job in batch processing.
 class Step {
   /// Returns the new instance of [Step].
-  Step.from({
+  Step({
     required this.name,
   });
 

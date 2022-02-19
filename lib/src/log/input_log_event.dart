@@ -10,7 +10,7 @@ import 'package:batch/batch.dart';
 /// It manages the information for log output.
 class InputLogEvent {
   /// Returns the new instance of [LogEvent].
-  InputLogEvent.from({
+  InputLogEvent({
     required this.level,
     required this.message,
     required this.error,
