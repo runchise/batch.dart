@@ -112,13 +112,7 @@ void main() {
     );
 
   // Add jobs and run.
- BatchApplication(
-    logConfig: LogConfiguration(
-      level: LogLevel.debug,
-      filter: DevelopmentLogFilter(),
-      output: ConsoleLogOutput(),
-    ),
-  )
+ BatchApplication()
     ..addJob(job1)
     ..addJob(job2)
     ..run();
