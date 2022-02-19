@@ -2,7 +2,7 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/banner.dart';
+import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/batch_application.dart';
 import 'package:batch/src/job.dart';
 import 'package:batch/src/job_launcher.dart';
