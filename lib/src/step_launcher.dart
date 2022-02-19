@@ -24,7 +24,7 @@ class StepLauncher {
   Future<void> execute() async {
     if (steps.isEmpty) {
       throw Exception(
-        'Register the step to be launched is required.',
+        'The step to be launched is required.',
       );
     }
 

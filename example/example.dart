@@ -26,10 +26,16 @@ void main() {
         ..nextTask(SayWorldTask()),
     );
 
-  JobLauncher()
+  BatchApplication(
+    logConfig: LogConfiguration(
+      level: LogLevel.debug,
+      filter: DevelopmentLogFilter(),
+      output: ConsoleLogOutput(),
+    ),
+  )
     ..addJob(job1)
     ..addJob(job2)
-    ..execute();
+    ..run();
 }
 
 class TestTask implements Task {
