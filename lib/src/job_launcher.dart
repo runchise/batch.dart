@@ -3,23 +3,21 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
-import 'package:batch/src/log/logger.dart';
-import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/log_configuration.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
 import 'package:batch/src/banner.dart';
 import 'package:batch/src/job.dart';
+import 'package:batch/src/log/logger.dart';
+import 'package:batch/src/log/logger_instance.dart';
+import 'package:batch/src/log/logger_provider.dart';
+import 'package:batch/src/log_configuration.dart';
 import 'package:batch/src/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
 class JobLauncher {
   /// Returns the new instance of [JobLauncher].
-  JobLauncher.newInstance();
-
-  /// Returns the new instance of [JobLauncher] based on configuration.
-  JobLauncher.withConfig({
+  JobLauncher({
     this.logConfig,
   });
 
@@ -82,6 +80,7 @@ class JobLauncher {
 
       info('The job schedule has configured!');
     } catch (e) {
+      LoggerInstance.instance!.dispose();
       throw Exception(e);
     }
   }

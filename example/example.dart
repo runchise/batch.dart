@@ -26,7 +26,7 @@ void main() {
         ..nextTask(SayWorldTask()),
     );
 
-  JobLauncher.newInstance()
+  JobLauncher()
     ..addJob(job1)
     ..addJob(job2)
     ..execute();

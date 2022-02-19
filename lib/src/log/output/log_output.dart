@@ -2,8 +2,13 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/log/log_output_event.dart';
+// Project imports:
+import 'package:batch/src/log/output_log_event.dart';
 
 abstract class LogOutput {
-  void output(final LogOutputEvent event);
+  void init() {}
+
+  void output(final OutputLogEvent event);
+
+  void dispose() {}
 }

@@ -2,10 +2,11 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/log/log_filter.dart';
+// Project imports:
+import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/log_level.dart';
-import 'package:batch/src/log/log_output.dart';
-import 'package:batch/src/log/log_printer.dart';
+import 'package:batch/src/log/output/log_output.dart';
+import 'package:batch/src/log/printer/log_printer.dart';
 
 class LogConfiguration {
   /// Returns the new instance of [LogConfiguration].

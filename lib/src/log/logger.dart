@@ -2,29 +2,32 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Package imports:
-import 'package:batch/src/log/default_log_filter.dart';
-import 'package:batch/src/log/default_log_output.dart';
-import 'package:batch/src/log/default_log_printer.dart';
-import 'package:batch/src/log/log_filter.dart';
-import 'package:batch/src/log/log_input_event.dart';
-import 'package:batch/src/log/log_level.dart';
-import 'package:batch/src/log/log_output.dart';
-import 'package:batch/src/log/log_output_event.dart';
-import 'package:batch/src/log/log_printer.dart';
-
 // Project imports:
+import 'package:batch/src/log/filter/development_log_filter.dart';
+import 'package:batch/src/log/filter/log_filter.dart';
+import 'package:batch/src/log/input_log_event.dart';
+import 'package:batch/src/log/log_level.dart';
 import 'package:batch/src/log/logger_instance.dart';
+import 'package:batch/src/log/output/console_log_output.dart';
+import 'package:batch/src/log/output/log_output.dart';
+import 'package:batch/src/log/output_log_event.dart';
+import 'package:batch/src/log/printer/default_log_printer.dart';
+import 'package:batch/src/log/printer/log_printer.dart';
 import 'package:batch/src/log_configuration.dart';
 
 class Logger {
   /// Returns the new instance of [Logger].
   Logger.loadFrom({
     LogConfiguration? config,
-  })  : _filter = config?.filter ?? DefaultLogFilter(),
+  })  : _filter = config?.filter ?? DevelopmentLogFilter(),
         _printer = config?.printer ?? DefaultLogPrinter(),
-        _output = config?.output ?? DefaultLogOutput() {
+        _output = config?.output ?? ConsoleLogOutput() {
+    _filter.init();
     _filter.level = config?.level ?? LogLevel.trace;
+    _printer.init();
+    _output.init();
+
+    // Holds the Logger instance.
     LoggerInstance.instance = this;
   }
 
@@ -36,6 +39,9 @@ class Logger {
 
   /// The output
   final LogOutput _output;
+
+  /// The flag represents this logger is active or not
+  bool _active = true;
 
   /// Log a message at trace level.
   void trace(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
@@ -61,6 +67,13 @@ class Logger {
   void fatal(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
       _log(LogLevel.fatal, message, error, stackTrace);
 
+  void dispose() {
+    _active = false;
+    _filter.dispose();
+    _printer.dispose();
+    _output.dispose();
+  }
+
   /// Log a message with [level].
   void _log(
     LogLevel level,
@@ -68,11 +81,15 @@ class Logger {
     dynamic error,
     StackTrace? stackTrace,
   ]) {
-    if (error != null && error is StackTrace) {
-      throw ArgumentError('Error parameter cannot take a StackTrace!');
+    if (!_active) {
+      throw ArgumentError('Logger has already been disposed.');
     }
 
-    final inputEvent = LogInputEvent.from(
+    if (error != null && error is StackTrace) {
+      throw ArgumentError('The "error" parameter cannot take a StackTrace.');
+    }
+
+    final inputEvent = InputLogEvent.from(
       level: level,
       message: message,
       error: error,
@@ -83,7 +100,7 @@ class Logger {
       final output = _printer.log(inputEvent);
 
       if (output.isNotEmpty) {
-        final outputEvent = LogOutputEvent.from(
+        final outputEvent = OutputLogEvent.from(
           level: level,
           lines: output,
         );

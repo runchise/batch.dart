@@ -2,22 +2,23 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/log/log_filter.dart';
-import 'package:batch/src/log/log_input_event.dart';
+// Project imports:
+import 'package:batch/src/log/filter/log_filter.dart';
+import 'package:batch/src/log/input_log_event.dart';
 
-class DefaultLogFilter extends LogFilter {
+class DevelopmentLogFilter extends LogFilter {
   @override
-  bool shouldLog(final LogInputEvent event) {
-    bool shouldLog = false;
+  bool shouldLog(final InputLogEvent event) {
+    bool result = false;
 
     assert(() {
       if (event.level.index >= super.level!.index) {
-        shouldLog = true;
+        result = true;
       }
 
       return true;
     }());
 
-    return shouldLog;
+    return result;
   }
 }

@@ -2,7 +2,7 @@
 
 ## 0.2.0
 
-- Added logging feature. Some logs are automatically output to the console during batch processing, but you can output logs at any log level by using the various methods for log output added to `Task`.
+- Added logging feature. Some logs are automatically output to the console during batch processing, but you can output logs at any log level by using the various methods for log output.
 
 ## 0.1.0
 

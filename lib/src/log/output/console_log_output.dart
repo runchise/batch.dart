@@ -2,13 +2,14 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/log/log_output.dart';
-import 'package:batch/src/log/log_output_event.dart';
+// Project imports:
+import 'package:batch/src/log/output/log_output.dart';
+import 'package:batch/src/log/output_log_event.dart';
 
 /// Default implementation of [LogOutput].
 ///
 /// It sends everything to the system console.
-class DefaultLogOutput extends LogOutput {
+class ConsoleLogOutput extends LogOutput {
   @override
-  void output(final LogOutputEvent event) => event.lines.forEach(print);
+  void output(final OutputLogEvent event) => event.lines.forEach(print);
 }

@@ -29,10 +29,13 @@ A lightweight and powerful batch library written in Dart.
     - [1.2.1. Install Library](#121-install-library)
     - [1.2.2. Import It](#122-import-it)
     - [1.2.3. Use Batch library](#123-use-batch-library)
-    - [1.2.4. Logging](#124-logging)
-  - [1.3. Contribution](#13-contribution)
-  - [1.4. License](#14-license)
-  - [1.5. More Information](#15-more-information)
+  - [1.3. Logging](#13-logging)
+    - [1.3.1. Customize Log Configuration](#131-customize-log-configuration)
+    - [1.3.2. LogFilter](#132-logfilter)
+    - [1.3.3. LogOutput](#133-logoutput)
+  - [1.4. Contribution](#14-contribution)
+  - [1.5. License](#15-license)
+  - [1.6. More Information](#16-more-information)
 
 <!-- /TOC -->
 
@@ -138,11 +141,13 @@ Also `RepeatStatus` is an important factor when defining `Task` processing.
 
 A `Task` should always return `RepeatStatus`, and `RepeatStatus.finished` to finish the process of the `Task`. Another option to return in `Task` processing is `RepeatStatus.continuable`, but if this is returned, the same Task processing will be repeated over and over until `RepeatStatus.finished` is returned.
 
-### 1.2.4. Logging
+## 1.3. Logging
 
 The `batch` library supports logging since version `0.2.0`.
 
-The logging provided by the `batch` library can be used by classes that extend from the `Task` class. The `Task` class provides following logging methods.
+The logging system provided by the `batch` library is a customized library of [Logger](https://pub.dev/packages/logger), and is optimized for the `batch` library specification. Also the logging system provided by the `batch` library inherits many elements from [Logger](https://pub.dev/packages/logger) from this background.
+
+The `batch` library provides the following logging methods.
 
 |             | Description                                                                                                                                                                        |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,18 +158,25 @@ The logging provided by the `batch` library can be used by classes that extend f
 | **error**   | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
 | **fatal**   | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |
 
-The easiest way to do log output in a class that extends from the `Task` class is to pass the message you want to output to the logging method that is provided for the log level, as shown in the following example.
+The logging methods provided by the `batch` library can be used from any class that imports `batch.dart`. Besides there is no need to instantiate an Logger by yourself.
+
+All you need to specify about logging in `batch` library is the configuration of the log, and the Logger is provided safely under the lifecycle of the `batch` library.
+
+See the sample code below for the simplest usage.
 
 ```dart
+import 'package:batch/batch.dart';
+
 class TestLogTask extends Task {
   @override
   Future<RepeatStatus> execute() async {
-    super.trace('Test trace');
-    super.debug('Test debug');
-    super.info('Test info');
-    super.warning('Test warning');
-    super.error('Test error');
-    super.fatal('Test fatal');
+    trace('Test trace');
+    debug('Test debug');
+    info('Test info');
+    warning('Test warning');
+    error('Test error');
+    fatal('Test fatal');
+
     return RepeatStatus.finished;
   }
 }
@@ -182,13 +194,73 @@ yyyy-MM-dd 15:04:00.021510 [info   ] :: World!
 yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
 ```
 
-## 1.3. Contribution
+> Note:
+> The setup of the logger is done when executing the method `execute` in `JobLauncher`.
+> If you want to use the logging feature outside the life cycle of the `batch` library,
+> be sure to do so after executing the `execute` method of the `JobLauncher`.
+
+### 1.3.1. Customize Log Configuration
+
+It is very easy to change the configuration of the Logger provided by the `batch` library to suit your preferences.
+Just pass the `LogConfiguration` object to the `withConfig` constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
+
+```dart
+JobLauncher.withConfig(
+  logConfig: LogConfiguration.from(
+    level: LogLevel.debug,
+  ),
+);
+```
+
+Also, the logging feature can be freely customized by inheriting the following abstract classes and setting them in the `LogConfiguration`.
+
+|                | Description                                                                                                             |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **LogFilter**  | This is the layer that determines whether log output should be performed. By default, only the log level is determined. |
+| **LogPrinter** | This layer defines the format for log output.                                                                           |
+| **LogOutput**  | This is the layer that actually performs the log output. By default, it outputs to the console.                         |
+
+Also, the `batch` library provides several classes that implement these abstract classes, so you can use them depending on your situation.
+
+### 1.3.2. LogFilter
+
+|                          | Description                                                                                                                                                                                  |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **DevelopmentLogFilter** | This is a simple log filter for development environments. You can control the output of logs just according to the log level in the development environment. This filter is used by default. |
+| **ProductionLogFilter**  | This is a simple log filter for production environments. You can control the output of logs just according to the log level in the production environment.                                   |
+
+**_Example_**
+
+```dart
+JobLauncher.withConfig(
+  logConfig: LogConfiguration.from(
+    filter: ProductionLogFilter(),
+  ),
+);
+```
+
+### 1.3.3. LogOutput
+
+|                      | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| **ConsoleLogOutput** | Provides features to output log to console. This filter is used by default. |
+| **FileLogOutput**    | Provides features to output the log to the specified file.                  |
+
+```dart
+JobLauncher.withConfig(
+  logConfig: LogConfiguration.from(
+    output: ConsoleLogOutput(),
+  ),
+);
+```
+
+## 1.4. Contribution
 
 If you would like to contribute to the development of this library, please create an [issue](https://github.com/myConsciousness/batch.dart/issues) or create a Pull Request.
 
 Developer will respond to issues and review pull requests as quickly as possible.
 
-## 1.4. License
+## 1.5. License
 
 ```license
 Copyright (c) 2022, Kato Shinya. All rights reserved.
@@ -196,7 +268,7 @@ Use of this source code is governed by a
 BSD-style license that can be found in the LICENSE file.
 ```
 
-## 1.5. More Information
+## 1.6. More Information
 
 `Batch` was designed and implemented by **_Kato Shinya_**.
 

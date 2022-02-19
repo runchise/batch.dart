@@ -2,14 +2,15 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Project imports:
 import 'package:batch/batch.dart';
 
 /// The class that represents log.
 ///
 /// It manages the information for log output.
-class LogInputEvent {
+class InputLogEvent {
   /// Returns the new instance of [LogEvent].
-  LogInputEvent.from({
+  InputLogEvent.from({
     required this.level,
     required this.message,
     required this.error,
@@ -30,14 +31,14 @@ class LogInputEvent {
 
   @override
   String toString() {
-    return 'LogInputEvent(level: $level, message: $message, error: $error, stackTrace: $stackTrace)';
+    return 'InputLogEvent(level: $level, message: $message, error: $error, stackTrace: $stackTrace)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is LogInputEvent &&
+    return other is InputLogEvent &&
         other.level == level &&
         other.message == message &&
         other.error == error &&

@@ -2,13 +2,15 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Package imports:
 import 'package:collection/collection.dart';
 
+// Project imports:
 import 'package:batch/batch.dart';
 
-class LogOutputEvent {
-  /// Returns the new instance of [LogOutputEvent].
-  LogOutputEvent.from({
+class OutputLogEvent {
+  /// Returns the new instance of [OutputLogEvent].
+  OutputLogEvent.from({
     required this.level,
     required this.lines,
   });
@@ -20,14 +22,14 @@ class LogOutputEvent {
   final List<String> lines;
 
   @override
-  String toString() => 'LogOutputEvent(level: $level, lines: $lines)';
+  String toString() => 'OutputLogEvent(level: $level, lines: $lines)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     final listEquals = const DeepCollectionEquality().equals;
 
-    return other is LogOutputEvent &&
+    return other is OutputLogEvent &&
         other.level == level &&
         listEquals(other.lines, lines);
   }
