@@ -6,13 +6,13 @@
 import 'package:batch/src/log/filter/development_log_filter.dart';
 import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
+import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/log_level.dart';
 import 'package:batch/src/log/output/console_log_output.dart';
 import 'package:batch/src/log/output/log_output.dart';
 import 'package:batch/src/log/output_log_event.dart';
 import 'package:batch/src/log/printer/default_log_printer.dart';
 import 'package:batch/src/log/printer/log_printer.dart';
-import 'package:batch/src/log/log_configuration.dart';
 
 class Logger {
   /// Returns the new instance of [Logger].

@@ -2,8 +2,9 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/job/execution.dart';
-import 'package:batch/src/job/process_status.dart';
+// Project imports:
+import 'package:batch/src/job/context/execution.dart';
+import 'package:batch/src/job/context/process_status.dart';
 
 class StepExecution extends Execution {
   /// Returns the new instance of [StepExecution].

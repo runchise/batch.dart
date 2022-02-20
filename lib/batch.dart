@@ -9,9 +9,9 @@ export 'package:batch/src/batch_application.dart';
 export 'package:batch/src/job/job.dart';
 export 'package:batch/src/job/step.dart';
 export 'package:batch/src/job/task.dart';
-export 'package:batch/src/job/execution_context.dart';
-export 'package:batch/src/job/job_execution.dart';
-export 'package:batch/src/job/step_execution.dart';
+export 'package:batch/src/job/context/execution_context.dart';
+export 'package:batch/src/job/context/job_execution.dart';
+export 'package:batch/src/job/context/step_execution.dart';
 export 'package:batch/src/job/repeat_status.dart' show RepeatStatus;
 
 // Logging features

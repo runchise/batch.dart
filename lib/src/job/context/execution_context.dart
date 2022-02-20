@@ -2,9 +2,10 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:batch/src/job/job_execution.dart';
-import 'package:batch/src/job/shared_parameters.dart';
-import 'package:batch/src/job/step_execution.dart';
+// Project imports:
+import 'package:batch/src/job/context/job_execution.dart';
+import 'package:batch/src/job/context/step_execution.dart';
+import 'package:batch/src/job/parameter/shared_parameters.dart';
 
 class ExecutionContext {
   /// The current job execution

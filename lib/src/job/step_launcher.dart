@@ -3,10 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/execution_context.dart';
-import 'package:batch/src/job/process_status.dart';
+import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/context/process_status.dart';
+import 'package:batch/src/job/context/step_execution.dart';
 import 'package:batch/src/job/step.dart';
-import 'package:batch/src/job/step_execution.dart';
 import 'package:batch/src/job/task_launcher.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
