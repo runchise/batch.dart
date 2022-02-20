@@ -9,7 +9,7 @@ import 'package:batch/src/job/job.dart';
 import 'package:batch/src/job/job_launcher.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/log_configuration.dart';
+import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/job/shared_parameters.dart';
 
 class BatchApplicationImpl implements BatchApplication {

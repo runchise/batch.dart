@@ -5,7 +5,7 @@
 // Project imports:
 import 'package:batch/src/batch_application_impl.dart';
 import 'package:batch/src/job/job.dart';
-import 'package:batch/src/log_configuration.dart';
+import 'package:batch/src/log/log_configuration.dart';
 
 abstract class BatchApplication {
   /// Returns the new instance of [BatchApplication].

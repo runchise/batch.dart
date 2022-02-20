@@ -12,7 +12,7 @@ import 'package:batch/src/log/output/log_output.dart';
 import 'package:batch/src/log/output_log_event.dart';
 import 'package:batch/src/log/printer/default_log_printer.dart';
 import 'package:batch/src/log/printer/log_printer.dart';
-import 'package:batch/src/log_configuration.dart';
+import 'package:batch/src/log/log_configuration.dart';
 
 class Logger {
   /// Returns the new instance of [Logger].

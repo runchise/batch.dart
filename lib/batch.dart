@@ -15,7 +15,7 @@ export 'package:batch/src/job/step_execution.dart';
 export 'package:batch/src/job/repeat_status.dart' show RepeatStatus;
 
 // Logging features
-export 'package:batch/src/log_configuration.dart';
+export 'package:batch/src/log/log_configuration.dart';
 export 'package:batch/src/log/logger_provider.dart';
 export 'package:batch/src/log/log_level.dart';
 export 'package:batch/src/log/input_log_event.dart';
