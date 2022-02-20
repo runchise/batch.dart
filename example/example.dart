@@ -35,6 +35,7 @@ void main() {
   )
     ..addJob(job1)
     ..addJob(job2)
+    ..addParameter(key: 'key', value: 'value')
     ..run();
 }
 
@@ -42,7 +43,7 @@ class TestTask implements Task {
   static int count = 0;
 
   @override
-  Future<RepeatStatus> execute() async {
+  Future<RepeatStatus> execute(ExecutionContext context) async {
     if (count == 5) {
       trace('Finish.');
       return RepeatStatus.finished;
@@ -57,7 +58,7 @@ class TestTask implements Task {
 
 class SayHelloTask implements Task {
   @override
-  Future<RepeatStatus> execute() async {
+  Future<RepeatStatus> execute(ExecutionContext context) async {
     debug('Hello,');
     return RepeatStatus.finished;
   }
@@ -65,7 +66,7 @@ class SayHelloTask implements Task {
 
 class SayWorldTask implements Task {
   @override
-  Future<RepeatStatus> execute() async {
+  Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
     return RepeatStatus.finished;
   }

@@ -2,7 +2,13 @@
 
 ## 0.2.0
 
+### New Features
+
 - Added logging feature. Some logs are automatically output to the console during batch processing, but you can output logs at any log level by using the various methods for log output.
+
+### Destructive Changes
+
+- Refactored the structure, made `JobLauncher` private and released `BatchApplication` as new entry point.
 
 ## 0.1.0
 

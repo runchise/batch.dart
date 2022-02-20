@@ -4,12 +4,12 @@
 
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/batch_application.dart';
-import 'package:batch/src/job.dart';
-import 'package:batch/src/job_launcher.dart';
+import 'package:batch/src/job/job.dart';
+import 'package:batch/src/job/job_launcher.dart';
 import 'package:batch/src/log/logger.dart';
-import 'package:batch/src/log/logger_instance.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/log_configuration.dart';
+import 'package:batch/src/parameter/shared_parameters.dart';
 
 class BatchApplicationImpl implements BatchApplication {
   BatchApplicationImpl({
@@ -36,6 +36,19 @@ class BatchApplicationImpl implements BatchApplication {
   }
 
   @override
+  BatchApplication addParameter<T>({
+    required String key,
+    required T value,
+  }) {
+    SharedParameters.instance.putAsGlobalScope(
+      key: key,
+      value: value,
+    );
+
+    return this;
+  }
+
+  @override
   void run() {
     try {
       //! The logging functionality provided by the batch library
@@ -49,7 +62,7 @@ class BatchApplicationImpl implements BatchApplication {
 
       JobLauncher(jobs: _jobs).execute();
     } catch (e) {
-      LoggerInstance.instance!.dispose();
+      Logger.instance.dispose();
       throw Exception(e);
     }
   }

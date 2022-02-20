@@ -3,7 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/repeat_status.dart';
+import 'package:batch/src/job/execution_context.dart';
+import 'package:batch/src/job/repeat_status.dart';
 
 /// This abstract class represents the smallest unit of processing that is
 /// included in the steps when a job is executed.
@@ -18,5 +19,5 @@ abstract class Task {
   /// until [RepeatStatus.finished] is returned. This will result in an infinite loop,
   /// so be sure to consider the case where RepeatStatus.finished is returned
   /// when using RepeatStatus.continue.
-  Future<RepeatStatus> execute();
+  Future<RepeatStatus> execute(final ExecutionContext context);
 }

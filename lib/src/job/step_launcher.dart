@@ -4,8 +4,8 @@
 
 // Project imports:
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/step.dart';
-import 'package:batch/src/task_launcher.dart';
+import 'package:batch/src/job/step.dart';
+import 'package:batch/src/job/task_launcher.dart';
 
 class StepLauncher {
   /// Returns the new instance of [StepLauncher].

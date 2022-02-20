@@ -3,8 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/repeat_status.dart';
-import 'package:batch/src/task.dart';
+import 'package:batch/src/job/execution_context.dart';
+import 'package:batch/src/job/job_execution.dart';
+import 'package:batch/src/job/repeat_status.dart';
+import 'package:batch/src/job/step_execution.dart';
+import 'package:batch/src/job/task.dart';
 
 class TaskLauncher {
   /// Returns the new instance of [TaskLauncher].
@@ -26,7 +29,12 @@ class TaskLauncher {
     for (final task in tasks) {
       RepeatStatus repeatStatus = RepeatStatus.continuable;
       do {
-        repeatStatus = await task.execute();
+        repeatStatus = await task.execute(
+          ExecutionContext(
+            jobExecution: JobExecution(),
+            stepExecution: StepExecution(),
+          ),
+        );
       } while (repeatStatus.isContinuable);
     }
   }

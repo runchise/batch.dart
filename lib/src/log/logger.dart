@@ -7,7 +7,6 @@ import 'package:batch/src/log/filter/development_log_filter.dart';
 import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
 import 'package:batch/src/log/log_level.dart';
-import 'package:batch/src/log/logger_instance.dart';
 import 'package:batch/src/log/output/console_log_output.dart';
 import 'package:batch/src/log/output/log_output.dart';
 import 'package:batch/src/log/output_log_event.dart';
@@ -30,8 +29,14 @@ class Logger {
     _filter.level = config.level ?? LogLevel.trace;
 
     // Holds the Logger instance.
-    LoggerInstance.instance = this;
+    _singletonInstance = this;
   }
+
+  /// Returns the singleton instance of [Logger].
+  static get instance => _singletonInstance!;
+
+  /// The singleton instance of this [Logger].
+  static Logger? _singletonInstance;
 
   /// The base log level
   final LogLevel _level;

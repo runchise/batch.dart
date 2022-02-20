@@ -6,9 +6,9 @@
 import 'package:cron/cron.dart';
 
 // Project imports:
-import 'package:batch/src/job.dart';
+import 'package:batch/src/job/job.dart';
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/step_launcher.dart';
+import 'package:batch/src/job/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
 class JobLauncher {
