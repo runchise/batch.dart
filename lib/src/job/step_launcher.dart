@@ -3,22 +3,30 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/log/logger_provider.dart';
+import 'package:batch/src/job/execution_context.dart';
+import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/job/step.dart';
+import 'package:batch/src/job/step_execution.dart';
 import 'package:batch/src/job/task_launcher.dart';
+import 'package:batch/src/log/logger_provider.dart';
 
 class StepLauncher {
   /// Returns the new instance of [StepLauncher].
   StepLauncher({
-    required this.parentJobName,
+    required this.context,
     required this.steps,
-  }) : assert(parentJobName.isNotEmpty);
+    required String parentJobName,
+  })  : assert(parentJobName.isNotEmpty),
+        _parentJobName = parentJobName;
 
-  /// The parent job name
-  final String parentJobName;
+  /// The execution context
+  final ExecutionContext context;
 
   /// The steps
   final List<Step> steps;
+
+  /// The parent job name
+  final String _parentJobName;
 
   /// Runs all steps.
   Future<void> execute() async {
@@ -29,11 +37,20 @@ class StepLauncher {
     }
 
     for (final step in steps) {
-      info('STARTED STEP ($parentJobName -> ${step.name})');
+      info('STARTED STEP ($_parentJobName -> ${step.name})');
 
-      await TaskLauncher(tasks: step.tasks).execute();
+      context.stepExecution = StepExecution(
+        parentJobName: _parentJobName,
+        name: step.name,
+      );
 
-      info('FINISHED STEP ($parentJobName -> ${step.name})');
+      context.stepExecution!.status = ProcessStatus.started;
+
+      await TaskLauncher(context: context, tasks: step.tasks).execute();
+
+      context.stepExecution!.status = ProcessStatus.completed;
+
+      info('FINISHED STEP ($_parentJobName -> ${step.name})');
     }
   }
 }

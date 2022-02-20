@@ -3,8 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/parameter/job_relationship.dart';
-import 'package:batch/src/parameter/shared_parameters.dart';
 import 'package:batch/src/job/step.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
@@ -42,21 +40,6 @@ class Job {
     }
 
     steps.add(step);
-
-    return this;
-  }
-
-  Job addParameter<T>({
-    required String key,
-    required T value,
-  }) {
-    SharedParameters.instance.putAsJobScope(
-      key: key,
-      value: value,
-      relationship: JobRelationship(
-        parentJobName: name,
-      ),
-    );
 
     return this;
   }

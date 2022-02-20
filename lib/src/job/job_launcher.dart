@@ -3,11 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
+import 'package:batch/batch.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
-import 'package:batch/src/job/job.dart';
-import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/job/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
@@ -37,9 +36,13 @@ class JobLauncher {
       _cron.schedule(Schedule.parse(job.cron), () async {
         info('STARTED JOB (${job.name})');
 
+        final context = ExecutionContext();
+        context.jobExecution = JobExecution(name: job.name);
+
         await StepLauncher(
-          parentJobName: job.name,
+          context: context,
           steps: job.steps,
+          parentJobName: job.name,
         ).execute();
 
         info('FINISHED JOB (${job.name})');

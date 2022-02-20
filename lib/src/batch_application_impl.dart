@@ -2,6 +2,7 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Project imports:
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/batch_application.dart';
 import 'package:batch/src/job/job.dart';
@@ -9,7 +10,7 @@ import 'package:batch/src/job/job_launcher.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/log_configuration.dart';
-import 'package:batch/src/parameter/shared_parameters.dart';
+import 'package:batch/src/job/shared_parameters.dart';
 
 class BatchApplicationImpl implements BatchApplication {
   BatchApplicationImpl({
@@ -40,7 +41,7 @@ class BatchApplicationImpl implements BatchApplication {
     required String key,
     required T value,
   }) {
-    SharedParameters.instance.putAsGlobalScope(
+    SharedParameters.instance.put(
       key: key,
       value: value,
     );
