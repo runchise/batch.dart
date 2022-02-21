@@ -28,7 +28,7 @@ void main() {
 
   BatchApplication(
     logConfig: LogConfiguration(
-      level: LogLevel.debug,
+      level: LogLevel.trace,
       filter: DevelopmentLogFilter(),
       output: ConsoleLogOutput(),
     ),
@@ -39,7 +39,7 @@ void main() {
     ..run();
 }
 
-class TestTask implements Task {
+class TestTask extends Task<TestTask> {
   static int count = 0;
 
   @override
@@ -56,7 +56,7 @@ class TestTask implements Task {
   }
 }
 
-class SayHelloTask implements Task {
+class SayHelloTask extends Task<SayHelloTask> {
   @override
   Future<RepeatStatus> execute(ExecutionContext context) async {
     debug('Hello,');
@@ -64,7 +64,7 @@ class SayHelloTask implements Task {
   }
 }
 
-class SayWorldTask implements Task {
+class SayWorldTask extends Task<SayWorldTask> {
   @override
   Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
