@@ -4,6 +4,14 @@
 
 ### New Features
 
+- Added `DefaultLogFilter`.
+
+### Destructive Changes
+
+- Deleted `DevelopmentLogFilter` and `ProductionLogFilter`.
+
+### New Features
+
 - Added logging feature. Some logs are automatically output to the console during batch processing, but you can output logs at any log level by using the various methods for log output.
 - Enabled parameter exchange between tasks in the same step.
 - Added the concept of SharedParameters, which are shared by the entire batch application.
