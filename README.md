@@ -111,14 +111,17 @@ void main() {
         ..nextTask(SayWorldTask()),
     );
 
-  // Add jobs and run.
+  // Add jobs and shared parameters, then run.
  BatchApplication()
+    // You can add any parameters that is shared in this batch application.
+    ..addSharedParameter(key: 'key1', value: 'value1')
+    ..addSharedParameter(key: 'key2', value: {'any': 'object'})
     ..addJob(job1)
     ..addJob(job2)
     ..run();
 }
 
-class SayHelloTask implements Task {
+class SayHelloTask extends Task<SayHelloTask> {
   @override
   Future<RepeatStatus> execute() async {
     // Logging output is possible at any log level.
@@ -128,7 +131,7 @@ class SayHelloTask implements Task {
   }
 }
 
-class SayWorldTask implements Task {
+class SayWorldTask extends Task<SayWorldTask> {
   @override
   Future<RepeatStatus> execute() async {
     info('World!');
