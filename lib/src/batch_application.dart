@@ -4,7 +4,7 @@
 
 // Project imports:
 import 'package:batch/src/batch_application_impl.dart';
-import 'package:batch/src/job/job.dart';
+import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/log/log_configuration.dart';
 
 abstract class BatchApplication {

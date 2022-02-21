@@ -6,13 +6,12 @@
 export 'package:batch/src/batch_application.dart';
 
 // Job features
-export 'package:batch/src/job/job.dart';
-export 'package:batch/src/job/step.dart';
-export 'package:batch/src/job/task.dart';
+export 'package:batch/src/job/entity/job.dart';
+export 'package:batch/src/job/entity/step.dart';
+export 'package:batch/src/job/entity/task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
-export 'package:batch/src/job/context/job_execution.dart';
-export 'package:batch/src/job/context/step_execution.dart';
-export 'package:batch/src/job/repeat_status.dart' show RepeatStatus;
+export 'package:batch/src/job/execution.dart';
+export 'package:batch/src/job/const/repeat_status.dart' show RepeatStatus;
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';

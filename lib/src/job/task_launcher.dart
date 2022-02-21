@@ -4,18 +4,16 @@
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/repeat_status.dart';
-import 'package:batch/src/job/task.dart';
+import 'package:batch/src/job/const/repeat_status.dart';
+import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/context_helper.dart';
 
-class TaskLauncher {
+class TaskLauncher extends ContextHelper<Task> {
   /// Returns the new instance of [TaskLauncher].
   TaskLauncher({
-    required this.context,
+    required ExecutionContext context,
     required this.tasks,
-  });
-
-  /// The execution context
-  final ExecutionContext context;
+  }) : super(context: context);
 
   /// The tasks
   final List<Task> tasks;
@@ -29,10 +27,14 @@ class TaskLauncher {
     }
 
     for (final task in tasks) {
+      super.startNewExecution(name: task.name);
+
       RepeatStatus repeatStatus = RepeatStatus.continuable;
       do {
-        repeatStatus = await task.execute(context);
+        repeatStatus = await task.execute(super.context);
       } while (repeatStatus.isContinuable);
+
+      super.finishExecution();
     }
   }
 }

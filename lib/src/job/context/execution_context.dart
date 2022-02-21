@@ -3,23 +3,28 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/context/job_execution.dart';
-import 'package:batch/src/job/context/step_execution.dart';
+import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/execution.dart';
+import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
+import 'package:batch/src/job/entity/step.dart';
 
 class ExecutionContext {
   /// The current job execution
-  JobExecution? jobExecution;
+  Execution<Job>? jobExecution;
 
   /// The current step execution
-  StepExecution? stepExecution;
+  Execution<Step>? stepExecution;
+
+  /// The current task execution
+  Execution<Task>? taskExecution;
 
   /// The shared parameters
   final Map<String, dynamic> sharedParameters =
       Map.from(SharedParameters.instance.values);
 
   /// The parameters
-  Map<String, dynamic> parameters = {};
+  final Map<String, dynamic> parameters = {};
 
   @override
   String toString() =>

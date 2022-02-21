@@ -3,22 +3,20 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/step.dart';
+import 'package:batch/src/job/entity/entity.dart';
+import 'package:batch/src/job/entity/step.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
 ///
 /// Pass a unique [name] and a [cron] that represents the execution schedule
 /// to the [Job.from] constructor when initializing [Job]. And then use
 /// the [nextStep] method to register the [Step] to be executed.
-class Job {
+class Job extends Entity<Job> {
   /// Returns the new instance of [Job].
   Job({
-    required this.name,
+    required String name,
     required this.cron,
-  });
-
-  /// The name
-  final String name;
+  }) : super(name: name);
 
   /// The cron
   final String cron;
@@ -45,15 +43,15 @@ class Job {
   }
 
   @override
-  String toString() => 'Job(name: $name)';
+  String toString() => 'Job(cron: $cron)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Job && other.name == name;
+    return other is Job && other.cron == cron;
   }
 
   @override
-  int get hashCode => name.hashCode;
+  int get hashCode => cron.hashCode;
 }

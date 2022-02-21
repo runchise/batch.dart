@@ -3,17 +3,15 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/task.dart';
+import 'package:batch/src/job/entity/entity.dart';
+import 'package:batch/src/job/entity/task.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
-class Step {
+class Step extends Entity<Step> {
   /// Returns the new instance of [Step].
   Step({
-    required this.name,
-  });
-
-  /// The name
-  final String name;
+    required String name,
+  }) : super(name: name);
 
   /// The tasks
   final List<Task> tasks = [];

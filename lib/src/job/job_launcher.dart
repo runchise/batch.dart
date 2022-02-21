@@ -4,8 +4,8 @@
 
 // Package imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/context/job_execution.dart';
-import 'package:batch/src/job/job.dart';
+import 'package:batch/src/job/context_helper.dart';
+import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:cron/cron.dart';
 
@@ -13,11 +13,11 @@ import 'package:cron/cron.dart';
 import 'package:batch/src/job/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
-class JobLauncher {
+class JobLauncher extends ContextHelper<Job> {
   /// Returns the new instance of [JobLauncher].
   JobLauncher({
     required this.jobs,
-  });
+  }) : super(context: ExecutionContext());
 
   /// The jobs
   final List<Job> jobs;
@@ -37,18 +37,15 @@ class JobLauncher {
 
     for (final job in jobs) {
       _cron.schedule(Schedule.parse(job.cron), () async {
-        info('STARTED JOB (${job.name})');
-
-        final context = ExecutionContext();
-        context.jobExecution = JobExecution(name: job.name);
+        super.startNewExecution(name: job.name);
 
         await StepLauncher(
-          context: context,
+          context: super.context,
           steps: job.steps,
           parentJobName: job.name,
         ).execute();
 
-        info('FINISHED JOB (${job.name})');
+        super.finishExecution();
       });
     }
 
