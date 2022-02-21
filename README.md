@@ -46,7 +46,8 @@ The `batch` library was created to make it easier to develop `job schedule` and 
 
 ## 1.1. Features
 
-- Job management library written in Dart.
+- Very powerful batch library written in Dart.
+- Multiple job schedules can be easily defined.
 - Intuitive and easy to understand job definitions.
 - Easy scheduling of job execution in Cron format.
 - Powerful and customizable logging functions without the need for third-party libraries.
