@@ -64,4 +64,6 @@ abstract class ContextHelper<T extends Entity<T>> {
           'FINISHED TASK (${context.jobExecution!.name} -> ${context.stepExecution!.name} -> ${context.taskExecution!.name})');
     }
   }
+
+  void clearParameters() => context.parameters.clear();
 }

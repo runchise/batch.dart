@@ -33,9 +33,11 @@ void main() {
       output: ConsoleLogOutput(),
     ),
   )
+    // You can add any parameters that is shared in this batch application.
+    ..addSharedParameter(key: 'key1', value: 'value1')
+    ..addSharedParameter(key: 'key2', value: {'any': 'object'})
     ..addJob(job1)
     ..addJob(job2)
-    ..addParameter(key: 'key', value: 'value')
     ..run();
 }
 
@@ -48,6 +50,11 @@ class TestTask extends Task<TestTask> {
       trace('Finish.');
       return RepeatStatus.finished;
     }
+
+    // This parameter is shared just in tasks in this step.
+    context.parameters['key_$count'] = 'value$count';
+    // You can use shared parameters in any places.
+    info(context.sharedParameters['key1']);
 
     count++;
 

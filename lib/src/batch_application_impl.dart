@@ -37,7 +37,7 @@ class BatchApplicationImpl implements BatchApplication {
   }
 
   @override
-  BatchApplication addParameter<T>({
+  BatchApplication addSharedParameter<T>({
     required String key,
     required T value,
   }) {
@@ -63,7 +63,6 @@ class BatchApplicationImpl implements BatchApplication {
 
       JobLauncher(jobs: _jobs).execute();
     } catch (e) {
-      print(e);
       Logger.instance.dispose();
       throw Exception(e);
     }

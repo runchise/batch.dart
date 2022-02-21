@@ -21,7 +21,7 @@ abstract class BatchApplication {
   BatchApplication addJob(final Job job);
 
   /// Adds parameter as global scope.
-  BatchApplication addParameter<T>({
+  BatchApplication addSharedParameter<T>({
     required String key,
     required T value,
   });

@@ -36,5 +36,7 @@ class TaskLauncher extends ContextHelper<Task> {
 
       super.finishExecution();
     }
+
+    super.clearParameters();
   }
 }
