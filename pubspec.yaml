@@ -1,5 +1,5 @@
 name: batch
-description: A lightweight and powerful batch library written in Dart. You can easily develop a job management and batch program in Dart with this library.
+description: A lightweight and powerful batch library written in Dart. You can easily develop a job schedule and batch program in Dart with this library.
 version: 0.2.0
 homepage: https://github.com/myConsciousness/batch.dart
 
