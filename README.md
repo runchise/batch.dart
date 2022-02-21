@@ -24,18 +24,19 @@ A lightweight and powerful batch library written in Dart.
 <!-- TOC -->
 
 - [1. About](#1-about)
-  - [1.1. Basic Concepts](#11-basic-concepts)
-  - [1.2. Introduction](#12-introduction)
-    - [1.2.1. Install Library](#121-install-library)
-    - [1.2.2. Import It](#122-import-it)
-    - [1.2.3. Use Batch library](#123-use-batch-library)
-  - [1.3. Logging](#13-logging)
-    - [1.3.1. Customize Log Configuration](#131-customize-log-configuration)
-    - [1.3.2. LogFilter](#132-logfilter)
-    - [1.3.3. LogOutput](#133-logoutput)
-  - [1.4. Contribution](#14-contribution)
-  - [1.5. License](#15-license)
-  - [1.6. More Information](#16-more-information)
+  - [1.1. Features](#11-features)
+  - [1.2. Basic Concepts](#12-basic-concepts)
+  - [1.3. Introduction](#13-introduction)
+    - [1.3.1. Install Library](#131-install-library)
+    - [1.3.2. Import It](#132-import-it)
+    - [1.3.3. Use Batch library](#133-use-batch-library)
+  - [1.4. Logging](#14-logging)
+    - [1.4.1. Customize Log Configuration](#141-customize-log-configuration)
+    - [1.4.2. LogFilter](#142-logfilter)
+    - [1.4.3. LogOutput](#143-logoutput)
+  - [1.5. Contribution](#15-contribution)
+  - [1.6. License](#16-license)
+  - [1.7. More Information](#17-more-information)
 
 <!-- /TOC -->
 
@@ -43,7 +44,15 @@ A lightweight and powerful batch library written in Dart.
 
 The `batch` library was created to make it easier to develop `CLI program` in Dart language. It supports scheduling using `Cron` and it is a very lightweight and powerful.
 
-## 1.1. Basic Concepts
+## 1.1. Features
+
+- Job management library written in Dart.
+- Intuitive and easy to understand job definitions.
+- Easy scheduling of job execution in Cron format.
+- Powerful and customizable logging functions without the need for third-party libraries.
+- **_You can use Dart's assets in Job management!_**
+
+## 1.2. Basic Concepts
 
 The processing of the `batch` library is mainly performed using the following elements.
 
@@ -55,9 +64,9 @@ The processing of the `batch` library is mainly performed using the following el
 
 The concepts in the table above are in hierarchical order, with the top concepts encompassing the lower elements. However, this hierarchy only represents the layers of processing, and the higher level processing does not affect the lower level processing and vice versa.
 
-## 1.2. Introduction
+## 1.3. Introduction
 
-### 1.2.1. Install Library
+### 1.3.1. Install Library
 
 **_With Dart:_**
 
@@ -71,13 +80,13 @@ The concepts in the table above are in hierarchical order, with the top concepts
  flutter pub add batch
 ```
 
-### 1.2.2. Import It
+### 1.3.2. Import It
 
 ```dart
 import 'package:batch/batch.dart';
 ```
 
-### 1.2.3. Use Batch library
+### 1.3.3. Use Batch library
 
 The easiest way to use the `batch` library is to create a class that implements `Task` and register it to Step and Job in the order you want to execute.
 
@@ -144,7 +153,7 @@ Also `RepeatStatus` is an important factor when defining `Task` processing.
 
 A `Task` should always return `RepeatStatus`, and `RepeatStatus.finished` to finish the process of the `Task`. Another option to return in `Task` processing is `RepeatStatus.continuable`, but if this is returned, the same Task processing will be repeated over and over until `RepeatStatus.finished` is returned.
 
-## 1.3. Logging
+## 1.4. Logging
 
 The `batch` library supports logging since version `0.2.0`.
 
@@ -202,7 +211,7 @@ yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
 > If you want to use the logging feature outside the life cycle of the `batch` library,
 > be sure to do so after executing the `run` method of the `BatchApplication`.
 
-### 1.3.1. Customize Log Configuration
+### 1.4.1. Customize Log Configuration
 
 It is very easy to change the configuration of the Logger provided by the `batch` library to suit your preferences.
 Just pass the `LogConfiguration` object to the constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
@@ -225,7 +234,7 @@ Also, the logging feature can be freely customized by inheriting the following a
 
 Also, the `batch` library provides several classes that implement these abstract classes, so you can use them depending on your situation.
 
-### 1.3.2. LogFilter
+### 1.4.2. LogFilter
 
 |                          | Description                                                                                                                                                                                  |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -242,7 +251,7 @@ BatchApplication(
 );
 ```
 
-### 1.3.3. LogOutput
+### 1.4.3. LogOutput
 
 |                      | Description                                                                 |
 | -------------------- | --------------------------------------------------------------------------- |
@@ -259,13 +268,13 @@ BatchApplication(
 );
 ```
 
-## 1.4. Contribution
+## 1.5. Contribution
 
 If you would like to contribute to the development of this library, please create an [issue](https://github.com/myConsciousness/batch.dart/issues) or create a Pull Request.
 
 Developer will respond to issues and review pull requests as quickly as possible.
 
-## 1.5. License
+## 1.6. License
 
 ```license
 Copyright (c) 2022, Kato Shinya. All rights reserved.
@@ -273,7 +282,7 @@ Use of this source code is governed by a
 BSD-style license that can be found in the LICENSE file.
 ```
 
-## 1.6. More Information
+## 1.7. More Information
 
 `Batch` was designed and implemented by **_Kato Shinya_**.
 
