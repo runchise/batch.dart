@@ -1,6 +1,6 @@
 # Release Note
 
-## 0.2.0
+## 0.2.1
 
 ### New Features
 
@@ -9,6 +9,8 @@
 ### Destructive Changes
 
 - Deleted `DevelopmentLogFilter` and `ProductionLogFilter`.
+
+## 0.2.0
 
 ### New Features
 
