@@ -15,6 +15,7 @@ class SharedParameters {
   /// The shared parameters
   final values = <String, dynamic>{};
 
+  /// Puts [value] in association with [key].
   void put({
     required String key,
     required dynamic value,

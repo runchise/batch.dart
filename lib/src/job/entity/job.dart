@@ -9,8 +9,8 @@ import 'package:batch/src/job/entity/step.dart';
 /// This class represents a job which is the largest unit in batch execution processing.
 ///
 /// Pass a unique [name] and a [cron] that represents the execution schedule
-/// to the [Job.from] constructor when initializing [Job]. And then use
-/// the [nextStep] method to register the [Step] to be executed.
+/// to the constructor when initializing [Job]. And then use the [nextStep] method
+/// to add the [Step] to be executed.
 class Job extends Entity<Job> {
   /// Returns the new instance of [Job].
   Job({

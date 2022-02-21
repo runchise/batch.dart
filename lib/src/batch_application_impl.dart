@@ -12,7 +12,9 @@ import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
+/// This class is an implementation class of [BatchApplication].
 class BatchApplicationImpl implements BatchApplication {
+  /// Returns the new instance of [BatchApplicationImpl].
   BatchApplicationImpl({
     this.logConfig,
   });
@@ -37,9 +39,9 @@ class BatchApplicationImpl implements BatchApplication {
   }
 
   @override
-  BatchApplication addSharedParameter<T>({
+  BatchApplication addSharedParameter({
     required String key,
-    required T value,
+    required dynamic value,
   }) {
     SharedParameters.instance.put(
       key: key,
