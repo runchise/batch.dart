@@ -3,10 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/const/repeat_status.dart';
-import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/context_helper.dart';
+import 'package:batch/src/job/entity/task.dart';
 
 class TaskLauncher extends ContextHelper<Task> {
   /// Returns the new instance of [TaskLauncher].

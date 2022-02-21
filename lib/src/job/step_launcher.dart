@@ -4,8 +4,8 @@
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/context_helper.dart';
+import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/task_launcher.dart';
 
 class StepLauncher extends ContextHelper<Step> {
