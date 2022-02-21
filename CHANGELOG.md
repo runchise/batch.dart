@@ -5,10 +5,13 @@
 ### New Features
 
 - Added logging feature. Some logs are automatically output to the console during batch processing, but you can output logs at any log level by using the various methods for log output.
+- Enabled parameter exchange between tasks in the same step.
+- Added the concept of SharedParameters, which are shared by the entire batch application.
 
 ### Destructive Changes
 
 - Refactored the structure, made `JobLauncher` private and released `BatchApplication` as new entry point.
+- Added ExecutionContext as an argument to the execute method of the Task class.
 
 ## 0.1.0
 
