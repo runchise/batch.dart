@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/log/filter/development_log_filter.dart';
+import 'package:batch/src/log/filter/default_log_filter.dart';
 import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
 import 'package:batch/src/log/log_configuration.dart';
@@ -19,7 +19,7 @@ class Logger {
   Logger.loadFrom({
     required LogConfiguration config,
   })  : _level = config.level ?? LogLevel.trace,
-        _filter = config.filter ?? DevelopmentLogFilter(),
+        _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
         _output = config.output ?? ConsoleLogOutput() {
     _filter.init();

@@ -237,10 +237,9 @@ Also, the `batch` library provides several classes that implement these abstract
 
 ### 1.4.2. LogFilter
 
-|                          | Description                                                                                                                                                                                  |
-| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **DevelopmentLogFilter** | This is a simple log filter for development environments. You can control the output of logs just according to the log level in the development environment. This filter is used by default. |
-| **ProductionLogFilter**  | This is a simple log filter for production environments. You can control the output of logs just according to the log level in the production environment.                                   |
+|                      | Description                                                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **DefaultLogFilter** | This is a simple log filter. You can control the output of logs just according to the log level. This filter is used by default. |
 
 **_Example_**
 

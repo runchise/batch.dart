@@ -29,7 +29,7 @@ void main() {
   BatchApplication(
     logConfig: LogConfiguration(
       level: LogLevel.trace,
-      filter: DevelopmentLogFilter(),
+      filter: DefaultLogFilter(),
       output: ConsoleLogOutput(),
     ),
   )

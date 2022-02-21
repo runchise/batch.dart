@@ -6,19 +6,8 @@
 import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
 
-class DevelopmentLogFilter extends LogFilter {
+class DefaultLogFilter extends LogFilter {
   @override
-  bool shouldLog(final InputLogEvent event) {
-    bool result = false;
-
-    assert(() {
-      if (event.level.index >= super.level!.index) {
-        result = true;
-      }
-
-      return true;
-    }());
-
-    return result;
-  }
+  bool shouldLog(final InputLogEvent event) =>
+      event.level.index >= level!.index;
 }
