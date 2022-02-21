@@ -2,8 +2,7 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Project imports:
-import 'package:batch/batch.dart';
+import 'package:batch/src/log/log_level.dart';
 
 /// The class that represents log.
 ///
@@ -28,28 +27,4 @@ class InputLogEvent {
 
   /// The stacktrace
   final StackTrace? stackTrace;
-
-  @override
-  String toString() {
-    return 'InputLogEvent(level: $level, message: $message, error: $error, stackTrace: $stackTrace)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is InputLogEvent &&
-        other.level == level &&
-        other.message == message &&
-        other.error == error &&
-        other.stackTrace == stackTrace;
-  }
-
-  @override
-  int get hashCode {
-    return level.hashCode ^
-        message.hashCode ^
-        error.hashCode ^
-        stackTrace.hashCode;
-  }
 }
