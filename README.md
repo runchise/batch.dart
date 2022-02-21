@@ -246,7 +246,7 @@ Also, the `batch` library provides several classes that implement these abstract
 ```dart
 BatchApplication(
   logConfig: LogConfiguration(
-    filter: ProductionLogFilter(),
+    filter: DefaultLogFilter(),
   ),
 );
 ```
