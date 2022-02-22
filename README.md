@@ -99,30 +99,46 @@ When creating `Job` and `Task` instances, the names should be unique. However, y
 import 'package:batch/batch.dart';
 
 void main() {
-  // The name of the Job must be unique.
   final job1 = Job(name: 'Job1', cron: '*/1 * * * *')
-    // The name of the Step must be unique in this Job.
     ..nextStep(
       Step(name: 'Step1')
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     )
     ..nextStep(
-      Step(name: 'Step2')
+      Step(name: 'Step2').branch().onCompleted().to(
+            // You can create branches based on BranchStatus.
+            Step(name: 'Step3')
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          )
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
 
-  final job2 = Job(name: 'Job2', cron: '*/3 * * * *')
-    ..nextStep(
-      // You can reuse the Step name for another Job.
-      Step(name: 'Step1')
+  final job2 = Job(
+    name: 'Job2',
+    cron: '*/3 * * * *',
+    // You can set precondition to run this job.
+    precondition: JobPrecondition(),
+  )..nextStep(
+      Step(
+        name: 'Step1',
+        // You can set precondition to run this step.
+        precondition: StepPrecondition(),
+      )
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
 
-  // Add jobs and shared parameters, then run.
- BatchApplication()
+  BatchApplication(
+    logConfig: LogConfiguration(
+      level: LogLevel.trace,
+      filter: DefaultLogFilter(),
+      output: ConsoleLogOutput(),
+      printLog: true,
+    ),
+  )
     // You can add any parameters that is shared in this batch application.
     ..addSharedParameter(key: 'key1', value: 'value1')
     ..addSharedParameter(key: 'key2', value: {'any': 'object'})
@@ -133,19 +149,31 @@ void main() {
 
 class SayHelloTask extends Task<SayHelloTask> {
   @override
-  Future<RepeatStatus> execute() async {
-    // Logging output is possible at any log level.
-    // This library provides trace, debug, info, warning, error and fatal.
-    info('Hello,');
+  Future<RepeatStatus> execute(ExecutionContext context) async {
+    debug('Hello,');
     return RepeatStatus.finished;
   }
 }
 
 class SayWorldTask extends Task<SayWorldTask> {
   @override
-  Future<RepeatStatus> execute() async {
+  Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
     return RepeatStatus.finished;
+  }
+}
+
+class JobPrecondition extends Precondition {
+  @override
+  bool check() {
+    return true;
+  }
+}
+
+class StepPrecondition extends Precondition {
+  @override
+  bool check() {
+    return false;
   }
 }
 ```

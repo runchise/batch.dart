@@ -14,6 +14,7 @@ void main() {
     )
     ..nextStep(
       Step(name: 'Step2').branch().onCompleted().to(
+            // You can create branches based on BranchStatus.
             Step(name: 'Step3')
               ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
