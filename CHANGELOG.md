@@ -5,6 +5,7 @@
 ### New Features
 
 - Added `DefaultLogFilter`.
+- Added `Precondition` to check the starting condition of `Job` and `Step`. It can be specified as an argument when creating `Job` and `Step` instances.
 
 ### Destructive Changes
 

@@ -5,6 +5,7 @@
 // Project imports:
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/step.dart';
+import 'package:batch/src/job/precondition.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
 ///
@@ -16,7 +17,8 @@ class Job extends Entity<Job> {
   Job({
     required String name,
     required this.cron,
-  }) : super(name: name);
+    Precondition? precondition,
+  }) : super(name: name, precondition: precondition);
 
   /// The cron
   final String cron;
@@ -41,17 +43,4 @@ class Job extends Entity<Job> {
 
     return this;
   }
-
-  @override
-  String toString() => 'Job(cron: $cron)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Job && other.cron == cron;
-  }
-
-  @override
-  int get hashCode => cron.hashCode;
 }

@@ -5,13 +5,15 @@
 // Project imports:
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/precondition.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
 class Step extends Entity<Step> {
   /// Returns the new instance of [Step].
   Step({
     required String name,
-  }) : super(name: name);
+    Precondition? precondition,
+  }) : super(name: name, precondition: precondition);
 
   /// The tasks
   final List<Task> tasks = [];
@@ -23,17 +25,4 @@ class Step extends Entity<Step> {
     tasks.add(task);
     return this;
   }
-
-  @override
-  String toString() => 'Step(name: $name)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Step && other.name == name;
-  }
-
-  @override
-  int get hashCode => name.hashCode;
 }

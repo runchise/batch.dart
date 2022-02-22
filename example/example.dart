@@ -19,9 +19,17 @@ void main() {
         ..nextTask(SayWorldTask()),
     );
 
-  final job2 = Job(name: 'Job2', cron: '*/3 * * * *')
-    ..nextStep(
-      Step(name: 'Step1')
+  final job2 = Job(
+    name: 'Job2',
+    cron: '*/3 * * * *',
+    // You can set precondition to run this job.
+    precondition: JobPrecondition(),
+  )..nextStep(
+      Step(
+        name: 'Step1',
+        // You can set precondition to run this step.
+        precondition: StepPrecondition(),
+      )
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),
     );
@@ -31,6 +39,7 @@ void main() {
       level: LogLevel.trace,
       filter: DefaultLogFilter(),
       output: ConsoleLogOutput(),
+      printLog: true,
     ),
   )
     // You can add any parameters that is shared in this batch application.
@@ -76,5 +85,19 @@ class SayWorldTask extends Task<SayWorldTask> {
   Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
     return RepeatStatus.finished;
+  }
+}
+
+class JobPrecondition extends Precondition {
+  @override
+  bool check() {
+    return true;
+  }
+}
+
+class StepPrecondition extends Precondition {
+  @override
+  bool check() {
+    return true;
   }
 }

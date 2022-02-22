@@ -11,7 +11,10 @@ export 'package:batch/src/job/entity/step.dart';
 export 'package:batch/src/job/entity/task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';
+export 'package:batch/src/job/precondition.dart';
 export 'package:batch/src/job/const/repeat_status.dart' show RepeatStatus;
+export 'package:batch/src/job/const/process_status.dart' show ProcessStatus;
+export 'package:batch/src/job/const/exit_status.dart' show ExitStatus;
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';

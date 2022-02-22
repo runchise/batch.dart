@@ -4,9 +4,10 @@
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/context_helper.dart';
+import 'package:batch/src/job/context/context_helper.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/task_launcher.dart';
+import 'package:batch/src/log/logger_provider.dart';
 
 class StepLauncher extends ContextHelper<Step> {
   /// Returns the new instance of [StepLauncher].
@@ -23,12 +24,15 @@ class StepLauncher extends ContextHelper<Step> {
   /// Runs all steps.
   Future<void> execute() async {
     if (steps.isEmpty) {
-      throw Exception(
-        'The step to be launched is required.',
-      );
+      throw Exception('The step to be launched is required.');
     }
 
     for (final step in steps) {
+      if (!step.canLaunch()) {
+        info('Skipped ${step.name} because the precondition is not met.');
+        return;
+      }
+
       super.startNewExecution(name: step.name);
 
       await TaskLauncher(
