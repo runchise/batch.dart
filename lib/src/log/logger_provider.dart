@@ -15,7 +15,7 @@ final debug = Logger.instance.debug;
 final info = Logger.instance.info;
 
 /// Logging function for warning level.
-final warning = Logger.instance.warning;
+final warn = Logger.instance.warn;
 
 /// Logging function for error level.
 final error = Logger.instance.error;

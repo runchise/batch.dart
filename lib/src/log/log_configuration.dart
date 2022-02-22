@@ -15,6 +15,7 @@ class LogConfiguration {
     this.filter,
     this.printer,
     this.output,
+    this.printLog = true,
   });
 
   /// The log level
@@ -28,4 +29,7 @@ class LogConfiguration {
 
   /// The custom log output
   final LogOutput? output;
+
+  /// The flag represents this logger should print log or not
+  final bool printLog;
 }

@@ -18,10 +18,10 @@ class Logger {
   /// Returns the new instance of [Logger].
   Logger.loadFrom({
     required LogConfiguration config,
-  })  : _level = config.level ?? LogLevel.trace,
-        _filter = config.filter ?? DefaultLogFilter(),
+  })  : _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
-        _output = config.output ?? ConsoleLogOutput() {
+        _output = config.output ?? ConsoleLogOutput(),
+        _printLog = config.printLog {
     _filter.init();
     _printer.init();
     _output.init();
@@ -38,9 +38,6 @@ class Logger {
   /// The singleton instance of this [Logger].
   static Logger? _singletonInstance;
 
-  /// The base log level
-  final LogLevel _level;
-
   /// The filter
   final LogFilter _filter;
 
@@ -50,24 +47,23 @@ class Logger {
   /// The output
   final LogOutput _output;
 
+  /// The flag represents this logger should print log or not
+  final bool _printLog;
+
   /// The flag represents this logger is active or not
   bool _active = true;
 
   /// Log a message at trace level.
-  void trace(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _log(LogLevel.trace, message, error, stackTrace);
+  void trace(dynamic message) => _log(LogLevel.trace, message);
 
   /// Log a message at debug level.
-  void debug(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _log(LogLevel.debug, message, error, stackTrace);
+  void debug(dynamic message) => _log(LogLevel.debug, message);
 
   /// Log a message at info level.
-  void info(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _log(LogLevel.info, message, error, stackTrace);
+  void info(dynamic message) => _log(LogLevel.info, message);
 
-  /// Log a message at warning level.
-  void warning(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
-      _log(LogLevel.warning, message, error, stackTrace);
+  /// Log a message at warn level.
+  void warn(dynamic message) => _log(LogLevel.warn, message);
 
   /// Log a message at error level.
   void error(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
@@ -91,7 +87,7 @@ class Logger {
     dynamic error,
     StackTrace? stackTrace,
   ]) {
-    if (_level == LogLevel.off) {
+    if (!_printLog) {
       /// Do nothing when log output is disabled.
       return;
     }
