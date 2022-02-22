@@ -25,16 +25,21 @@ class TaskLauncher extends ContextHelper<Task> {
     }
 
     for (final task in tasks) {
-      super.startNewExecution(name: task.name);
-
-      RepeatStatus repeatStatus = RepeatStatus.continuable;
-      do {
-        repeatStatus = await task.execute(super.context);
-      } while (repeatStatus.isContinuable);
-
-      super.finishExecution();
+      await _executeTask(task: task);
     }
 
     super.clearParameters();
+  }
+
+  Future<void> _executeTask({required Task task}) async {
+    super.startNewExecution(name: task.name);
+
+    RepeatStatus repeatStatus = RepeatStatus.continuable;
+
+    do {
+      repeatStatus = await task.execute(super.context);
+    } while (repeatStatus.isContinuable);
+
+    super.finishExecution();
   }
 }

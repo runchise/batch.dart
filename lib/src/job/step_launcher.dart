@@ -33,14 +33,29 @@ class StepLauncher extends ContextHelper<Step> {
         return;
       }
 
-      super.startNewExecution(name: step.name);
+      await _executeStep(step: step);
 
-      await TaskLauncher(
-        context: super.context,
-        tasks: step.tasks,
-      ).execute();
+      if (step.hasBranch) {
+        for (final branchBuilder in step.branchBuilders) {
+          final branch = branchBuilder.build();
+          if (branch.on == super.context.branchContribution.status) {
+            await _executeStep(step: branch.to);
+          }
+        }
+      }
 
-      super.finishExecution();
+      super.resetBranchStatus();
     }
+  }
+
+  Future<void> _executeStep({required Step step}) async {
+    super.startNewExecution(name: step.name);
+
+    await TaskLauncher(
+      context: super.context,
+      tasks: step.tasks,
+    ).execute();
+
+    super.finishExecution();
   }
 }

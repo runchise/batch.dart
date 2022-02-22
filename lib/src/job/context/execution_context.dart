@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/job/branch/branch_contribution.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/entity/task.dart';
@@ -32,6 +33,9 @@ class ExecutionContext {
 
   /// The current task execution
   Execution<Task>? taskExecution;
+
+  /// The branch contribution
+  final BranchContribution branchContribution = BranchContribution();
 
   /// The shared parameters
   final Map<String, dynamic> sharedParameters =

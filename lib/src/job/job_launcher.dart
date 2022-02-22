@@ -40,18 +40,22 @@ class JobLauncher extends ContextHelper<Job> {
           return;
         }
 
-        super.startNewExecution(name: job.name);
-
-        await StepLauncher(
-          context: super.context,
-          steps: job.steps,
-          parentJobName: job.name,
-        ).execute();
-
-        super.finishExecution();
+        await _executeJob(job: job);
       });
     }
 
     info('The job schedule has configured!');
+  }
+
+  Future<void> _executeJob({required Job job}) async {
+    super.startNewExecution(name: job.name);
+
+    await StepLauncher(
+      context: super.context,
+      steps: job.steps,
+      parentJobName: job.name,
+    ).execute();
+
+    super.finishExecution();
   }
 }

@@ -20,7 +20,7 @@ class Step extends Entity<Step> {
   final List<Task> tasks = [];
 
   /// The branches
-  final List<BranchBuilder<Step>> branches = [];
+  final List<BranchBuilder<Step>> branchBuilders = [];
 
   /// Adds next [Task].
   ///
@@ -32,10 +32,10 @@ class Step extends Entity<Step> {
   /// Returns the new branch of this step.
   BranchBuilder<Step> branch() {
     final branch = BranchBuilder<Step>(parentEntity: this);
-    branches.add(branch);
+    branchBuilders.add(branch);
     return branch;
   }
 
   /// Returns true if this step has branch, otherwise false.
-  bool get hasBranch => branches.isNotEmpty;
+  bool get hasBranch => branchBuilders.isNotEmpty;
 }
