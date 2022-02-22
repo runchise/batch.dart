@@ -13,9 +13,21 @@ void main() {
         ..nextTask(SayWorldTask()),
     )
     ..nextStep(
-      Step(name: 'Step2').branch().onCompleted().to(
+      Step(name: 'Step2')
+          .branch()
+          .onCompleted()
+          .to(
             // You can create branches based on BranchStatus.
             Step(name: 'Step3')
+              ..nextTask(TestTask())
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          )
+          .branch()
+          .onFailed()
+          .to(
+            // You can create branches based on BranchStatus.
+            Step(name: 'Step4')
               ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
@@ -90,6 +102,7 @@ class SayWorldTask extends Task<SayWorldTask> {
   @override
   Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
+    context.branchContribution.status = BranchStatus.failed;
     return RepeatStatus.finished;
   }
 }

@@ -3,17 +3,17 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:;
+import 'package:batch/src/job/launcher.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/context/context_helper.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/step_launcher.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 /// This class provides the feature to securely execute registered jobs.
-class JobLauncher extends ContextHelper<Job> {
+class JobLauncher extends Launcher<Job> {
   /// Returns the new instance of [JobLauncher].
   JobLauncher({
     required this.jobs,
@@ -25,7 +25,7 @@ class JobLauncher extends ContextHelper<Job> {
   /// Cron
   final _cron = Cron();
 
-  /// Runs all scheduled jobs.
+  @override
   void execute() {
     if (jobs.isEmpty) {
       throw Exception('The job to be launched is required.');

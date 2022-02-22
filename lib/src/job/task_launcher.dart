@@ -5,10 +5,10 @@
 // Project imports:
 import 'package:batch/src/job/const/repeat_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/context/context_helper.dart';
 import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/launcher.dart';
 
-class TaskLauncher extends ContextHelper<Task> {
+class TaskLauncher extends Launcher<Task> {
   /// Returns the new instance of [TaskLauncher].
   TaskLauncher({
     required ExecutionContext context,
@@ -18,7 +18,7 @@ class TaskLauncher extends ContextHelper<Task> {
   /// The tasks
   final List<Task> tasks;
 
-  /// Runs all tasks.
+  @override
   Future<void> execute() async {
     if (tasks.isEmpty) {
       throw Exception('Register the task to be launched is required.');
