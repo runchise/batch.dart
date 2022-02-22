@@ -162,14 +162,14 @@ The logging system provided by the `batch` library is a customized library of [L
 
 The `batch` library provides the following logging methods.
 
-|             | Description                                                                                                                                                                        |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **trace**   | A log level describing events showing step by step execution of your code that can be ignored during the standard operation, but may be useful during extended debugging sessions. |
-| **debug**   | A log level used for events considered to be useful during software debugging when more granular information is needed.                                                            |
-| **info**    | An event happened, and the event is purely informative and can be ignored during normal operations.                                                                                |
-| **warning** | Unexpected behavior happened inside the application, but it is continuing its work and the key business features are operating as expected.                                        |
-| **error**   | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
-| **fatal**   | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |
+|           | Description                                                                                                                                                                        |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **trace** | A log level describing events showing step by step execution of your code that can be ignored during the standard operation, but may be useful during extended debugging sessions. |
+| **debug** | A log level used for events considered to be useful during software debugging when more granular information is needed.                                                            |
+| **info**  | An event happened, and the event is purely informative and can be ignored during normal operations.                                                                                |
+| **warn**  | Unexpected behavior happened inside the application, but it is continuing its work and the key business features are operating as expected.                                        |
+| **error** | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
+| **fatal** | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |
 
 The logging methods provided by the `batch` library can be used from any class that imports `batch.dart`. Besides there is no need to instantiate an Logger by yourself.
 
@@ -180,13 +180,13 @@ See the sample code below for the simplest usage.
 ```dart
 import 'package:batch/batch.dart';
 
-class TestLogTask implements Task {
+class TestLogTask extends Task<TestLogTask> {
   @override
   Future<RepeatStatus> execute() async {
     trace('Test trace');
     debug('Test debug');
     info('Test info');
-    warning('Test warning');
+    warn('Test warning');
     error('Test error');
     fatal('Test fatal');
 
