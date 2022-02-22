@@ -13,7 +13,12 @@ void main() {
         ..nextTask(SayWorldTask()),
     )
     ..nextStep(
-      Step(name: 'Step2')
+      Step(name: 'Step2').branch().onFailed().to(
+            Step(name: 'Step2')
+              ..nextTask(TestTask())
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          )
         ..nextTask(TestTask())
         ..nextTask(SayHelloTask())
         ..nextTask(SayWorldTask()),

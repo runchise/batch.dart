@@ -2,7 +2,7 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-enum ExitStatus {
+enum BranchStatus {
   /// This element indicates that a particular task process has finished successfully.
   completed,
 

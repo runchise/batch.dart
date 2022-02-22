@@ -26,21 +26,4 @@ class Execution<T extends Entity<T>> {
 
   /// The finished date time
   final DateTime? finishedAt;
-
-  @override
-  String toString() =>
-      'Execution(name: $name, status: $status, finishedAt: $finishedAt)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Execution<T> &&
-        other.name == name &&
-        other.status == status &&
-        other.finishedAt == finishedAt;
-  }
-
-  @override
-  int get hashCode => name.hashCode ^ status.hashCode ^ finishedAt.hashCode;
 }

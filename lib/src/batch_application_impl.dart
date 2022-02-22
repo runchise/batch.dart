@@ -26,7 +26,7 @@ class BatchApplicationImpl implements BatchApplication {
   final LogConfiguration? logConfig;
 
   @override
-  BatchApplication addJob(final Job job) {
+  void addJob(final Job job) {
     for (final registeredJob in _jobs) {
       if (registeredJob.name == job.name) {
         throw Exception('The job name "${job.name}" is already registered.');
@@ -34,12 +34,10 @@ class BatchApplicationImpl implements BatchApplication {
     }
 
     _jobs.add(job);
-
-    return this;
   }
 
   @override
-  BatchApplication addSharedParameter({
+  void addSharedParameter({
     required String key,
     required dynamic value,
   }) {
@@ -47,8 +45,6 @@ class BatchApplicationImpl implements BatchApplication {
       key: key,
       value: value,
     );
-
-    return this;
   }
 
   @override

@@ -35,7 +35,7 @@ class Banner {
                                       A lightweight and powerful batch library written in Dart.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-  Version: 0.2.2
+  Version: 0.3.0
   License: BSD 3-Clause
   Author : Kato Shinya (https://github.com/myConsciousness)
 

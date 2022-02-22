@@ -39,20 +39,4 @@ class ExecutionContext {
 
   /// The parameters
   final Map<String, dynamic> parameters = {};
-
-  @override
-  String toString() =>
-      'ExecutionContext(jobExecution: $jobExecution, stepExecution: $stepExecution)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ExecutionContext &&
-        other.jobExecution == jobExecution &&
-        other.stepExecution == stepExecution;
-  }
-
-  @override
-  int get hashCode => jobExecution.hashCode ^ stepExecution.hashCode;
 }

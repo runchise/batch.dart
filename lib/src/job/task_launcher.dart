@@ -21,9 +21,7 @@ class TaskLauncher extends ContextHelper<Task> {
   /// Runs all tasks.
   Future<void> execute() async {
     if (tasks.isEmpty) {
-      throw Exception(
-        'Register the task to be launched is required.',
-      );
+      throw Exception('Register the task to be launched is required.');
     }
 
     for (final task in tasks) {

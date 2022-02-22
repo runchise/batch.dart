@@ -65,10 +65,10 @@ abstract class BatchApplication {
   ///
   /// The name of the Job must be unique, and an exception will be raised
   /// if a Job with a duplicate name has already been registered.
-  BatchApplication addJob(final Job job);
+  void addJob(final Job job);
 
   /// Adds parameter as global scope.
-  BatchApplication addSharedParameter({
+  void addSharedParameter({
     required String key,
     required dynamic value,
   });

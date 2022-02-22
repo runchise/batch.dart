@@ -14,7 +14,7 @@ export 'package:batch/src/job/execution.dart';
 export 'package:batch/src/job/precondition.dart';
 export 'package:batch/src/job/const/repeat_status.dart' show RepeatStatus;
 export 'package:batch/src/job/const/process_status.dart' show ProcessStatus;
-export 'package:batch/src/job/const/exit_status.dart' show ExitStatus;
+export 'package:batch/src/job/const/branch_status.dart' show BranchStatus;
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';

@@ -32,15 +32,24 @@ class Job extends Entity<Job> {
   ///
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
-  Job nextStep(final Step step) {
-    for (final registeredStep in steps) {
-      if (registeredStep.name == step.name) {
-        throw Exception('The step name "${step.name}" is already registered.');
-      }
+  void nextStep(final Step step) {
+    if (!_checkName(name: step.name, steps: steps)) {
+      throw Exception('The step name "${step.name}" is already registered.');
     }
 
     steps.add(step);
+  }
 
-    return this;
+  bool _checkName({
+    required String name,
+    required List<Step> steps,
+  }) {
+    for (final step in steps) {
+      if (step.name == name) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
