@@ -1,5 +1,12 @@
 # Release Note
 
+## 0.3.0
+
+### New Features
+
+- Added `Precondition` to check the preconditions for executing `Job` and `Step`.
+- Conditional branching is now possible for the `Step` layer based on `BranchStatus` by using the `branch()` method of `Step`.
+
 ## 0.2.1
 
 ### New Features
