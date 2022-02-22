@@ -195,7 +195,7 @@ class TestLogTask extends Task<TestLogTask> {
 }
 ```
 
-For example, if you run [sample code](#123-use-batch-library) as described earlier, you will see the following log output.
+For example, if you run [sample code](#133-use-batch-library) as described earlier, you will see the following log output.
 
 ```terminal
 yyyy-MM-dd 15:03:46.523299 [info   ] :: The job schedule is being configured...
