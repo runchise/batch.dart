@@ -16,14 +16,14 @@ import 'package:batch/src/log/logger_provider.dart';
 class BatchApplicationImpl implements BatchApplication {
   /// Returns the new instance of [BatchApplicationImpl].
   BatchApplicationImpl({
-    this.logConfig,
-  });
+    LogConfiguration? logConfig,
+  }) : _logConfig = logConfig;
+
+  /// The configuration for logging
+  final LogConfiguration? _logConfig;
 
   /// The jobs
   final _jobs = <Job>[];
-
-  /// The configuration for logging
-  final LogConfiguration? logConfig;
 
   @override
   void addJob(final Job job) {
@@ -52,8 +52,7 @@ class BatchApplicationImpl implements BatchApplication {
     try {
       //! The logging functionality provided by the batch library
       //! will be available when this loading process is complete.
-      //! Also an instance of the Logger is held as a static field in LoggerInstance.
-      Logger.loadFrom(config: logConfig ?? LogConfiguration());
+      Logger.loadFrom(config: _logConfig ?? LogConfiguration());
 
       info(
         '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',

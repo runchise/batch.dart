@@ -4,12 +4,12 @@
 
 // Project imports:
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/execution.dart';
+import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 abstract class ContextHelper<T extends Entity<T>> {
@@ -68,7 +68,7 @@ abstract class ContextHelper<T extends Entity<T>> {
   }
 
   void resetBranchStatus() =>
-      context.branchContribution.status = BranchStatus.completed;
+      context.branchContribution.status = BranchStatus.succeeded;
 
   void clearParameters() => context.parameters.clear();
 }

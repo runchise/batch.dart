@@ -2,8 +2,6 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// Package imports:;
-
 // Package imports:
 import 'package:cron/cron.dart';
 
@@ -36,7 +34,7 @@ class JobLauncher extends Launcher<Job> {
     info('The job schedule is being configured...');
 
     for (final job in jobs) {
-      _cron.schedule(Schedule.parse(job.cron), () async {
+      _cron.schedule(Schedule.parse(job.schedule.build()), () async {
         if (!job.canLaunch()) {
           info('Skipped ${job.name} because the precondition is not met.');
           return;

@@ -4,69 +4,75 @@
 
 import 'package:batch/batch.dart';
 
-void main() {
-  final job1 = Job(name: 'Job1', cron: '*/1 * * * *')
-    ..nextStep(
-      Step(name: 'Step1')
-        ..nextTask(TestTask())
-        ..nextTask(SayHelloTask())
-        ..nextTask(SayWorldTask()),
+void main(List<String> args) => BatchApplication(
+      logConfig: LogConfiguration(
+        level: LogLevel.trace,
+        filter: DefaultLogFilter(),
+        output: ConsoleLogOutput(),
+        printLog: true,
+      ),
     )
-    ..nextStep(
-      Step(name: 'Step2')
-          .branch()
-          .onCompleted()
-          .to(
-            // You can create branches based on BranchStatus.
-            Step(name: 'Step3')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
-          )
-          .branch()
-          .onFailed()
-          .to(
-            // You can create branches based on BranchStatus.
-            Step(name: 'Step4')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
-          )
-        ..nextTask(TestTask())
-        ..nextTask(SayHelloTask())
-        ..nextTask(SayWorldTask()),
-    );
+      // You can add any parameters that is shared in this batch application.
+      ..addSharedParameter(key: 'key1', value: 'value1')
+      ..addSharedParameter(key: 'key2', value: {'any': 'object'})
+      ..addJob(_buildTestJob1())
+      ..addJob(_buildTestJob2())
+      ..run();
 
-  final job2 = Job(
-    name: 'Job2',
-    cron: '*/3 * * * *',
-    // You can set precondition to run this job.
-    precondition: JobPrecondition(),
-  )..nextStep(
-      Step(
-        name: 'Step1',
-        // You can set precondition to run this step.
-        precondition: StepPrecondition(),
+Job _buildTestJob1() => Job(
+      name: 'Job1',
+      schedule: Schedule.cron(value: '*/1 * * * *'),
+    )
+      ..nextStep(
+        Step(name: 'Step1')
+          ..nextTask(TestTask())
+          ..nextTask(SayHelloTask())
+          ..nextTask(SayWorldTask()),
       )
-        ..nextTask(SayHelloTask())
-        ..nextTask(SayWorldTask()),
-    );
+      ..nextStep(
+        Step(name: 'Step2')
+          ..nextTask(TestTask())
+          ..nextTask(SayHelloTask())
+          ..nextTask(SayWorldTask())
+          ..branchOnSucceeded(
+            to: Step(name: 'Step3')
+              ..nextTask(TestTask())
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          )
+          ..branchOnFailed(
+            to: Step(name: 'Step4')
+              ..nextTask(TestTask())
+              ..nextTask(SayHelloTask())
+              ..branchOnCompleted(
+                to: Step(name: 'Step6')
+                  ..nextTask(TestTask())
+                  ..nextTask(SayHelloTask())
+                  ..nextTask(SayWorldTask()),
+              ),
+          )
+          ..branchOnCompleted(
+            to: Step(name: 'Step5')
+              ..nextTask(TestTask())
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          ),
+      );
 
-  BatchApplication(
-    logConfig: LogConfiguration(
-      level: LogLevel.trace,
-      filter: DefaultLogFilter(),
-      output: ConsoleLogOutput(),
-      printLog: true,
-    ),
-  )
-    // You can add any parameters that is shared in this batch application.
-    ..addSharedParameter(key: 'key1', value: 'value1')
-    ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-    ..addJob(job1)
-    ..addJob(job2)
-    ..run();
-}
+Job _buildTestJob2() => Job(
+      name: 'Job2',
+      schedule: Schedule.cron(value: '*/3 * * * *'),
+      // You can set precondition to run this job.
+      precondition: JobPrecondition(),
+    )..nextStep(
+        Step(
+          name: 'Step1',
+          // You can set precondition to run this step.
+          precondition: StepPrecondition(),
+        )
+          ..nextTask(SayHelloTask())
+          ..nextTask(SayWorldTask()),
+      );
 
 class TestTask extends Task<TestTask> {
   static int count = 0;

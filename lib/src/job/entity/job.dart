@@ -6,6 +6,7 @@
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/precondition.dart';
+import 'package:batch/src/job/schedule/schedule.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
 ///
@@ -16,12 +17,12 @@ class Job extends Entity<Job> {
   /// Returns the new instance of [Job].
   Job({
     required String name,
-    required this.cron,
+    required this.schedule,
     Precondition? precondition,
   }) : super(name: name, precondition: precondition);
 
-  /// The cron
-  final String cron;
+  /// The schedule
+  final Schedule schedule;
 
   /// The steps
   final List<Step> steps = [];
@@ -32,24 +33,5 @@ class Job extends Entity<Job> {
   ///
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
-  void nextStep(final Step step) {
-    if (!_checkName(name: step.name, steps: steps)) {
-      throw Exception('The step name "${step.name}" is already registered.');
-    }
-
-    steps.add(step);
-  }
-
-  bool _checkName({
-    required String name,
-    required List<Step> steps,
-  }) {
-    for (final step in steps) {
-      if (step.name == name) {
-        return false;
-      }
-    }
-
-    return true;
-  }
+  void nextStep(final Step step) => steps.add(step);
 }

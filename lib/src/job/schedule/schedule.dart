@@ -3,9 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/branch/branch_status.dart';
+import 'package:batch/src/job/schedule/cron.dart';
 
-class BranchContribution {
-  /// The branch status
-  BranchStatus status = BranchStatus.succeeded;
+abstract class Schedule {
+  factory Schedule.cron({required String value}) => Cron(value: value);
+
+  String build();
 }

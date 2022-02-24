@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
@@ -41,9 +42,9 @@ class StepLauncher extends Launcher<Step> {
     await _executeStep(step: step);
 
     if (step.hasBranch) {
-      for (final branchBuilder in step.branchBuilders) {
-        final branch = branchBuilder.build();
-        if (branch.on == super.context.branchContribution.status) {
+      for (final branch in step.branches) {
+        if (branch.on == super.context.branchContribution.status ||
+            branch.on == BranchStatus.completed) {
           await _executeStepRecursively(step: branch.to);
         }
       }

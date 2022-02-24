@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/job/entity/entity.dart';
+import 'package:batch/src/job/process_status.dart';
 
 class Execution<T extends Entity<T>> {
   /// Returns the new instance of [Execution].

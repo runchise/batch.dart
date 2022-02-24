@@ -5,41 +5,29 @@
 // Project imports:
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
+import 'package:batch/src/job/builder/builder.dart';
 import 'package:batch/src/job/entity/entity.dart';
 
-class BranchBuilder<T extends Entity<T>> {
-  /// Returns the new instance of [BranchBuilder].
-  BranchBuilder({
-    required T parentEntity,
-  }) : _parentEntity = parentEntity;
-
-  /// The parent entity
-  final T _parentEntity;
-
+class BranchBuilder<T extends Entity<T>> extends Builder<Branch<T>> {
   /// The status as a basis for this branching
   BranchStatus? _on;
 
   /// The next point for this branching
   T? _to;
 
-  /// Sets the status as [BranchStatus.completed].
-  BranchBuilder<T> onCompleted() {
-    _on = BranchStatus.completed;
-    return this;
-  }
-
-  /// Sets the status as [BranchStatus.failed].
-  BranchBuilder<T> onFailed() {
-    _on = BranchStatus.failed;
+  /// Sets the branch status.
+  BranchBuilder<T> on(final BranchStatus status) {
+    _on = status;
     return this;
   }
 
   /// Sets the next point for this branching.
-  T to(final T to) {
+  BranchBuilder<T> to(final T to) {
     _to = to;
-    return _parentEntity;
+    return this;
   }
 
+  @override
   Branch<T> build() {
     if (_on == null) {
       throw ArgumentError('Set the branch status for this branch.');
