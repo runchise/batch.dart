@@ -5,8 +5,8 @@
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/step.dart';
-import 'package:batch/src/job/launcher.dart';
-import 'package:batch/src/job/task_launcher.dart';
+import 'package:batch/src/job/launcher/launcher.dart';
+import 'package:batch/src/job/launcher/task_launcher.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 class StepLauncher extends Launcher<Step> {

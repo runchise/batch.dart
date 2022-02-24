@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/const/repeat_status.dart';
+import 'package:batch/src/job/repeat_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 

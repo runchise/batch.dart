@@ -12,9 +12,9 @@ export 'package:batch/src/job/entity/task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';
 export 'package:batch/src/job/precondition.dart';
-export 'package:batch/src/job/const/repeat_status.dart' show RepeatStatus;
-export 'package:batch/src/job/const/process_status.dart' show ProcessStatus;
-export 'package:batch/src/job/const/branch_status.dart' show BranchStatus;
+export 'package:batch/src/job/repeat_status.dart' show RepeatStatus;
+export 'package:batch/src/job/process_status.dart' show ProcessStatus;
+export 'package:batch/src/job/branch/branch_status.dart' show BranchStatus;
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';
