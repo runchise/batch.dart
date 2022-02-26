@@ -17,12 +17,12 @@ class Job extends Entity<Job> {
   /// Returns the new instance of [Job].
   Job({
     required String name,
-    required this.schedule,
+    this.schedule,
     Precondition? precondition,
   }) : super(name: name, precondition: precondition);
 
   /// The schedule
-  final Schedule schedule;
+  final Schedule? schedule;
 
   /// The steps
   final List<Step> steps = [];
@@ -34,4 +34,7 @@ class Job extends Entity<Job> {
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
   void nextStep(final Step step) => steps.add(step);
+
+  /// Returns true if this job has not a schedule, otherwise false.
+  bool get hasNotSchedule => schedule == null;
 }

@@ -12,7 +12,7 @@ class DefaultLogPrinter extends LogPrinter {
   List<String> log(final InputLogEvent event) => _buildBuffer(event);
 
   String _buildHeader(final InputLogEvent event) =>
-      '${DateTime.now()} [${event.level.name.padRight(5, ' ')}]';
+      '${DateTime.now().toString().padRight(26, '0')} [${event.level.name.padRight(5, ' ')}]';
 
   String _stringifyMessage(final dynamic message) =>
       message is Function ? message() : message.toString();

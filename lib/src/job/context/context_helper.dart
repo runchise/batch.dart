@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/job/branch/branch_contribution.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
@@ -67,8 +68,25 @@ abstract class ContextHelper<T extends Entity<T>> {
     }
   }
 
-  void resetBranchStatus() =>
-      context.branchContribution.status = BranchStatus.succeeded;
+  void resetBranchStatus() {
+    if (T == Job) {
+      context.branchContribution.jobStatus = BranchStatus.succeeded;
+    } else if (T == Step) {
+      context.branchContribution.stepStatus = BranchStatus.succeeded;
+    } else {
+      context.branchContribution.taskStatus = BranchStatus.succeeded;
+    }
+  }
 
   void clearParameters() => context.parameters.clear();
+
+  BranchStatus get branchStatus {
+    if (T == Job) {
+      return context.branchContribution.jobStatus;
+    } else if (T == Step) {
+      return context.branchContribution.stepStatus;
+    }
+
+    return context.branchContribution.taskStatus;
+  }
 }

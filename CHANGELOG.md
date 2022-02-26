@@ -2,10 +2,12 @@
 
 ## 0.3.0
 
+- Fixed a bug that prevented the Cron schedule from being reflected correctly.
+
 ### New Features
 
 - Added `Precondition` to check the preconditions for executing `Job` and `Step`.
-- Conditional branching is now possible for the `Step` layer based on `BranchStatus` by using the `branch()` method of `Step`.
+- Conditional branching is now possible for the all layers based on `BranchStatus` by using the `branchOnSucceeded`, `branchOnFailed` and `branchOnCompleted`.
 
 ## 0.2.1
 

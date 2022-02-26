@@ -3,13 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Package imports:
+import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:cron/cron.dart';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
-import 'package:batch/src/job/launcher/step_launcher.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 /// This class provides the feature to securely execute registered jobs.
@@ -22,9 +22,6 @@ class JobLauncher extends Launcher<Job> {
   /// The jobs
   final List<Job> jobs;
 
-  /// Cron
-  final _cron = Cron();
-
   @override
   void execute() {
     if (jobs.isEmpty) {
@@ -34,28 +31,15 @@ class JobLauncher extends Launcher<Job> {
     info('The job schedule is being configured...');
 
     for (final job in jobs) {
-      _cron.schedule(Schedule.parse(job.schedule.build()), () async {
-        if (!job.canLaunch()) {
-          info('Skipped ${job.name} because the precondition is not met.');
-          return;
-        }
+      if (job.hasNotSchedule) {
+        throw StateError('Be sure to specify a schedule for the root job.');
+      }
 
-        await _executeJob(job: job);
+      Cron().schedule(Schedule.parse(job.schedule!.build()), () async {
+        await super.executeRecursively(entity: job);
       });
     }
 
     info('The job schedule has configured!');
-  }
-
-  Future<void> _executeJob({required Job job}) async {
-    super.startNewExecution(name: job.name);
-
-    await StepLauncher(
-      context: super.context,
-      steps: job.steps,
-      parentJobName: job.name,
-    ).execute();
-
-    super.finishExecution();
   }
 }

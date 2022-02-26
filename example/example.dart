@@ -64,7 +64,8 @@ Job _buildTestJob2() => Job(
       schedule: Schedule.cron(value: '*/3 * * * *'),
       // You can set precondition to run this job.
       precondition: JobPrecondition(),
-    )..nextStep(
+    )
+      ..nextStep(
         Step(
           name: 'Step1',
           // You can set precondition to run this step.
@@ -72,6 +73,21 @@ Job _buildTestJob2() => Job(
         )
           ..nextTask(SayHelloTask())
           ..nextTask(SayWorldTask()),
+      )
+      ..branchOnSucceeded(
+        to: Job(
+          name: 'Job3',
+          // You can set precondition to run this job.
+          precondition: JobPrecondition(),
+        )..nextStep(
+            Step(
+              name: 'Step1',
+              // You can set precondition to run this step.
+              precondition: StepPrecondition(),
+            )
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask()),
+          ),
       );
 
 class TestTask extends Task<TestTask> {
@@ -108,7 +124,7 @@ class SayWorldTask extends Task<SayWorldTask> {
   @override
   Future<RepeatStatus> execute(ExecutionContext context) async {
     info('World!');
-    context.branchContribution.status = BranchStatus.failed;
+    context.branchContribution.stepStatus = BranchStatus.failed;
     return RepeatStatus.finished;
   }
 }

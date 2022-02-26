@@ -6,6 +6,12 @@
 import 'package:batch/src/job/branch/branch_status.dart';
 
 class BranchContribution {
-  /// The branch status
-  BranchStatus status = BranchStatus.succeeded;
+  /// The branch status for Job
+  BranchStatus jobStatus = BranchStatus.succeeded;
+
+  /// The branch status for Step
+  BranchStatus stepStatus = BranchStatus.succeeded;
+
+  /// The branch status for Task
+  BranchStatus taskStatus = BranchStatus.succeeded;
 }

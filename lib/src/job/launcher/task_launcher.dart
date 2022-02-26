@@ -6,7 +6,6 @@
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/task.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
-import 'package:batch/src/job/repeat_status.dart';
 
 class TaskLauncher extends Launcher<Task> {
   /// Returns the new instance of [TaskLauncher].
@@ -25,21 +24,9 @@ class TaskLauncher extends Launcher<Task> {
     }
 
     for (final task in tasks) {
-      await _executeTask(task: task);
+      await super.executeRecursively(entity: task);
     }
 
     super.clearParameters();
-  }
-
-  Future<void> _executeTask({required Task task}) async {
-    super.startNewExecution(name: task.name);
-
-    RepeatStatus repeatStatus = RepeatStatus.continuable;
-
-    do {
-      repeatStatus = await task.execute(super.context);
-    } while (repeatStatus.isContinuable);
-
-    super.finishExecution();
   }
 }

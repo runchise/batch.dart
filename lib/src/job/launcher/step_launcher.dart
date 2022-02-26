@@ -3,12 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
-import 'package:batch/src/job/launcher/task_launcher.dart';
-import 'package:batch/src/log/logger_provider.dart';
 
 class StepLauncher extends Launcher<Step> {
   /// Returns the new instance of [StepLauncher].
@@ -29,38 +26,7 @@ class StepLauncher extends Launcher<Step> {
     }
 
     for (final step in steps) {
-      _executeStepRecursively(step: step);
+      super.executeRecursively(entity: step);
     }
-  }
-
-  Future<void> _executeStepRecursively({required Step step}) async {
-    if (!step.canLaunch()) {
-      info('Skipped ${step.name} because the precondition is not met.');
-      return;
-    }
-
-    await _executeStep(step: step);
-
-    if (step.hasBranch) {
-      for (final branch in step.branches) {
-        if (branch.on == super.context.branchContribution.status ||
-            branch.on == BranchStatus.completed) {
-          await _executeStepRecursively(step: branch.to);
-        }
-      }
-    }
-
-    super.resetBranchStatus();
-  }
-
-  Future<void> _executeStep({required Step step}) async {
-    super.startNewExecution(name: step.name);
-
-    await TaskLauncher(
-      context: super.context,
-      tasks: step.tasks,
-    ).execute();
-
-    super.finishExecution();
   }
 }
