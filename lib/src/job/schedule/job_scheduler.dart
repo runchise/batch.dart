@@ -16,8 +16,10 @@ import 'package:batch/src/job/schedule/scheduled_task.dart';
 import 'package:batch/src/runner.dart';
 
 class JobScheduler implements Runner {
+  /// Returns the new instance of [JobScheduler].
   JobScheduler({required List<Job> jobs}) : _jobs = jobs;
 
+  /// The jobs
   final List<Job> _jobs;
 
   /// The schedules

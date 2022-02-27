@@ -6,5 +6,6 @@
 import 'package:batch/src/job/schedule/model/schedule.dart';
 
 abstract class ScheduleParser<R extends Schedule> {
+  /// Returns the parsed [Schedule].
   R parse();
 }

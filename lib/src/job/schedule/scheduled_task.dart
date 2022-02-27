@@ -11,6 +11,7 @@ import 'package:batch/src/job/schedule/model/schedule.dart';
 typedef Task = FutureOr<dynamic> Function();
 
 class ScheduledTask {
+  /// Returns the new instance of [ScheduledTask].
   ScheduledTask({required this.schedule, required Task task}) : _task = task;
 
   /// The schedule
