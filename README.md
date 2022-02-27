@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-A lightweight and powerful batch library written in Dart.
+A lightweight and powerful Job Scheduling Framework written in Dart
 </p>
 
 ---
@@ -42,7 +42,7 @@ A lightweight and powerful batch library written in Dart.
 
 # 1. About
 
-The `batch` library was created to make it easier to develop `job schedule` and `batch` program in Dart language. It supports easy scheduling using `Cron` and it is a very lightweight and powerful.
+The `batch` library was created to make it easier to develop `job scheduling` and `batch` program in Dart language. It supports easy scheduling using `Cron` and it is a very lightweight and powerful.
 
 ## 1.1. Features
 

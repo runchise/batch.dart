@@ -5,7 +5,7 @@
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/job/entity/job.dart';
-import 'package:batch/src/job/parameter/shared_parameters.dart';
+import 'package:batch/src/job/repository/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
@@ -103,7 +103,7 @@ class _BatchApplication implements BatchApplication {
     required String key,
     required dynamic value,
   }) {
-    SharedParameters.instance.put(
+    SharedParameters.instance.add(
       key: key,
       value: value,
     );
