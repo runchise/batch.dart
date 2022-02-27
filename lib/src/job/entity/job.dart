@@ -6,7 +6,7 @@
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/precondition.dart';
-import 'package:batch/src/job/schedule/schedule.dart';
+import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
 ///
@@ -22,7 +22,7 @@ class Job extends Entity<Job> {
   }) : super(name: name, precondition: precondition);
 
   /// The schedule
-  final Schedule? schedule;
+  final ScheduleParser? schedule;
 
   /// The steps
   final List<Step> steps = [];
@@ -35,6 +35,6 @@ class Job extends Entity<Job> {
   /// if a Step with a duplicate name has already been registered in this Job.
   void nextStep(final Step step) => steps.add(step);
 
-  /// Returns true if this job has not a schedule, otherwise false.
-  bool get hasNotSchedule => schedule == null;
+  /// Returns true if this job is not scheduled, otherwise false.
+  bool get isNotScheduled => schedule == null;
 }

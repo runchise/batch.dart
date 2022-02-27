@@ -5,7 +5,7 @@
 // Project imports:
 import 'package:batch/src/job/name/unique_name.dart';
 import 'package:batch/src/job/repository/name_relation.dart';
-import 'package:batch/src/job/repository/unique_constraint_exception.dart';
+import 'package:batch/src/job/exception/unique_constraint_exception.dart';
 
 class UniqueNamePolicy {
   /// The internal constructor.

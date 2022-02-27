@@ -6,6 +6,7 @@
 import 'package:batch/src/batch_application_impl.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/log/log_configuration.dart';
+import 'package:batch/src/runner.dart';
 
 /// This is a batch application that manages the execution of arbitrarily defined jobs
 /// with own lifecycle.
@@ -54,7 +55,7 @@ import 'package:batch/src/log/log_configuration.dart';
 ///        │
 ///        └ ┄
 /// ```
-abstract class BatchApplication {
+abstract class BatchApplication implements Runner {
   /// Returns the new instance of [BatchApplication].
   factory BatchApplication({
     LogConfiguration? logConfig,
@@ -72,7 +73,4 @@ abstract class BatchApplication {
     required String key,
     required dynamic value,
   });
-
-  /// Runs this batch application.
-  void run();
 }

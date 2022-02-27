@@ -21,7 +21,7 @@ void main(List<String> args) => BatchApplication(
 
 Job _buildTestJob1() => Job(
       name: 'Job1',
-      schedule: Schedule.cron(value: '*/1 * * * *'),
+      schedule: CronParser(value: '*/1 * * * *'),
     )
       ..nextStep(
         Step(name: 'Step1')
@@ -61,7 +61,7 @@ Job _buildTestJob1() => Job(
 
 Job _buildTestJob2() => Job(
       name: 'Job2',
-      schedule: Schedule.cron(value: '*/3 * * * *'),
+      schedule: CronParser(value: '*/3 * * * *'),
       // You can set precondition to run this job.
       precondition: JobPrecondition(),
     )

@@ -11,19 +11,20 @@ class TaskLauncher extends Launcher<Task> {
   /// Returns the new instance of [TaskLauncher].
   TaskLauncher({
     required ExecutionContext context,
-    required this.tasks,
-  }) : super(context: context);
+    required List<Task> tasks,
+  })  : _tasks = tasks,
+        super(context: context);
 
   /// The tasks
-  final List<Task> tasks;
+  final List<Task> _tasks;
 
   @override
-  Future<void> execute() async {
-    if (tasks.isEmpty) {
+  Future<void> run() async {
+    if (_tasks.isEmpty) {
       throw Exception('Register the task to be launched is required.');
     }
 
-    for (final task in tasks) {
+    for (final task in _tasks) {
       await super.executeRecursively(entity: task);
     }
 

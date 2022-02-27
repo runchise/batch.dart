@@ -6,8 +6,8 @@
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/batch_application.dart';
 import 'package:batch/src/job/entity/job.dart';
-import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
+import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
@@ -58,7 +58,11 @@ class BatchApplicationImpl implements BatchApplication {
         '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
       );
 
-      JobLauncher(jobs: _jobs).execute();
+      info('The job schedule is being configured...');
+
+      JobScheduler(jobs: _jobs).run();
+
+      info('The job schedule has configured!');
     } catch (e) {
       Logger.instance.dispose();
       throw Exception(e);

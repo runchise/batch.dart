@@ -11,21 +11,22 @@ class StepLauncher extends Launcher<Step> {
   /// Returns the new instance of [StepLauncher].
   StepLauncher({
     required ExecutionContext context,
-    required this.steps,
+    required List<Step> steps,
     required String parentJobName,
   })  : assert(parentJobName.isNotEmpty),
+        _steps = steps,
         super(context: context);
 
   /// The steps
-  final List<Step> steps;
+  final List<Step> _steps;
 
   @override
-  Future<void> execute() async {
-    if (steps.isEmpty) {
+  Future<void> run() async {
+    if (_steps.isEmpty) {
       throw Exception('The step to be launched is required.');
     }
 
-    for (final step in steps) {
+    for (final step in _steps) {
       super.executeRecursively(entity: step);
     }
   }

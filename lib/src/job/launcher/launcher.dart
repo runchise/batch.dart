@@ -13,14 +13,14 @@ import 'package:batch/src/job/launcher/step_launcher.dart';
 import 'package:batch/src/job/launcher/task_launcher.dart';
 import 'package:batch/src/job/repeat_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
+import 'package:batch/src/runner.dart';
 
-abstract class Launcher<T extends Entity<T>> extends ContextHelper<T> {
+abstract class Launcher<T extends Entity<T>> extends ContextHelper<T>
+    implements Runner {
   /// Returns the new instance of [Launcher].
   Launcher({
     required ExecutionContext context,
   }) : super(context: context);
-
-  void execute();
 
   Future<void> executeRecursively({required T entity}) async {
     if (!entity.canLaunch()) {
@@ -50,12 +50,12 @@ abstract class Launcher<T extends Entity<T>> extends ContextHelper<T> {
         context: super.context,
         steps: entity.steps,
         parentJobName: entity.name,
-      ).execute();
+      ).run();
     } else if (entity is Step) {
       await TaskLauncher(
         context: super.context,
         tasks: entity.tasks,
-      ).execute();
+      ).run();
     } else {
       RepeatStatus repeatStatus = RepeatStatus.continuable;
       do {
