@@ -104,6 +104,7 @@ class TestTask extends Task<TestTask> {
     context.parameters['key_$count'] = 'value$count';
     // You can use shared parameters in any places.
     info(context.findSharedParameter('key1'));
+    info(context.findSharedParameter('key2'));
 
     count++;
 
