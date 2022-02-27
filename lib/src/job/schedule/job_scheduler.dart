@@ -18,8 +18,6 @@ import 'package:batch/src/runner.dart';
 class JobScheduler implements Runner {
   JobScheduler({required List<Job> jobs}) : _jobs = jobs;
 
-  static const int _millisecondsPerSecond = 1000;
-
   final List<Job> _jobs;
 
   /// The schedules
@@ -55,9 +53,9 @@ class JobScheduler implements Runner {
     final now = clock.now();
     final isTickSeconds =
         _scheduledTasks.any((task) => task.schedule.hasSeconds);
-    final ms = (isTickSeconds ? 1 : 60) * _millisecondsPerSecond -
+    final ms = (isTickSeconds ? 1 : 60) * Duration.millisecondsPerSecond -
         (now.millisecondsSinceEpoch %
-            ((isTickSeconds ? 1 : 60) * _millisecondsPerSecond));
+            ((isTickSeconds ? 1 : 60) * Duration.millisecondsPerSecond));
 
     _timer = Timer(Duration(milliseconds: ms), _tick);
   }

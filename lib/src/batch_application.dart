@@ -3,9 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/batch_application_impl.dart';
+import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/job/entity/job.dart';
+import 'package:batch/src/job/parameter/shared_parameters.dart';
+import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
+import 'package:batch/src/log/logger.dart';
+import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
 /// This is a batch application that manages the execution of arbitrarily defined jobs
@@ -57,10 +61,8 @@ import 'package:batch/src/runner.dart';
 /// ```
 abstract class BatchApplication implements Runner {
   /// Returns the new instance of [BatchApplication].
-  factory BatchApplication({
-    LogConfiguration? logConfig,
-  }) =>
-      BatchApplicationImpl(logConfig: logConfig);
+  factory BatchApplication({LogConfiguration? logConfig}) =>
+      _BatchApplication(logConfig: logConfig);
 
   /// Adds [Job].
   ///
@@ -73,4 +75,59 @@ abstract class BatchApplication implements Runner {
     required String key,
     required dynamic value,
   });
+}
+
+class _BatchApplication implements BatchApplication {
+  /// Returns the new instance of [_BatchApplication].
+  _BatchApplication({LogConfiguration? logConfig}) : _logConfig = logConfig;
+
+  /// The configuration for logging
+  final LogConfiguration? _logConfig;
+
+  /// The jobs
+  final _jobs = <Job>[];
+
+  @override
+  void addJob(final Job job) {
+    for (final registeredJob in _jobs) {
+      if (registeredJob.name == job.name) {
+        throw Exception('The job name "${job.name}" is already registered.');
+      }
+    }
+
+    _jobs.add(job);
+  }
+
+  @override
+  void addSharedParameter({
+    required String key,
+    required dynamic value,
+  }) {
+    SharedParameters.instance.put(
+      key: key,
+      value: value,
+    );
+  }
+
+  @override
+  void run() {
+    try {
+      //! The logging functionality provided by the batch library
+      //! will be available when this loading process is complete.
+      Logger.loadFrom(config: _logConfig ?? LogConfiguration());
+
+      info(
+        '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
+      );
+
+      info('The job schedule is being configured...');
+
+      JobScheduler(jobs: _jobs).run();
+
+      info('The job schedule has configured!');
+    } catch (e) {
+      Logger.instance.dispose();
+      throw Exception(e);
+    }
+  }
 }

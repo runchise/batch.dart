@@ -35,6 +35,7 @@ class ScheduledTask {
       _overrun = true;
       return;
     }
+
     _running = Future.microtask(() => _task()).then(
       (_) => null,
       onError: (_) => null,

@@ -21,7 +21,7 @@ import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 /// | | | +------ Days      (range: 1-31)
 /// | | +-------- Hours     (range: 0-23)
 /// | +---------- Minutes   (range: 0-59)
-/// +------------ Seconds   (range: 0-59)
+/// +------------ Seconds   (range: 0-59, it will be interpreted as "*" if omitted)
 /// ```
 class CronParser extends ScheduleParser<Cron> {
   /// Returns the new instance of [CronParser].
