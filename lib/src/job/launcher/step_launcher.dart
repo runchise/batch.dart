@@ -27,7 +27,7 @@ class StepLauncher extends Launcher<Step> {
     }
 
     for (final step in _steps) {
-      super.executeRecursively(entity: step);
+      await super.executeRecursively(entity: step);
     }
   }
 }

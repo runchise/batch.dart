@@ -2,14 +2,18 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Dart imports:
 import 'dart:async';
 
+// Package imports:
+import 'package:clock/clock.dart';
+
+// Project imports:
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/schedule/model/schedule.dart';
 import 'package:batch/src/job/schedule/scheduled_task.dart';
 import 'package:batch/src/runner.dart';
-import 'package:clock/clock.dart';
 
 class JobScheduler implements Runner {
   JobScheduler({required List<Job> jobs}) : _jobs = jobs;

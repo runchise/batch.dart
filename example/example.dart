@@ -61,7 +61,7 @@ Job _buildTestJob1() => Job(
 
 Job _buildTestJob2() => Job(
       name: 'Job2',
-      schedule: CronParser(value: '*/3 * * * *'),
+      schedule: CronParser(value: '*/2 * * * *'),
       // You can set precondition to run this job.
       precondition: JobPrecondition(),
     )

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:collection/collection.dart';
-
 abstract class Schedule {
   /// Returns the new instance of [Schedule].
   Schedule({
@@ -41,33 +39,4 @@ abstract class Schedule {
       seconds != null &&
       seconds!.isNotEmpty &&
       (seconds!.length != 1 || !seconds!.contains(0));
-
-  @override
-  String toString() {
-    return 'Schedule(seconds: $seconds, minutes: $minutes, hours: $hours, days: $days, months: $months, weekdays: $weekdays)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
-
-    return other is Schedule &&
-        listEquals(other.seconds, seconds) &&
-        listEquals(other.minutes, minutes) &&
-        listEquals(other.hours, hours) &&
-        listEquals(other.days, days) &&
-        listEquals(other.months, months) &&
-        listEquals(other.weekdays, weekdays);
-  }
-
-  @override
-  int get hashCode {
-    return seconds.hashCode ^
-        minutes.hashCode ^
-        hours.hashCode ^
-        days.hashCode ^
-        months.hashCode ^
-        weekdays.hashCode;
-  }
 }
