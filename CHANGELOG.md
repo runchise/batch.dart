@@ -2,12 +2,15 @@
 
 ## 0.3.0
 
-- Fixed a bug that prevented the Cron schedule from being reflected correctly.
-
 ### New Features
 
-- Added `Precondition` to check the preconditions for executing `Job` and `Step`.
-- Conditional branching is now possible for the all layers based on `BranchStatus` by using the `branchOnSucceeded`, `branchOnFailed` and `branchOnCompleted`.
+- Added `Precondition` to check the preconditions for executing `Job`, `Step` and `Task`.
+- Conditional branching is now possible for the all layers (`Job`/`Step`/`Task`) based on `BranchStatus` by using the `branchOnSucceeded`, `branchOnFailed` and `branchOnCompleted`.
+- Due to the feature to create branches in `Job`, the schedule argument of the `Job` object is no longer required. However, be sure to set up a schedule for the root `Job`s.
+
+### Destructive Changes
+
+- Changed the type of the argument when specifying `Job` scheduling. Now you can use `CronParser` to specify the schedule in Cron format.
 
 ## 0.2.1
 
