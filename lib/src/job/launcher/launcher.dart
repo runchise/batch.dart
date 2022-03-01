@@ -11,7 +11,6 @@ import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/launcher/step_launcher.dart';
 import 'package:batch/src/job/launcher/task_launcher.dart';
-import 'package:batch/src/job/repeat_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
@@ -57,10 +56,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextHelper<T>
         tasks: entity.tasks,
       ).run();
     } else {
-      RepeatStatus repeatStatus = RepeatStatus.continuable;
-      do {
-        repeatStatus = await entity.execute(super.context);
-      } while (repeatStatus.isContinuable);
+      await entity.execute(super.context);
     }
 
     super.finishExecution();

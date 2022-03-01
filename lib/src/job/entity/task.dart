@@ -5,7 +5,6 @@
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
-import 'package:batch/src/job/repeat_status.dart';
 
 /// This abstract class represents the smallest unit of processing that is
 /// included in the steps when a job is executed.
@@ -23,5 +22,5 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
   /// until [RepeatStatus.finished] is returned. This will result in an infinite loop,
   /// so be sure to consider the case where RepeatStatus.finished is returned
   /// when using RepeatStatus.continue.
-  Future<RepeatStatus> execute(final ExecutionContext context);
+  void execute(final ExecutionContext context);
 }

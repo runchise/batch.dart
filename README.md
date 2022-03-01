@@ -188,42 +188,28 @@ Job _buildTestJob2() => Job(
       );
 
 class TestTask extends Task<TestTask> {
-  static int count = 0;
-
   @override
-  Future<RepeatStatus> execute(ExecutionContext context) async {
-    if (count == 5) {
-      trace('Finish.');
-      return RepeatStatus.finished;
-    }
-
-    // This parameter is shared just in tasks in this step.
-    context.parameters['key_$count'] = 'value$count';
+  void execute(ExecutionContext context) {
+    // This parameter is shared just in this step.
+    context.parameters['key'] = 'value';
     // You can use shared parameters in any places.
     info(context.findSharedParameter('key1'));
     info(context.findSharedParameter('key2'));
-
-    count++;
-
-    info('Continue.');
-    return RepeatStatus.continuable;
   }
 }
 
 class SayHelloTask extends Task<SayHelloTask> {
   @override
-  Future<RepeatStatus> execute(ExecutionContext context) async {
+  void execute(ExecutionContext context) {
     debug('Hello,');
-    return RepeatStatus.finished;
   }
 }
 
 class SayWorldTask extends Task<SayWorldTask> {
   @override
-  Future<RepeatStatus> execute(ExecutionContext context) async {
+  void execute(ExecutionContext context) {
     info('World!');
     context.branchContribution.stepStatus = BranchStatus.failed;
-    return RepeatStatus.finished;
   }
 }
 
@@ -241,10 +227,6 @@ class StepPrecondition extends Precondition {
   }
 }
 ```
-
-Also `RepeatStatus` is an important factor when defining `Task` processing.
-
-A `Task` should always return `RepeatStatus`, and `RepeatStatus.finished` to finish the process of the `Task`. Another option to return in `Task` processing is `RepeatStatus.continuable`, but if this is returned, the same Task processing will be repeated over and over until `RepeatStatus.finished` is returned.
 
 ## 1.4. Logging
 
