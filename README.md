@@ -272,13 +272,16 @@ class TestLogTask extends Task<TestLogTask> {
 For example, if you run [sample code](#133-use-batch-library) as described earlier, you will see the following log output.
 
 ```terminal
-yyyy-MM-dd 15:03:46.523299 [info   ] :: The job schedule is being configured...
-yyyy-MM-dd 15:03:46.532843 [info   ] :: The job schedule has configured!
-yyyy-MM-dd 15:04:00.016205 [info   ] :: STARTED JOB (Job1)
-yyyy-MM-dd 15:04:00.017023 [info   ] :: STARTED STEP (Job1 -> Step1)
-yyyy-MM-dd 15:04:00.021285 [info   ] :: Hello,
-yyyy-MM-dd 15:04:00.021510 [info   ] :: World!
-yyyy-MM-dd 15:04:00.021581 [info   ] :: FINISHED STEP (Job1 -> Step1)
+yyyy-MM-dd 17:16:25.504323 [info ] :: Logger instance has completed loading
+yyyy-MM-dd 17:16:25.504555 [info ] :: Started Job scheduling on startup
+yyyy-MM-dd 17:16:25.504626 [info ] :: Detected 2 Jobs on the root
+yyyy-MM-dd 17:16:25.504720 [info ] :: Scheduling Job [name=Job1]
+yyyy-MM-dd 17:16:25.512262 [info ] :: Scheduling Job [name=Job2]
+yyyy-MM-dd 17:16:25.512444 [info ] :: Job scheduling has been completed and the batch application is now running
+yyyy-MM-dd 17:17:00.020004 [info ] :: Job: [name=Job1] launched with the following parameters: [key1=value1, key2={any: object}]
+yyyy-MM-dd 17:17:00.020362 [info ] :: Job1 has started.
+yyyy-MM-dd 17:17:00.021608 [info ] :: Executing Step: [Job1 -> Step1]
+yyyy-MM-dd 17:17:00.022776 [info ] :: Executing Task: [Job1 -> Step1 -> TestTask]
 ```
 
 > Note:
