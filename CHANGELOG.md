@@ -1,5 +1,11 @@
 # Release Note
 
+## 0.4.0
+
+### Destructive Changes
+
+- Deleted `RepeatStatus`.
+
 ## 0.3.0
 
 ### New Features
