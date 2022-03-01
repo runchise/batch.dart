@@ -120,11 +120,9 @@ class _BatchApplication implements BatchApplication {
         '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
       );
 
-      info('The job schedule is being configured...');
+      info('Logger instance has completed loading');
 
       JobScheduler(jobs: _jobs).run();
-
-      info('The job schedule has configured!');
     } catch (e) {
       Logger.instance.dispose();
       throw Exception(e);

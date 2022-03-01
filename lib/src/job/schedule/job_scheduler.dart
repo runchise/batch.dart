@@ -6,6 +6,7 @@
 import 'dart:async';
 
 // Package imports:
+import 'package:batch/src/log/logger_provider.dart';
 import 'package:clock/clock.dart';
 
 // Project imports:
@@ -30,16 +31,25 @@ class JobScheduler implements Runner {
 
   @override
   void run() {
+    info('Started Job scheduling on startup');
+    info('Detected ${_jobs.length} Jobs on the root');
+
     for (final job in _jobs) {
       if (job.isNotScheduled) {
         throw StateError('Be sure to specify a schedule for the root job.');
       }
+
+      info('Scheduling Job [name=${job.name}]');
 
       _schedule(
         job.schedule!.parse(),
         () async => await JobLauncher(job: job).run(),
       );
     }
+
+    info(
+      'Job scheduling has been completed and the batch application is now running',
+    );
   }
 
   void _schedule(Schedule schedule, Task task) {

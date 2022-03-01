@@ -14,4 +14,7 @@ class SharedParameter {
 
   /// The value
   final dynamic value;
+
+  @override
+  String toString() => '$key=$value';
 }

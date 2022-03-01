@@ -10,6 +10,7 @@ import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/execution.dart';
 import 'package:batch/src/job/process_status.dart';
+import 'package:batch/src/job/repository/service/shared_parameters.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 abstract class ContextHelper<T extends Entity<T>> {
@@ -24,14 +25,15 @@ abstract class ContextHelper<T extends Entity<T>> {
   void startNewExecution({required String name}) {
     if (T == Job) {
       context.jobExecution = Execution(name: name, startedAt: DateTime.now());
-      info('STARTED JOB ($name)');
+      info(
+          'Job: [name=$name] launched with the following parameters: ${SharedParameters.instance.records}');
     } else if (T == Step) {
       context.stepExecution = Execution(name: name, startedAt: DateTime.now());
-      info('STARTED STEP (${context.jobExecution!.name} -> $name)');
+      info('Executing Step: [${context.jobExecution!.name} -> $name]');
     } else {
       context.taskExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'STARTED TASK (${context.jobExecution!.name} -> ${context.stepExecution!.name} -> $name)');
+          'Executing Task: [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> $name]');
     }
   }
 
@@ -43,7 +45,7 @@ abstract class ContextHelper<T extends Entity<T>> {
         startedAt: context.jobExecution!.startedAt,
         finishedAt: DateTime.now(),
       );
-      info('FINISHED JOB (${context.jobExecution!.name})');
+      info('Finished Job [${context.jobExecution!.name}]');
     } else if (T == Step) {
       context.stepExecution = Execution(
         name: context.stepExecution!.name,
@@ -53,7 +55,7 @@ abstract class ContextHelper<T extends Entity<T>> {
       );
 
       info(
-          'FINISHED STEP (${context.jobExecution!.name} -> ${context.stepExecution!.name})');
+          'Finished Step [${context.jobExecution!.name} -> ${context.stepExecution!.name}]');
     } else {
       context.taskExecution = Execution(
         name: context.taskExecution!.name,
@@ -63,7 +65,7 @@ abstract class ContextHelper<T extends Entity<T>> {
       );
 
       info(
-          'FINISHED TASK (${context.jobExecution!.name} -> ${context.stepExecution!.name} -> ${context.taskExecution!.name})');
+          'Finished Task [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> ${context.taskExecution!.name}]');
     }
   }
 
