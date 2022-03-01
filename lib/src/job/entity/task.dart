@@ -13,7 +13,19 @@ import 'package:batch/src/job/entity/entity.dart';
 /// [execute] in a class that inherits from this [Task].
 abstract class Task<T extends Task<T>> extends Entity<Task> {
   /// Returns the new instance of [Task].
-  Task() : super(name: T.toString());
+  Task({
+    Function(ExecutionContext context)? onStarted,
+    Function(ExecutionContext context)? onSucceeded,
+    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
+        onFailed,
+    Function(ExecutionContext context)? onCompleted,
+  }) : super(
+          name: T.toString(),
+          onStarted: onStarted,
+          onSucceeded: onSucceeded,
+          onFailed: onFailed,
+          onCompleted: onCompleted,
+        );
 
   /// Runs this [Task] and returns the [RepeatStatus].
   ///

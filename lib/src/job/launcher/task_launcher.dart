@@ -25,7 +25,8 @@ class TaskLauncher extends Launcher<Task> {
     }
 
     for (final task in _tasks) {
-      await super.executeRecursively(entity: task);
+      await super.executeRecursively(
+          entity: task, execute: (task) async => await task.execute(context));
     }
 
     super.clearParameters();

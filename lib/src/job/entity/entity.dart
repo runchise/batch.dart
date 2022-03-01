@@ -6,6 +6,7 @@
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/builder/branch_builder.dart';
+import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/precondition.dart';
 
 /// This is an abstract class that represents an entity in Job execution.
@@ -14,6 +15,10 @@ abstract class Entity<T extends Entity<T>> {
   Entity({
     required this.name,
     Precondition? precondition,
+    this.onStarted,
+    this.onSucceeded,
+    this.onFailed,
+    this.onCompleted,
   }) : _precondition = precondition;
 
   /// The name
@@ -21,6 +26,22 @@ abstract class Entity<T extends Entity<T>> {
 
   /// The precondition
   final Precondition? _precondition;
+
+  /// The callback when this process is started
+  final Function(ExecutionContext context)? onStarted;
+
+  /// The callback when this process is succeeded
+  final Function(ExecutionContext context)? onSucceeded;
+
+  /// The callback when this process is stopped due to exception
+  final Function(
+    ExecutionContext context,
+    dynamic error,
+    StackTrace stackTrace,
+  )? onFailed;
+
+  /// The callback when this process is completed (regardless of success and failure)
+  final Function(ExecutionContext context)? onCompleted;
 
   /// The branches
   final List<Branch<T>> branches = [];

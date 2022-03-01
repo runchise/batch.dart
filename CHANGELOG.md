@@ -2,6 +2,10 @@
 
 ## 0.4.0
 
+### New Features
+
+- Added `onStarted`, `onSucceeded`, `onFailed` and `onCompleted` callbacks for `Job`, `Step` and `Task`.
+
 ### Destructive Changes
 
 - Deleted `RepeatStatus`.
