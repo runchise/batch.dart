@@ -35,7 +35,7 @@ class Banner {
                             A lightweight and powerful Job Scheduling Framework written in Dart.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-  Version: 0.3.0
+  Version: 0.4.0
   License: BSD 3-Clause
   Author : Kato Shinya (https://github.com/myConsciousness)
 

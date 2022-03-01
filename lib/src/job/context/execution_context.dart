@@ -9,7 +9,7 @@ import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/entity/task.dart';
 import 'package:batch/src/job/execution.dart';
 import 'package:batch/src/job/repository/model/shared_parameter.dart';
-import 'package:batch/src/job/repository/shared_parameters.dart';
+import 'package:batch/src/job/repository/service/shared_parameters.dart';
 
 /// This class represents a context for managing metadata that is accumulated
 /// as a batch application is executed.

@@ -5,7 +5,7 @@
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/job/entity/job.dart';
-import 'package:batch/src/job/repository/shared_parameters.dart';
+import 'package:batch/src/job/repository/service/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
