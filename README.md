@@ -119,6 +119,11 @@ void main(List<String> args) => BatchApplication(
 Job _buildTestJob1() => Job(
       name: 'Job1',
       schedule: CronParser(value: '*/1 * * * *'),
+      // You can define callbacks for each processing phase.
+      onStarted: (context) => info('Job1 has started.'),
+      onSucceeded: (context) => info('Job1 has succeeded.'),
+      onFailed: (context, error, stackTrace) => info('Job1 has failed due to $error from $stackTrace'),
+      onCompleted: (context) => info('Job1 has completed.'),
     )
       ..nextStep(
         Step(name: 'Step1')
@@ -149,7 +154,14 @@ Job _buildTestJob1() => Job(
               ),
           )
           ..branchOnCompleted(
-            to: Step(name: 'Step5')
+            to: Step(
+              name: 'Step5',
+              // You can define callbacks for each processing phase.
+              onStarted: (context) => info('Step5 has started.'),
+              onSucceeded: (context) => info('Step5 has succeeded.'),
+              onFailed: (context, error, stackTrace) => info('Step5 has failed due to $error from $stackTrace'),
+              onCompleted: (context) => info('Step5 has completed.'),
+            )
               ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
