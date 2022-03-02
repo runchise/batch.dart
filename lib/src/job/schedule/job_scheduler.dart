@@ -6,7 +6,6 @@
 import 'dart:async';
 
 // Package imports:
-import 'package:batch/src/log/logger_provider.dart';
 import 'package:clock/clock.dart';
 
 // Project imports:
@@ -14,6 +13,7 @@ import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/schedule/model/schedule.dart';
 import 'package:batch/src/job/schedule/scheduled_task.dart';
+import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
 class JobScheduler implements Runner {
