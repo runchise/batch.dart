@@ -7,8 +7,10 @@ import 'package:batch/batch.dart';
 void main(List<String> args) => BatchApplication(
       logConfig: LogConfiguration(
         level: LogLevel.trace,
-        filter: DefaultLogFilter(),
         output: ConsoleLogOutput(),
+        color: LogColor(
+          info: ConsoleColor.cyan1,
+        ),
         printLog: true,
       ),
     )
@@ -112,6 +114,13 @@ class TestTask extends Task<TestTask> {
     // You can use shared parameters in any places.
     info(context.findSharedParameter('key1'));
     info(context.findSharedParameter('key2'));
+
+    trace('Trace');
+    info('Info');
+    debug('Debug');
+    warn('Warn');
+    error('Error');
+    fatal('Fatal');
   }
 }
 

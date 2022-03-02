@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/log/color/log_color.dart';
 import 'package:batch/src/log/filter/default_log_filter.dart';
 import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
@@ -21,6 +22,7 @@ class Logger {
   })  : _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
         _output = config.output ?? ConsoleLogOutput(),
+        _color = config.color ?? LogColor(),
         _printLog = config.printLog {
     _filter.init();
     _printer.init();
@@ -46,6 +48,9 @@ class Logger {
 
   /// The output
   final LogOutput _output;
+
+  /// The color
+  final LogColor _color;
 
   /// The flag represents this logger should print log or not
   final bool _printLog;
@@ -113,7 +118,7 @@ class Logger {
       if (output.isNotEmpty) {
         final outputEvent = OutputLogEvent(
           level: level,
-          lines: output,
+          lines: output.map((message) => _color[level](message)).toList(),
         );
 
         try {

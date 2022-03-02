@@ -5,6 +5,7 @@
 ### New Features
 
 - Added `onStarted`, `onSucceeded`, `onFailed` and `onCompleted` callbacks for `Job`, `Step` and `Task`.
+- Added feature to specify the color of the message when logging out with `LogColor` and `ConsoleColor`.
 
 ### Destructive Changes
 
