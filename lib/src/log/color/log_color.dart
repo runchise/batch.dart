@@ -2,9 +2,11 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Package imports:
+import 'package:console_color/console_color.dart';
+
 // Project imports:
 import 'package:batch/src/log/color/ansi_color.dart';
-import 'package:batch/src/log/color/console_color.dart';
 import 'package:batch/src/log/log_level.dart';
 
 class LogColor {

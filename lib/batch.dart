@@ -26,4 +26,4 @@ export 'package:batch/src/log/filter/log_filter.dart';
 export 'package:batch/src/log/output/console_log_output.dart';
 export 'package:batch/src/log/output/file_log_output.dart';
 export 'package:batch/src/log/color/log_color.dart';
-export 'package:batch/src/log/color/console_color.dart' show ConsoleColor;
+export 'package:console_color/console_color.dart' show ConsoleColor;
