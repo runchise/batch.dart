@@ -4,4 +4,8 @@
 
 enum TableName {
   sharedParameters,
+
+  jobParameters,
+
+  stepParameters,
 }

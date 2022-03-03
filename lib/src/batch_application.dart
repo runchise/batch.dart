@@ -65,9 +65,6 @@ abstract class BatchApplication implements Runner {
       _BatchApplication(logConfig: logConfig);
 
   /// Adds [Job].
-  ///
-  /// The name of the Job must be unique, and an exception will be raised
-  /// if a Job with a duplicate name has already been registered.
   void addJob(final Job job);
 
   /// Adds parameter as global scope.
@@ -102,12 +99,8 @@ class _BatchApplication implements BatchApplication {
   void addSharedParameter({
     required String key,
     required dynamic value,
-  }) {
-    SharedParameters.instance.add(
-      key: key,
-      value: value,
-    );
-  }
+  }) =>
+      SharedParameters.instance[key] = value;
 
   @override
   void run() {

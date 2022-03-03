@@ -6,7 +6,7 @@
 import 'package:batch/src/job/repository/database.dart';
 import 'package:batch/src/job/repository/table_name.dart';
 
-abstract class Repository {
+abstract class Repository<T> {
   /// The singleton instance of [Database]
   final _database = Database.instance;
 
@@ -14,14 +14,27 @@ abstract class Repository {
   TableName get table;
 
   /// Returns the records associated with [table].
-  List<dynamic> get records {
+  List<T> get records {
     if (_database.has(table)) {
-      return _database.tables[table]!;
+      return _database.tables[table] as List<T>;
     }
 
-    final newRecords = [];
-    _database.tables[table] = newRecords;
+    return _initialize();
+  }
 
+  /// Removes all elements records associated with [table].
+  void removeAll() {
+    if (!_database.has(table)) {
+      return;
+    }
+
+    _initialize();
+  }
+
+  /// Initialize table associated with [table] and returns new list.
+  List<T> _initialize() {
+    final newRecords = <T>[];
+    _database.tables[table] = newRecords;
     return newRecords;
   }
 }

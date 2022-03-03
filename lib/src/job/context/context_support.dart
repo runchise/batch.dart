@@ -10,12 +10,14 @@ import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/execution.dart';
 import 'package:batch/src/job/process_status.dart';
+import 'package:batch/src/job/repository/service/job_parameters.dart';
 import 'package:batch/src/job/repository/service/shared_parameters.dart';
+import 'package:batch/src/job/repository/service/step_parameters.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
-abstract class ContextHelper<T extends Entity<T>> {
-  /// Returns the new instance of [ContextHelper].
-  ContextHelper({
+abstract class ContextSupport<T extends Entity<T>> {
+  /// Returns the new instance of [ContextSupport].
+  ContextSupport({
     required this.context,
   });
 
@@ -26,14 +28,15 @@ abstract class ContextHelper<T extends Entity<T>> {
     if (T == Job) {
       context.jobExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'Job: [name=$name] launched with the following parameters: ${SharedParameters.instance.records}');
+          'Job: [name=$name] launched with the following shared parameters: ${SharedParameters.instance.records}');
     } else if (T == Step) {
       context.stepExecution = Execution(name: name, startedAt: DateTime.now());
-      info('Executing Step: [${context.jobExecution!.name} -> $name]');
+      info(
+          'Executing Step: [${context.jobExecution!.name} -> $name] with the following job parameters: ${JobParameters.instance.records}');
     } else {
       context.taskExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'Executing Task: [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> $name]');
+          'Executing Task: [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> $name] with the following step parameters: ${StepParameters.instance.records}');
     }
   }
 
@@ -78,8 +81,6 @@ abstract class ContextHelper<T extends Entity<T>> {
       context.branchContribution.taskStatus = BranchStatus.succeeded;
     }
   }
-
-  void clearParameters() => context.parameters.clear();
 
   BranchStatus get branchStatus {
     if (T == Job) {

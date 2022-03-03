@@ -109,11 +109,14 @@ Job _buildTestJob2() => Job(
 class TestTask extends Task<TestTask> {
   @override
   void execute(ExecutionContext context) {
+    // This parameter is shared just in this job.
+    context.jobParameters['key'] = 'job_parameter';
     // This parameter is shared just in this step.
-    context.parameters['key'] = 'value';
+    context.stepParameters['key'] = 'step_parameter';
+
     // You can use shared parameters in any places.
-    info(context.findSharedParameter('key1'));
-    info(context.findSharedParameter('key2'));
+    info(context.sharedParameters['key1']);
+    info(context.sharedParameters['key2']);
 
     trace('Trace');
     info('Info');

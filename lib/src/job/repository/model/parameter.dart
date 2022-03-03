@@ -2,9 +2,9 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-class SharedParameter {
-  /// Returns the new instance of [SharedParameter].
-  SharedParameter({
+class Parameter {
+  /// Returns the new instance of [Parameter].
+  Parameter({
     required this.key,
     required this.value,
   });

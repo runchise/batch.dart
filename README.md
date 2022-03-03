@@ -32,8 +32,7 @@ A lightweight and powerful Job Scheduling Framework written in Dart
     - [1.3.3. Use Batch library](#133-use-batch-library)
   - [1.4. Logging](#14-logging)
     - [1.4.1. Customize Log Configuration](#141-customize-log-configuration)
-    - [1.4.2. LogFilter](#142-logfilter)
-    - [1.4.3. LogOutput](#143-logoutput)
+    - [1.4.2. LogOutput](#142-logoutput)
   - [1.5. Contribution](#15-contribution)
   - [1.6. License](#16-license)
   - [1.7. More Information](#17-more-information)
@@ -284,16 +283,16 @@ class TestLogTask extends Task<TestLogTask> {
 For example, if you run [sample code](#133-use-batch-library) as described earlier, you will see the following log output.
 
 ```terminal
-yyyy-MM-dd 17:16:25.504323 [info ] :: Logger instance has completed loading
-yyyy-MM-dd 17:16:25.504555 [info ] :: Started Job scheduling on startup
-yyyy-MM-dd 17:16:25.504626 [info ] :: Detected 2 Jobs on the root
-yyyy-MM-dd 17:16:25.504720 [info ] :: Scheduling Job [name=Job1]
-yyyy-MM-dd 17:16:25.512262 [info ] :: Scheduling Job [name=Job2]
-yyyy-MM-dd 17:16:25.512444 [info ] :: Job scheduling has been completed and the batch application is now running
-yyyy-MM-dd 17:17:00.020004 [info ] :: Job: [name=Job1] launched with the following parameters: [key1=value1, key2={any: object}]
-yyyy-MM-dd 17:17:00.020362 [info ] :: Job1 has started.
-yyyy-MM-dd 17:17:00.021608 [info ] :: Executing Step: [Job1 -> Step1]
-yyyy-MM-dd 17:17:00.022776 [info ] :: Executing Task: [Job1 -> Step1 -> TestTask]
+yyyy-MM-dd 19:16:25.504323 [info ] - Logger instance has completed loading
+yyyy-MM-dd 19:16:25.504555 [info ] - Started Job scheduling on startup
+yyyy-MM-dd 19:16:25.504626 [info ] - Detected 2 Jobs on the root
+yyyy-MM-dd 19:16:25.504720 [info ] - Scheduling Job [name=Job1]
+yyyy-MM-dd 19:16:25.512262 [info ] - Scheduling Job [name=Job2]
+yyyy-MM-dd 19:16:25.512444 [info ] - Job scheduling has been completed and the batch application is now running
+yyyy-MM-dd 19:17:00.020004 [info ] - Job: [name=Job1] launched with the following parameters: [key1=value1, key2={any: object}]
+yyyy-MM-dd 19:17:00.020362 [info ] - Job1 has started.
+yyyy-MM-dd 19:17:00.021608 [info ] - Executing Step: [Job1 -> Step1]
+yyyy-MM-dd 19:17:00.022776 [info ] - Executing Task: [Job1 -> Step1 -> TestTask]
 ```
 
 > Note:
@@ -324,23 +323,7 @@ Also, the logging feature can be freely customized by inheriting the following a
 
 Also, the `batch` library provides several classes that implement these abstract classes, so you can use them depending on your situation.
 
-### 1.4.2. LogFilter
-
-|                      | Description                                                                                                                      |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **DefaultLogFilter** | This is a simple log filter. You can control the output of logs just according to the log level. This filter is used by default. |
-
-**_Example_**
-
-```dart
-BatchApplication(
-  logConfig: LogConfiguration(
-    filter: DefaultLogFilter(),
-  ),
-);
-```
-
-### 1.4.3. LogOutput
+### 1.4.2. LogOutput
 
 |                      | Description                                                                 |
 | -------------------- | --------------------------------------------------------------------------- |

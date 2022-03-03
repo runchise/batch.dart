@@ -4,13 +4,13 @@
 
 // Project imports:
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/context/context_helper.dart';
+import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
-abstract class Launcher<T extends Entity<T>> extends ContextHelper<T>
+abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
     implements Runner {
   /// Returns the new instance of [Launcher].
   Launcher({

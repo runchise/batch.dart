@@ -8,8 +8,10 @@ import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/entity/task.dart';
 import 'package:batch/src/job/execution.dart';
-import 'package:batch/src/job/repository/model/shared_parameter.dart';
+import 'package:batch/src/job/repository/service/job_parameters.dart';
+import 'package:batch/src/job/repository/service/parameters.dart';
 import 'package:batch/src/job/repository/service/shared_parameters.dart';
+import 'package:batch/src/job/repository/service/step_parameters.dart';
 
 /// This class represents a context for managing metadata that is accumulated
 /// as a batch application is executed.
@@ -38,10 +40,12 @@ class ExecutionContext {
   /// The branch contribution
   final BranchContribution branchContribution = BranchContribution();
 
-  /// Returns the [SharedParameter] associated with [key].
-  dynamic findSharedParameter(final String key) =>
-      SharedParameters.instance.findByKey(key).value;
+  /// The shared parameters
+  final Parameters sharedParameters = SharedParameters.instance;
 
-  /// The parameters
-  final Map<String, dynamic> parameters = {};
+  /// The job parameters
+  final Parameters jobParameters = JobParameters.instance;
+
+  /// The step parameters
+  final Parameters stepParameters = StepParameters.instance;
 }

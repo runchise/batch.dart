@@ -19,7 +19,7 @@ class DefaultLogPrinter extends LogPrinter {
 
   List<String> _buildBuffer(final InputLogEvent event) {
     final buffer = <String>[];
-    buffer.add('${_buildHeader(event)} :: ${_stringifyMessage(event.message)}');
+    buffer.add('${_buildHeader(event)} - ${_stringifyMessage(event.message)}');
 
     if (event.error != null) {
       buffer.add(event.error.toString());
