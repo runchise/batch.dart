@@ -8,15 +8,13 @@ import 'package:batch/src/log/printer/log_printer.dart';
 
 /// The default printer.
 class DefaultLogPrinter extends LogPrinter {
+  /// The maximum width of step on log
+  static const _maxWidthStep = 30;
+
   @override
   List<String> log(final InputLogEvent event) => _buildBuffer(event);
 
-  String _buildHeader(final InputLogEvent event) =>
-      '${DateTime.now().toString().padRight(26, '0')} [${event.level.name.padRight(5, ' ')}]';
-
-  String _stringifyMessage(final dynamic message) =>
-      message is Function ? message() : message.toString();
-
+  /// Returns the buffered log messages.
   List<String> _buildBuffer(final InputLogEvent event) {
     final buffer = <String>[];
     buffer.add('${_buildHeader(event)} - ${_stringifyMessage(event.message)}');
@@ -30,5 +28,43 @@ class DefaultLogPrinter extends LogPrinter {
     }
 
     return buffer;
+  }
+
+  /// Returns the header of log.
+  String _buildHeader(final InputLogEvent event) =>
+      '$_currentDateTime [${_logLevel(event)}] ($_executedStep)';
+
+  /// Returns the message in string.
+  /// The argument [message] is executed if it's a function.
+  String _stringifyMessage(final dynamic message) =>
+      message is Function ? message() : message.toString();
+
+  /// Returns the formatted current datetime.
+  String get _currentDateTime => DateTime.now().toString().padRight(26, '0');
+
+  /// Returns the formatted log level.
+  String _logLevel(final InputLogEvent event) =>
+      event.level.name.padRight(5, ' ');
+
+  /// Returns the executed step according to current stack trace.
+  String get _executedStep {
+    final String traces = StackTrace.current.toString().split('#5')[1];
+    final executedStep = traces.substring(0, traces.indexOf(')')).trim();
+    final method =
+        executedStep.substring(0, executedStep.lastIndexOf(' ')).trim();
+    final place = executedStep
+        .substring(executedStep.lastIndexOf('.dart') + 5, executedStep.length)
+        .trim();
+
+    return _prettifyStep('$method$place');
+  }
+
+  /// Returns the formatted step.
+  String _prettifyStep(final String step) {
+    if (step.length <= _maxWidthStep) {
+      return step.padRight(_maxWidthStep);
+    }
+
+    return step.substring((step.length - _maxWidthStep));
   }
 }

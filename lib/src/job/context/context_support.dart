@@ -28,15 +28,15 @@ abstract class ContextSupport<T extends Entity<T>> {
     if (T == Job) {
       context.jobExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'Job: [name=$name] launched with the following shared parameters: ${SharedParameters.instance.records}');
+          'Job:  [name=$name] launched with the following shared parameters: ${SharedParameters.instance.records}');
     } else if (T == Step) {
       context.stepExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'Executing Step: [${context.jobExecution!.name} -> $name] with the following job parameters: ${JobParameters.instance.records}');
+          'Step: [name=$name] launched with the following job parameters: ${JobParameters.instance.records}');
     } else {
       context.taskExecution = Execution(name: name, startedAt: DateTime.now());
       info(
-          'Executing Task: [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> $name] with the following step parameters: ${StepParameters.instance.records}');
+          'Task: [name=$name] launched with the following step parameters: ${StepParameters.instance.records}');
     }
   }
 
@@ -48,7 +48,8 @@ abstract class ContextSupport<T extends Entity<T>> {
         startedAt: context.jobExecution!.startedAt,
         finishedAt: DateTime.now(),
       );
-      info('Finished Job [${context.jobExecution!.name}]');
+      info(
+          'Job:  [name=${context.jobExecution!.name}] finished with the following shared parameters: ${SharedParameters.instance.records} and the status: [${context.jobExecution!.status.name}]');
     } else if (T == Step) {
       context.stepExecution = Execution(
         name: context.stepExecution!.name,
@@ -58,7 +59,7 @@ abstract class ContextSupport<T extends Entity<T>> {
       );
 
       info(
-          'Finished Step [${context.jobExecution!.name} -> ${context.stepExecution!.name}]');
+          'Step: [name=${context.stepExecution!.name}] finished with the following job parameters: ${JobParameters.instance.records} and the status: [${context.stepExecution!.status.name}]');
     } else {
       context.taskExecution = Execution(
         name: context.taskExecution!.name,
@@ -68,7 +69,7 @@ abstract class ContextSupport<T extends Entity<T>> {
       );
 
       info(
-          'Finished Task [${context.jobExecution!.name} -> ${context.stepExecution!.name} -> ${context.taskExecution!.name}]');
+          'Task: [name=${context.taskExecution!.name}] finished with the following step parameters: ${StepParameters.instance.records} and the status: [${context.taskExecution!.status.name}]');
     }
   }
 
