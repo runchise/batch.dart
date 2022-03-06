@@ -4,13 +4,13 @@ title Batch Lifecycle
 hide footbox
 participant main
 participant BatchApplication
-participant Job
-participant Step
-participant Task
 participant JobScheduler
 participant JobLauncher
 participant StepLauncher
 participant TaskLauncher
+participant Job
+participant Step
+participant Task
 participant Repository
 
 activate main
