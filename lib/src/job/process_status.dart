@@ -4,12 +4,15 @@
 
 /// The enum represents status of batch processing.
 enum ProcessStatus {
-  /// This element indicates that the processing of the job or step is already started.
+  /// This element indicates that the processing is already started.
   started,
 
-  /// This element indicates that the processing of the job or step is completed.
+  /// This element indicates that the processing is skipped for some reason.
+  skipped,
+
+  /// This element indicates that the processing is completed.
   completed,
 
-  /// This element indicates that the processing of the job or step is failed.
+  /// This element indicates that the processing is failed.
   failed,
 }

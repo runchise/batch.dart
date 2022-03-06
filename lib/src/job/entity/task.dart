@@ -27,12 +27,6 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
           onCompleted: onCompleted,
         );
 
-  /// Runs this [Task] and returns the [RepeatStatus].
-  ///
-  /// Be sure to return [RepeatStatus.finished] to complete the process.
-  /// This Task process will be repeated if [RepeatStatus.continuable] is returned,
-  /// until [RepeatStatus.finished] is returned. This will result in an infinite loop,
-  /// so be sure to consider the case where RepeatStatus.finished is returned
-  /// when using RepeatStatus.continue.
+  /// Runs this [Task].
   void execute(final ExecutionContext context);
 }

@@ -49,11 +49,10 @@ group Register Jobs and Parameters
     note over Repository: Optional and this parameter will be shared all layers
 end
 
-
 group Framework Lifecycle
     main -> BatchApplication: run
 
-    group Schedule Registered Jobs
+    group Schedule And Executions
         create JobScheduler
         BatchApplication -> JobScheduler: new
         activate JobScheduler
@@ -63,75 +62,75 @@ group Framework Lifecycle
             Thereafter, the comparison of the current time
             and the scheduled time is repeated
         end note
-    end
 
-    loop Infinite Loop
-        opt Now == Scheduled Time
-            group Job Execution
-                create JobLauncher
-                JobScheduler -> JobLauncher: new
-                JobLauncher -> Job: get
-                JobLauncher <-- Job: Job's instance
+        loop Infinite Loop
+            opt Now == Scheduled Time
+                group Job Execution
+                    create JobLauncher
+                    JobScheduler -> JobLauncher: new
+                    JobLauncher -> Job: get
+                    JobLauncher <-- Job: Job's instance
 
-                opt JobPrecondition == true
-                    JobScheduler -> JobLauncher: run
+                    opt JobPrecondition == true
+                        JobScheduler -> JobLauncher: run
 
-                    activate JobLauncher
+                        activate JobLauncher
 
-                    group Step Execution
-                        create StepLauncher
-                        JobLauncher -> StepLauncher: new
-                        StepLauncher -> Step: get
-                        StepLauncher <-- Step: Step's instance
+                        group Step Execution
+                            create StepLauncher
+                            JobLauncher -> StepLauncher: new
+                            StepLauncher -> Step: get
+                            StepLauncher <-- Step: Step's instance
 
-                        opt StepPrecondition == true
-                            JobLauncher -> StepLauncher: run
-                            activate StepLauncher
+                            opt StepPrecondition == true
+                                JobLauncher -> StepLauncher: run
+                                activate StepLauncher
 
-                            group Task Execution
-                                create TaskLauncher
-                                StepLauncher -> TaskLauncher: new
-                                TaskLauncher -> Task: get
-                                TaskLauncher <-- Task: Task's instance
+                                group Task Execution
+                                    create TaskLauncher
+                                    StepLauncher -> TaskLauncher: new
+                                    TaskLauncher -> Task: get
+                                    TaskLauncher <-- Task: Task's instance
 
-                                opt TaskPrecondition == true
-                                    StepLauncher -> TaskLauncher: run
-                                    activate TaskLauncher
-                                    TaskLauncher -> Task: execute
-                                    activate Task
-                                    TaskLauncher <-- Task
-                                    deactivate Task
+                                    opt TaskPrecondition == true
+                                        StepLauncher -> TaskLauncher: run
+                                        activate TaskLauncher
+                                        TaskLauncher -> Task: execute
+                                        activate Task
+                                        TaskLauncher <-- Task
+                                        deactivate Task
+                                    end
+
+                                    opt TaskHasBranch == true
+                                        TaskLauncher -> TaskLauncher: run
+                                        note over TaskLauncher: Execute all task branches recursively
+                                    end
+                                                                                                        StepLauncher <-- TaskLauncher
+                                    deactivate TaskLauncher
+                                    destroy TaskLauncher
                                 end
-
-                                opt TaskHasBranch == true
-                                    TaskLauncher -> TaskLauncher: run
-                                    note over TaskLauncher: Execute all task branches recursively
-                                end
-                                                                                                    StepLauncher <-- TaskLauncher
-                                deactivate TaskLauncher
-                                destroy TaskLauncher
                             end
-                        end
 
-                        opt StepHadBranch == true
-                            StepLauncher -> StepLauncher: run
-                            note over StepLauncher: Execute all step branches recursively
-                        end
+                            opt StepHadBranch == true
+                                StepLauncher -> StepLauncher: run
+                                note over StepLauncher: Execute all step branches recursively
+                            end
 
-                        JobLauncher <-- StepLauncher
-                        deactivate StepLauncher
-                        destroy StepLauncher
+                            JobLauncher <-- StepLauncher
+                            deactivate StepLauncher
+                            destroy StepLauncher
+                        end
                     end
-                end
 
-                opt JobHasBranch == true
-                    JobLauncher -> JobLauncher: run
-                    note over JobLauncher: Execute all job branches recursively
-                end
+                    opt JobHasBranch == true
+                        JobLauncher -> JobLauncher: run
+                        note over JobLauncher: Execute all job branches recursively
+                    end
 
-                JobScheduler <-- JobLauncher
-                deactivate JobLauncher
-                destroy JobLauncher
+                    JobScheduler <-- JobLauncher
+                    deactivate JobLauncher
+                    destroy JobLauncher
+                end
             end
         end
     end
