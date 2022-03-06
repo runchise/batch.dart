@@ -17,47 +17,51 @@ activate main
 
 group Initialize Required Instances
     create Job
-    main -> Job: new
+    main -> Job: new with unique name and schedule
     activate Job
     create Step
-    main -> Step: new
+    main -> Step: New with unique name
     activate Step
 
     create Task
-    main -> Task: new
+    main -> Task: New
     activate Task
 
     create BatchApplication
-    main -> BatchApplication: new
+    main -> BatchApplication: New
     activate BatchApplication
+
     create Repository
-    BatchApplication -> Repository: create singleton instance on load
+    BatchApplication -> Repository: Create singleton instance on load
     activate Repository
 end
 
 group Register Jobs and Parameters
-    BatchApplication -> Job: addJob
-    note over Job: Required before run batch application
+    main -> Step: Call addTask with Task instance as a parameter
+    note over main, Task: Add Task objects tied to the Step object
+    main <-- Step
 
-    Job -> Step: addStep
-    note over Step: Required before run batch application
+    main -> Job: Call addStep with Step instance as a parameter
+    note over main, Step: Add Step objects tied to the Job object
+    main <-- Job
 
-    Step -> Task: addTask
-    note over Task: Required before run batch application
+    main -> BatchApplication: Call addJob with Job instance as a parameter
+    note over main, Job: Add Job objects on root
+    main <-- BatchApplication
 
     BatchApplication -> Repository: addSharedParameter
     note over Repository: Optional and this parameter will be shared all layers
 end
 
 group Framework Lifecycle
-    main -> BatchApplication: run
+    main -> BatchApplication: Run
 
     group Schedule And Executions
         create JobScheduler
-        BatchApplication -> JobScheduler: new
+        BatchApplication -> JobScheduler: New
         activate JobScheduler
 
-        BatchApplication -> JobScheduler: run
+        BatchApplication -> JobScheduler: Run
         note over JobScheduler
             Thereafter, the comparison of the current time
             and the scheduled time is repeated
@@ -67,42 +71,42 @@ group Framework Lifecycle
             opt Now == Scheduled Time
                 group Job Execution
                     create JobLauncher
-                    JobScheduler -> JobLauncher: new
-                    JobLauncher -> Job: get Job's instance
+                    JobScheduler -> JobLauncher: New
+                    JobLauncher -> Job: Get Job's instance
                     JobLauncher <-- Job: Job's instance
 
                     opt JobPrecondition == true
-                        JobScheduler -> JobLauncher: run
+                        JobScheduler -> JobLauncher: Run
 
                         activate JobLauncher
 
                         group Step Execution
                             create StepLauncher
-                            JobLauncher -> StepLauncher: new
-                            StepLauncher -> Step: get Step's instance
+                            JobLauncher -> StepLauncher: New
+                            StepLauncher -> Step: Get Step's instance
                             StepLauncher <-- Step: Step's instance
 
                             opt StepPrecondition == true
-                                JobLauncher -> StepLauncher: run
+                                JobLauncher -> StepLauncher: Run
                                 activate StepLauncher
 
                                 group Task Execution
                                     create TaskLauncher
-                                    StepLauncher -> TaskLauncher: new
+                                    StepLauncher -> TaskLauncher: New
                                     TaskLauncher -> Task: get Task's instance
                                     TaskLauncher <-- Task: Task's instance
 
                                     opt TaskPrecondition == true
-                                        StepLauncher -> TaskLauncher: run
+                                        StepLauncher -> TaskLauncher: Run
                                         activate TaskLauncher
-                                        TaskLauncher -> Task: execute
+                                        TaskLauncher -> Task: Execute Task
                                         activate Task
                                         TaskLauncher <-- Task
                                         deactivate Task
                                     end
 
                                     opt TaskHasBranch == true
-                                        TaskLauncher -> TaskLauncher: run
+                                        TaskLauncher -> TaskLauncher: Run
                                         note over TaskLauncher: Execute all task branches recursively
                                     end
                                                                                                         StepLauncher <-- TaskLauncher
@@ -112,7 +116,7 @@ group Framework Lifecycle
                             end
 
                             opt StepHadBranch == true
-                                StepLauncher -> StepLauncher: run
+                                StepLauncher -> StepLauncher: Run
                                 note over StepLauncher: Execute all step branches recursively
                             end
 
@@ -123,7 +127,7 @@ group Framework Lifecycle
                     end
 
                     opt JobHasBranch == true
-                        JobLauncher -> JobLauncher: run
+                        JobLauncher -> JobLauncher: Run
                         note over JobLauncher: Execute all job branches recursively
                     end
 
