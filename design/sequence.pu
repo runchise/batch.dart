@@ -3,6 +3,8 @@ title Batch Lifecycle
 
 hide footbox
 participant main
+participant Repository
+participant Logger
 participant BatchApplication
 participant JobScheduler
 participant JobLauncher
@@ -11,7 +13,6 @@ participant TaskLauncher
 participant Job
 participant Step
 participant Task
-participant Repository
 
 activate main
 
@@ -28,7 +29,7 @@ group Initialize Required Instances
     activate Task
 
     create BatchApplication
-    main -> BatchApplication: New
+    main -> BatchApplication: New with configuration
     activate BatchApplication
 
     create Repository
@@ -55,6 +56,10 @@ end
 
 group Framework Lifecycle
     main -> BatchApplication: Run
+
+    create Logger
+    BatchApplication -> Logger: Load Logger
+    activate Logger
 
     group Schedule And Executions
         create JobScheduler
