@@ -48,7 +48,7 @@ class DefaultLogPrinter extends LogPrinter {
 
   /// Returns the executed step according to current stack trace.
   String get _executedStep {
-    final String traces = StackTrace.current.toString().split('#5')[1];
+    final String traces = StackTrace.current.toString().split('#6')[1];
     final executedStep = traces.substring(0, traces.indexOf(')')).trim();
     final method =
         executedStep.substring(0, executedStep.lastIndexOf(' ')).trim();

@@ -35,7 +35,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
       entity.onSucceeded?.call(context);
     } catch (error, stackTrace) {
-      entity.onFailed?.call(context, error, stackTrace);
+      entity.onError?.call(context, error, stackTrace);
     } finally {
       entity.onCompleted?.call(context);
     }

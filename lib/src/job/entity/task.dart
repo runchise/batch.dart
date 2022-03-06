@@ -17,16 +17,19 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
-        onFailed,
+        onError,
     Function(ExecutionContext context)? onCompleted,
   }) : super(
           name: T.toString(),
           onStarted: onStarted,
           onSucceeded: onSucceeded,
-          onFailed: onFailed,
+          onError: onError,
           onCompleted: onCompleted,
         );
 
   /// Runs this [Task].
   void execute(final ExecutionContext context);
+
+  /// Shutdown this batch application safely.
+  void shutdown() {}
 }

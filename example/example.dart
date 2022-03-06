@@ -26,9 +26,6 @@ Job _buildTestJob1() => Job(
       schedule: CronParser(value: '*/1 * * * *'),
       // You can define callbacks for each processing phase.
       onStarted: (context) => info('Job1 has started.'),
-      onSucceeded: (context) => info('Job1 has succeeded.'),
-      onFailed: (context, error, stackTrace) =>
-          info('Job1 has failed due to $error from $stackTrace'),
       onCompleted: (context) => info('Job1 has completed.'),
     )
       ..nextStep(
@@ -64,12 +61,16 @@ Job _buildTestJob1() => Job(
               name: 'Step5',
               // You can define callbacks for each processing phase.
               onStarted: (context) => info('Step5 has started.'),
-              onSucceeded: (context) => info('Step5 has succeeded.'),
-              onFailed: (context, error, stackTrace) =>
-                  info('Step5 has failed due to $error from $stackTrace'),
               onCompleted: (context) => info('Step5 has completed.'),
             )
-              ..nextTask(TestTask())
+              ..nextTask(TestTask(
+                // You can define callbacks for each processing phase.
+                onStarted: (context) => info('TestTask has started.'),
+                onSucceeded: (context) => info('TestTask has succeeded.'),
+                onError: (context, error, stackTrace) =>
+                    error('Error', error, stackTrace),
+                onCompleted: (context) => info('TestTask has completed.'),
+              ))
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
           ),
@@ -107,6 +108,19 @@ Job _buildTestJob2() => Job(
       );
 
 class TestTask extends Task<TestTask> {
+  TestTask({
+    Function(ExecutionContext context)? onStarted,
+    Function(ExecutionContext context)? onSucceeded,
+    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
+        onError,
+    Function(ExecutionContext context)? onCompleted,
+  }) : super(
+          onStarted: onStarted,
+          onSucceeded: onSucceeded,
+          onError: onError,
+          onCompleted: onCompleted,
+        );
+
   @override
   void execute(ExecutionContext context) {
     // This parameter is shared just in this job.
@@ -139,6 +153,8 @@ class SayWorldTask extends Task<SayWorldTask> {
   void execute(ExecutionContext context) {
     info('World!');
     context.branchContribution.stepStatus = BranchStatus.failed;
+
+    super.shutdown();
   }
 }
 

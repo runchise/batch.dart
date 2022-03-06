@@ -17,7 +17,7 @@ abstract class Entity<T extends Entity<T>> {
     Precondition? precondition,
     this.onStarted,
     this.onSucceeded,
-    this.onFailed,
+    this.onError,
     this.onCompleted,
   }) : _precondition = precondition;
 
@@ -38,7 +38,7 @@ abstract class Entity<T extends Entity<T>> {
     ExecutionContext context,
     dynamic error,
     StackTrace stackTrace,
-  )? onFailed;
+  )? onError;
 
   /// The callback when this process is completed (regardless of success and failure)
   final Function(ExecutionContext context)? onCompleted;

@@ -21,16 +21,11 @@ class Job extends Entity<Job> {
     this.schedule,
     Precondition? precondition,
     Function(ExecutionContext context)? onStarted,
-    Function(ExecutionContext context)? onSucceeded,
-    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
-        onFailed,
     Function(ExecutionContext context)? onCompleted,
   }) : super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
-          onSucceeded: onSucceeded,
-          onFailed: onFailed,
           onCompleted: onCompleted,
         );
 
