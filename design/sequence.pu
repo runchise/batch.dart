@@ -38,20 +38,15 @@ end
 group Register Jobs and Parameters
     BatchApplication -> Job: addJob
     note over Job: Required before run batch application
-    BatchApplication <-- Job
 
     Job -> Step: addStep
     note over Step: Required before run batch application
-    Job <-- Step
 
     Step -> Task: addTask
     note over Task: Required before run batch application
-    Step <-- Task
 
     BatchApplication -> Repository: addSharedParameter
     note over Repository: Optional and this parameter will be shared all layers
-
-    main <-- BatchApplication
 end
 
 
