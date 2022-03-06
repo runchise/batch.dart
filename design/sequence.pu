@@ -50,8 +50,9 @@ group Register Jobs and Parameters
     note over main, Job: Add Job objects on root
     main <-- BatchApplication
 
-    BatchApplication -> Repository: addSharedParameter
-    note over Repository: Optional and this parameter will be shared all layers
+    main -> Repository: addSharedParameter
+    note over main, Repository: Optional and this parameter will be shared all layers
+    main <-- Repository
 end
 
 group Framework Lifecycle
