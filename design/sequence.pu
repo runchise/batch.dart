@@ -3,16 +3,21 @@ title Batch Lifecycle
 
 hide footbox
 participant main
-participant Repository
 participant Logger
 participant BatchApplication
 participant JobScheduler
 participant JobLauncher
 participant StepLauncher
 participant TaskLauncher
+participant TaskExecution
+participant StepExecution
+participant JobExecution
+participant ApplicationExecution
 participant Job
 participant Step
-participant Task
+participant "UserDefinedTask extends Task" as Task
+participant ExecutionContext
+participant Repository
 
 activate main
 
@@ -36,7 +41,7 @@ group Initialize Required Instances
     activate Repository
 end
 
-group Register Jobs and Parameters
+group Register Jobs and Shared Parameters
     main -> Step: Call addTask with Task instance as a parameter
     note over main, Task: Add Task objects tied to the Step object
     main <-- Step
@@ -62,6 +67,11 @@ group Framework Lifecycle
     BatchApplication -> Logger: Load Logger
     activate Logger
 
+    create ApplicationExecution
+    BatchApplication -> ApplicationExecution: New
+    ApplicationExecution -> Repository: Register ApplicationExecution
+    activate ApplicationExecution
+
     group Schedule And Executions
         create JobScheduler
         BatchApplication -> JobScheduler: New
@@ -78,34 +88,50 @@ group Framework Lifecycle
                 group Job Execution
                     create JobLauncher
                     JobScheduler -> JobLauncher: New
-                    JobLauncher -> Job: Get Job's instance
-                    JobLauncher <-- Job: Job's instance
+                    JobLauncher -> Job: Check Precondition
 
                     opt JobPrecondition == true
                         JobScheduler -> JobLauncher: Run
-
                         activate JobLauncher
+
+                        create JobExecution
+                        JobLauncher -> JobExecution: New
+                        JobLauncher -> Repository: Register JobExecution
+                        activate JobExecution
+
+                        create ExecutionContext
+                        JobLauncher -> ExecutionContext: New
+                        activate ExecutionContext
 
                         group Step Execution
                             create StepLauncher
                             JobLauncher -> StepLauncher: New
-                            StepLauncher -> Step: Get Step's instance
-                            StepLauncher <-- Step: Step's instance
+                            StepLauncher -> Step: Check Precondition
 
                             opt StepPrecondition == true
                                 JobLauncher -> StepLauncher: Run
                                 activate StepLauncher
 
+                                create StepExecution
+                                StepLauncher -> StepExecution: New
+                                StepLauncher -> Repository: Register StepExecution
+                                activate StepExecution
+
                                 group Task Execution
                                     create TaskLauncher
                                     StepLauncher -> TaskLauncher: New
-                                    TaskLauncher -> Task: get Task's instance
-                                    TaskLauncher <-- Task: Task's instance
+                                    TaskLauncher -> Task: Check Precondition
 
                                     opt TaskPrecondition == true
                                         StepLauncher -> TaskLauncher: Run
                                         activate TaskLauncher
                                         TaskLauncher -> Task: Execute Task
+
+                                        create TaskExecution
+                                        TaskLauncher -> TaskExecution: New
+                                        TaskLauncher -> Repository: Register TaskExecution
+                                        activate TaskExecution
+
                                         activate Task
                                         TaskLauncher <-- Task
                                         deactivate Task
@@ -115,7 +141,10 @@ group Framework Lifecycle
                                         TaskLauncher -> TaskLauncher: Run
                                         note over TaskLauncher: Execute all task branches recursively
                                     end
-                                                                                                        StepLauncher <-- TaskLauncher
+
+                                    StepLauncher <-- TaskLauncher
+                                    deactivate TaskExecution
+                                    destroy TaskExecution
                                     deactivate TaskLauncher
                                     destroy TaskLauncher
                                 end
@@ -127,6 +156,8 @@ group Framework Lifecycle
                             end
 
                             JobLauncher <-- StepLauncher
+                            deactivate StepExecution
+                            destroy StepExecution
                             deactivate StepLauncher
                             destroy StepLauncher
                         end
@@ -138,6 +169,10 @@ group Framework Lifecycle
                     end
 
                     JobScheduler <-- JobLauncher
+                    deactivate JobExecution
+                    destroy JobExecution
+                    deactivate ExecutionContext
+                    destroy ExecutionContext
                     deactivate JobLauncher
                     destroy JobLauncher
                 end
