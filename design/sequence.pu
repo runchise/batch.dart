@@ -19,17 +19,13 @@ group Initialize Required Instances
     create Job
     main -> Job: new
     activate Job
-    main <-- Job: Job's instance
-
     create Step
     main -> Step: new
     activate Step
-    main <-- Step: Step's instance
 
     create Task
     main -> Task: new
     activate Task
-    main <-- Task: Task's instance
 
     create BatchApplication
     main -> BatchApplication: new
@@ -37,7 +33,6 @@ group Initialize Required Instances
     create Repository
     BatchApplication -> Repository: create singleton instance on load
     activate Repository
-    main <-- BatchApplication: instance
 end
 
 group Register Jobs and Parameters
