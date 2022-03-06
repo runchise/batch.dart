@@ -68,7 +68,7 @@ group Framework Lifecycle
                 group Job Execution
                     create JobLauncher
                     JobScheduler -> JobLauncher: new
-                    JobLauncher -> Job: get
+                    JobLauncher -> Job: get Job's instance
                     JobLauncher <-- Job: Job's instance
 
                     opt JobPrecondition == true
@@ -79,7 +79,7 @@ group Framework Lifecycle
                         group Step Execution
                             create StepLauncher
                             JobLauncher -> StepLauncher: new
-                            StepLauncher -> Step: get
+                            StepLauncher -> Step: get Step's instance
                             StepLauncher <-- Step: Step's instance
 
                             opt StepPrecondition == true
@@ -89,7 +89,7 @@ group Framework Lifecycle
                                 group Task Execution
                                     create TaskLauncher
                                     StepLauncher -> TaskLauncher: new
-                                    TaskLauncher -> Task: get
+                                    TaskLauncher -> Task: get Task's instance
                                     TaskLauncher <-- Task: Task's instance
 
                                     opt TaskPrecondition == true
