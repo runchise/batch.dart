@@ -8,6 +8,7 @@ import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
+import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
@@ -22,42 +23,42 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
     required T entity,
     required Function(dynamic entity) execute,
   }) async {
+    entity.onStarted?.call(context);
+    super.startNewExecution(name: entity.name);
+
     if (!entity.canLaunch()) {
       info('Skipped ${entity.name} because the precondition is not met.');
+      super.finishExecution(status: ProcessStatus.skipped);
       return;
     }
 
     if (BatchInstance.instance.isShuttingDown) {
       info(
           'Skipped ${entity.name} because this batch application is shutting down.');
+      super.finishExecution(status: ProcessStatus.skipped);
       return;
     }
 
-    super.startNewExecution(name: entity.name);
-
     try {
-      entity.onStarted?.call(context);
-
       await execute.call(entity);
-
       entity.onSucceeded?.call(context);
+
+      if (BatchInstance.instance.isRunning) {
+        if (entity.hasBranch) {
+          for (final branch in entity.branches) {
+            if (branch.on == super.branchStatus ||
+                branch.on == BranchStatus.completed) {
+              await executeRecursively(entity: branch.to, execute: execute);
+            }
+          }
+        }
+      }
+
+      super.finishExecution();
     } catch (error, stackTrace) {
       entity.onError?.call(context, error, stackTrace);
     } finally {
       entity.onCompleted?.call(context);
     }
-
-    super.finishExecution();
-
-    if (entity.hasBranch) {
-      for (final branch in entity.branches) {
-        if (branch.on == super.branchStatus ||
-            branch.on == BranchStatus.completed) {
-          await executeRecursively(entity: branch.to, execute: execute);
-        }
-      }
-    }
-
-    super.resetBranchStatus();
   }
 }

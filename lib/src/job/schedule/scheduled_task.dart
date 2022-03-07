@@ -54,6 +54,7 @@ class ScheduledTask {
   Future dispose() async {
     _closed = true;
     _overrun = false;
+
     if (_running != null) {
       await _running;
     }

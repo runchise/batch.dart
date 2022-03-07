@@ -5,6 +5,7 @@
 // Project imports:
 import 'package:batch/src/batch_status.dart';
 
+/// The class represents the unique instance of this batch application.
 class BatchInstance {
   /// The internal constructor.
   BatchInstance._internal();
@@ -20,6 +21,9 @@ class BatchInstance {
 
   /// Updates batch status to [status].
   void updateStatus(final BatchStatus status) => _status = status;
+
+  /// Returns true if this batch application is running, otherwise false.
+  bool get isRunning => _status == BatchStatus.running;
 
   /// Returns true if this batch application is shutting down, otherwise false.
   bool get isShuttingDown => _status == BatchStatus.shuttingDown;

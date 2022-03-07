@@ -13,8 +13,10 @@ class Execution<T extends Entity<T>> {
     required this.name,
     this.status = ProcessStatus.started,
     required this.startedAt,
+    DateTime? updatedAt,
     this.finishedAt,
-  }) : assert(name.isNotEmpty);
+  })  : assert(name.isNotEmpty),
+        _updatedAt = updatedAt;
 
   /// The name
   final String name;
@@ -22,11 +24,35 @@ class Execution<T extends Entity<T>> {
   /// The process status
   final ProcessStatus status;
 
-  BranchStatus branchStatus = BranchStatus.succeeded;
+  /// The branch status
+  BranchStatus _branchStatus = BranchStatus.completed;
 
   /// The started date time
   final DateTime startedAt;
 
+  /// The updated date time
+  DateTime? _updatedAt;
+
   /// The finished date time
-  final DateTime? finishedAt;
+  DateTime? finishedAt;
+
+  /// Returns the branch status.
+  BranchStatus get branchStatus => _branchStatus;
+
+  /// Returns the updated date time.
+  DateTime? get updatedAt => _updatedAt;
+
+  /// Updates branch status to succeeded.
+  void branchToSucceeded() => _updateBranchStatus(BranchStatus.succeeded);
+
+  /// Updates branch status to failed.
+  void branchToFailed() => _updateBranchStatus(BranchStatus.failed);
+
+  /// Updates branch status to completed.
+  void branchToCompleted() => _updateBranchStatus(BranchStatus.completed);
+
+  void _updateBranchStatus(final BranchStatus status) {
+    _branchStatus = status;
+    _updatedAt = DateTime.now();
+  }
 }

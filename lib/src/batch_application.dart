@@ -5,7 +5,7 @@
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/job/entity/job.dart';
-import 'package:batch/src/job/repository/service/shared_parameters.dart';
+import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
@@ -28,7 +28,8 @@ import 'package:batch/src/runner.dart';
 /// entire this batch application. This value can be added by tying it to string key and
 /// can be used in the Task class throughout the execution context.
 ///
-/// Also you can get more information about implementation on [example page](https://github.com/myConsciousness/batch.dart/blob/main/example/example.dart).
+/// Also you can get more information about implementation on
+/// [example page](https://github.com/myConsciousness/batch.dart/blob/main/example/example.dart).
 ///
 /// These job configuration can be assembled in any way you like. For example,
 /// you can configure it as follows.

@@ -44,7 +44,19 @@ class CronParser extends ScheduleParser<Cron> {
 
     if (fields.length < 5) {
       throw ScheduleParseException(
-          'The Cron format needs to consist of 5 fields at least.');
+        '''
+The Cron format needs to consist of 5 fields at least.
+ -----------
+ * * * * * *
+ -----------
+ | | | | | |
+ | | | | | +-- Weekdays  (range: 0-7)
+ | | | | +---- Months    (range: 1-12)
+ | | | +------ Days      (range: 1-31)
+ | | +-------- Hours     (range: 0-23)
+ | +---------- Minutes   (range: 0-59)
+ +------------ Seconds   (range: 0-59, it will be interpreted as "*" if it's omitted)''',
+      );
     }
 
     fields = [

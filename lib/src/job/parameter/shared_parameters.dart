@@ -3,8 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/repository/service/parameters.dart';
-import 'package:batch/src/job/repository/table_name.dart';
+import 'package:batch/src/job/parameter/parameters.dart';
 
 class SharedParameters extends Parameters {
   /// The internal constructor.
@@ -15,7 +14,4 @@ class SharedParameters extends Parameters {
 
   /// The singleton instance of this [SharedParameters].
   static final _singletonInstance = SharedParameters._internal();
-
-  @override
-  get table => TableName.sharedParameters;
 }

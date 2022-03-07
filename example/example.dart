@@ -17,7 +17,7 @@ void main(List<String> args) => BatchApplication(
       // You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..addJob(_buildTestJob1())
+      // ..addJob(_buildTestJob1())
       ..addJob(_buildTestJob2())
       ..run();
 
@@ -25,8 +25,10 @@ Job _buildTestJob1() => Job(
       name: 'Job1',
       schedule: CronParser(value: '*/1 * * * *'),
       // You can define callbacks for each processing phase.
-      onStarted: (context) => info('Job1 has started.'),
-      onCompleted: (context) => info('Job1 has completed.'),
+      onStarted: (context) =>
+          info('\n--------------- Job1 has started! ---------------'),
+      onCompleted: (context) =>
+          info('\n--------------- Job1 has completed! ---------------'),
     )
       ..nextStep(
         Step(name: 'Step1')
@@ -60,16 +62,24 @@ Job _buildTestJob1() => Job(
             to: Step(
               name: 'Step5',
               // You can define callbacks for each processing phase.
-              onStarted: (context) => info('Step5 has started.'),
-              onCompleted: (context) => info('Step5 has completed.'),
+              onStarted: (context) =>
+                  info('\n--------------- Step5 has started! ---------------'),
+              onCompleted: (context) => info(
+                  '\n--------------- Step5 has completed! ---------------'),
             )
               ..nextTask(TestTask(
                 // You can define callbacks for each processing phase.
-                onStarted: (context) => info('TestTask has started.'),
-                onSucceeded: (context) => info('TestTask has succeeded.'),
-                onError: (context, error, stackTrace) =>
-                    error('Error', error, stackTrace),
-                onCompleted: (context) => info('TestTask has completed.'),
+                onStarted: (context) => info(
+                    '\n--------------- TestTask has started! ---------------'),
+                onSucceeded: (context) => info(
+                    '\n--------------- TestTask has succeeded! ---------------'),
+                onError: (context, error, stackTrace) => error(
+                  '\n--------------- Error ---------------',
+                  error,
+                  stackTrace,
+                ),
+                onCompleted: (context) => info(
+                    '\n--------------- TestTask has completed! ---------------'),
               ))
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
@@ -78,7 +88,7 @@ Job _buildTestJob1() => Job(
 
 Job _buildTestJob2() => Job(
       name: 'Job2',
-      schedule: CronParser(value: '*/2 * * * *'),
+      schedule: CronParser(value: '*/1 * * * *'),
       // You can set precondition to run this job.
       precondition: JobPrecondition(),
     )
@@ -153,7 +163,8 @@ class SayWorldTask extends Task<SayWorldTask> {
   @override
   void execute(ExecutionContext context) {
     info('World!');
-    context.branchContribution.stepStatus = BranchStatus.failed;
+    context.jobExecution!.branchToSucceeded();
+    context.stepExecution!.branchToFailed();
   }
 }
 

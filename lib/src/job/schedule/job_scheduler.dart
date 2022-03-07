@@ -6,6 +6,7 @@
 import 'dart:async';
 
 // Package imports:
+import 'package:batch/src/batch_status.dart';
 import 'package:clock/clock.dart';
 
 // Project imports:
@@ -48,6 +49,8 @@ class JobScheduler implements Runner {
         () async => await JobLauncher(job: job).run(),
       );
     }
+
+    BatchInstance.instance.updateStatus(BatchStatus.running);
 
     info(
       'Job scheduling has been completed and the batch application is now running',
@@ -100,5 +103,6 @@ class JobScheduler implements Runner {
     info('Allocation memory is releasing');
     info('Shutdown the batch application');
     Logger.instance.dispose();
+    BatchInstance.instance.updateStatus(BatchStatus.shutdown);
   }
 }
