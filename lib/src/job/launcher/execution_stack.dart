@@ -34,7 +34,7 @@ class _ExecutionStack implements ExecutionStack {
   @override
   Execution pop() {
     assert(_values.isNotEmpty);
-    return _values[_values.length - 1];
+    return _values.removeLast();
   }
 
   @override

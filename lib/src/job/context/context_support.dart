@@ -77,12 +77,8 @@ abstract class ContextSupport<T extends Entity<T>> {
   }
 
   BranchStatus get branchStatus {
-    if (T == Job) {
-      return context.jobExecution!.branchStatus;
-    } else if (T == Step) {
-      return context.stepExecution!.branchStatus;
-    }
-
-    return context.taskExecution!.branchStatus;
+    final execution = _executionStack.pop();
+    _executionStack.push(execution);
+    return execution.branchStatus;
   }
 }
