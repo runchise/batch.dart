@@ -9,6 +9,7 @@ import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
 import 'package:batch/src/job/execution.dart';
+import 'package:batch/src/job/launcher/execution_stack.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
@@ -22,56 +23,57 @@ abstract class ContextSupport<T extends Entity<T>> {
   /// The execution context
   final ExecutionContext context;
 
+  /// The execution stack
+  final ExecutionStack _executionStack = ExecutionStack();
+
   void startNewExecution({required String name}) {
     if (T == Job) {
-      context.jobExecution = Execution(name: name, startedAt: DateTime.now());
+      context.jobExecution = _newExecution(name);
       info(
           'Job:  [name=$name] launched with the following shared parameters: ${SharedParameters.instance}');
     } else if (T == Step) {
-      context.stepExecution = Execution(name: name, startedAt: DateTime.now());
+      context.stepExecution = _newExecution(name);
       info(
           'Step: [name=$name] launched with the following job parameters: ${context.jobParameters}');
     } else {
-      context.taskExecution = Execution(name: name, startedAt: DateTime.now());
+      context.taskExecution = _newExecution(name);
       info(
           'Task: [name=$name] launched with the following step parameters: ${context.stepParameters}');
     }
   }
 
-  void finishExecution({ProcessStatus? status}) {
+  void finishExecution({required String name, ProcessStatus? status}) {
     if (T == Job) {
-      context.jobExecution = Execution(
-        name: context.jobExecution!.name,
-        status: status ?? ProcessStatus.completed,
-        startedAt: context.jobExecution!.startedAt,
-        updatedAt: DateTime.now(),
-        finishedAt: DateTime.now(),
-      );
+      context.jobExecution = _finishedExecution(status: status);
       info(
-          'Job:  [name=${context.jobExecution!.name}] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${context.jobExecution!.status.name}]');
+          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${context.jobExecution!.status.name}]');
     } else if (T == Step) {
-      context.stepExecution = Execution(
-        name: context.stepExecution!.name,
-        status: status ?? ProcessStatus.completed,
-        startedAt: context.stepExecution!.startedAt,
-        updatedAt: DateTime.now(),
-        finishedAt: DateTime.now(),
-      );
-
+      context.stepExecution = _finishedExecution(status: status);
       info(
-          'Step: [name=${context.stepExecution!.name}] finished with the following job parameters: ${context.jobParameters} and the status: [${context.stepExecution!.status.name}]');
+          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${context.stepExecution!.status.name}]');
     } else {
-      context.taskExecution = Execution(
-        name: context.taskExecution!.name,
-        status: status ?? ProcessStatus.completed,
-        startedAt: context.taskExecution!.startedAt,
-        updatedAt: DateTime.now(),
-        finishedAt: DateTime.now(),
-      );
-
+      context.taskExecution = _finishedExecution(status: status);
       info(
-          'Task: [name=${context.taskExecution!.name}] finished with the following step parameters: ${context.stepParameters} and the status: [${context.taskExecution!.status.name}]');
+          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${context.taskExecution!.status.name}]');
     }
+  }
+
+  dynamic _newExecution(final String name) {
+    final execution = Execution<T>(name: name, startedAt: DateTime.now());
+    _executionStack.push(execution);
+    return execution;
+  }
+
+  dynamic _finishedExecution({required ProcessStatus? status}) {
+    final execution = _executionStack.pop();
+
+    return Execution<T>(
+      name: execution.name,
+      status: status ?? ProcessStatus.completed,
+      startedAt: execution.startedAt,
+      updatedAt: DateTime.now(),
+      finishedAt: DateTime.now(),
+    );
   }
 
   BranchStatus get branchStatus {

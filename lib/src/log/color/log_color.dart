@@ -20,7 +20,7 @@ class LogColor {
     ConsoleColor? fatal,
   })  : _trace = AnsiColor.foreground(trace ?? ConsoleColor.grey),
         _debug = AnsiColor.foreground(debug ?? ConsoleColor.paleGreen10),
-        _info = AnsiColor.foreground(info ?? ConsoleColor.skyBlue1),
+        _info = AnsiColor.foreground(info ?? ConsoleColor.cyan1),
         _warn = AnsiColor.foreground(warn ?? ConsoleColor.orange1),
         _error = AnsiColor.foreground(error ?? ConsoleColor.red),
         _fatal = AnsiColor.foreground(fatal ?? ConsoleColor.paleVioletRed1);

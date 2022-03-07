@@ -9,7 +9,7 @@ void main(List<String> args) => BatchApplication(
         level: LogLevel.trace,
         output: ConsoleLogOutput(),
         color: LogColor(
-          info: ConsoleColor.cyan1,
+          info: ConsoleColor.cyan3,
         ),
         printLog: true,
       ),
@@ -17,7 +17,7 @@ void main(List<String> args) => BatchApplication(
       // You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      // ..addJob(_buildTestJob1())
+      ..addJob(_buildTestJob1())
       ..addJob(_buildTestJob2())
       ..run();
 
@@ -88,7 +88,7 @@ Job _buildTestJob1() => Job(
 
 Job _buildTestJob2() => Job(
       name: 'Job2',
-      schedule: CronParser(value: '*/1 * * * *'),
+      schedule: CronParser(value: '*/2 * * * *'),
       // You can set precondition to run this job.
       precondition: JobPrecondition(),
     )

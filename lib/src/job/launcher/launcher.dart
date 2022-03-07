@@ -28,14 +28,14 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
     if (!entity.canLaunch()) {
       info('Skipped ${entity.name} because the precondition is not met.');
-      super.finishExecution(status: ProcessStatus.skipped);
+      super.finishExecution(name: entity.name, status: ProcessStatus.skipped);
       return;
     }
 
     if (BatchInstance.instance.isShuttingDown) {
       info(
           'Skipped ${entity.name} because this batch application is shutting down.');
-      super.finishExecution(status: ProcessStatus.skipped);
+      super.finishExecution(name: entity.name, status: ProcessStatus.skipped);
       return;
     }
 
@@ -54,7 +54,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
         }
       }
 
-      super.finishExecution();
+      super.finishExecution(name: entity.name);
     } catch (error, stackTrace) {
       entity.onError?.call(context, error, stackTrace);
     } finally {

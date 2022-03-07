@@ -6,11 +6,11 @@
 import 'dart:async';
 
 // Package imports:
-import 'package:batch/src/batch_status.dart';
 import 'package:clock/clock.dart';
 
 // Project imports:
 import 'package:batch/src/batch_instance.dart';
+import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/schedule/model/schedule.dart';
