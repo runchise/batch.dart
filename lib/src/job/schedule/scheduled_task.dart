@@ -51,7 +51,7 @@ class ScheduledTask {
     });
   }
 
-  Future cancel() async {
+  Future dispose() async {
     _closed = true;
     _overrun = false;
     if (_running != null) {

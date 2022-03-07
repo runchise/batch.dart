@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
@@ -23,6 +24,12 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
   }) async {
     if (!entity.canLaunch()) {
       info('Skipped ${entity.name} because the precondition is not met.');
+      return;
+    }
+
+    if (BatchInstance.instance.isShuttingDown) {
+      info(
+          'Skipped ${entity.name} because this batch application is shutting down.');
       return;
     }
 

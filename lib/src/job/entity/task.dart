@@ -3,7 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/batch.dart';
+import 'package:batch/src/batch_instance.dart';
+import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/job/entity/entity.dart';
 
 /// This abstract class represents the smallest unit of processing that is
@@ -31,5 +33,8 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
   void execute(final ExecutionContext context);
 
   /// Shutdown this batch application safely.
-  void shutdown() {}
+  void shutdown() {
+    BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
+    info('The shutdown command was notified by Task: [name=${T.toString()}]');
+  }
 }

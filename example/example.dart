@@ -103,7 +103,8 @@ Job _buildTestJob2() => Job(
               precondition: StepPrecondition(),
             )
               ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
+              ..nextTask(SayWorldTask())
+              ..nextTask(ShutdownTask()),
           ),
       );
 
@@ -153,7 +154,12 @@ class SayWorldTask extends Task<SayWorldTask> {
   void execute(ExecutionContext context) {
     info('World!');
     context.branchContribution.stepStatus = BranchStatus.failed;
+  }
+}
 
+class ShutdownTask extends Task<ShutdownTask> {
+  @override
+  void execute(ExecutionContext context) {
     super.shutdown();
   }
 }

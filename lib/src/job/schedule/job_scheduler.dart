@@ -9,10 +9,12 @@ import 'dart:async';
 import 'package:clock/clock.dart';
 
 // Project imports:
+import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/schedule/model/schedule.dart';
 import 'package:batch/src/job/schedule/scheduled_task.dart';
+import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
@@ -73,6 +75,11 @@ class JobScheduler implements Runner {
   }
 
   void _tick() {
+    if (BatchInstance.instance.isShuttingDown) {
+      _dispose();
+      return;
+    }
+
     _timer = null;
 
     final now = clock.now();
@@ -81,5 +88,17 @@ class JobScheduler implements Runner {
     }
 
     _scheduleNext();
+  }
+
+  void _dispose() {
+    info('Preparing for shutdown the batch application safely');
+
+    for (final scheduledTask in _scheduledTasks) {
+      scheduledTask.dispose();
+    }
+
+    info('Allocation memory is releasing');
+    info('Shutdown the batch application');
+    Logger.instance.dispose();
   }
 }
