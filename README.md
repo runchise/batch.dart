@@ -97,147 +97,7 @@ The execution schedule is specified for each job when creating a `Job` instance 
 
 When creating `Job` and `Task` instances, the names should be unique. However, you can use the same name for steps contained in different `Job`.
 
-```dart
-import 'package:batch/batch.dart';
-
-void main(List<String> args) => BatchApplication(
-      logConfig: LogConfiguration(
-        level: LogLevel.trace,
-        filter: DefaultLogFilter(),
-        output: ConsoleLogOutput(),
-        printLog: true,
-      ),
-    )
-      // You can add any parameters that is shared in this batch application.
-      ..addSharedParameter(key: 'key1', value: 'value1')
-      ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..addJob(_buildTestJob1())
-      ..addJob(_buildTestJob2())
-      ..run();
-
-Job _buildTestJob1() => Job(
-      name: 'Job1',
-      schedule: CronParser(value: '*/1 * * * *'),
-      // You can define callbacks for each processing phase.
-      onStarted: (context) => info('Job1 has started.'),
-      onSucceeded: (context) => info('Job1 has succeeded.'),
-      onFailed: (context, error, stackTrace) => info('Job1 has failed due to $error from $stackTrace'),
-      onCompleted: (context) => info('Job1 has completed.'),
-    )
-      ..nextStep(
-        Step(name: 'Step1')
-          ..nextTask(TestTask())
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask()),
-      )
-      ..nextStep(
-        Step(name: 'Step2')
-          ..nextTask(TestTask())
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask())
-          ..branchOnSucceeded(
-            to: Step(name: 'Step3')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
-          )
-          ..branchOnFailed(
-            to: Step(name: 'Step4')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..branchOnCompleted(
-                to: Step(name: 'Step6')
-                  ..nextTask(TestTask())
-                  ..nextTask(SayHelloTask())
-                  ..nextTask(SayWorldTask()),
-              ),
-          )
-          ..branchOnCompleted(
-            to: Step(
-              name: 'Step5',
-              // You can define callbacks for each processing phase.
-              onStarted: (context) => info('Step5 has started.'),
-              onSucceeded: (context) => info('Step5 has succeeded.'),
-              onFailed: (context, error, stackTrace) => info('Step5 has failed due to $error from $stackTrace'),
-              onCompleted: (context) => info('Step5 has completed.'),
-            )
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
-          ),
-      );
-
-Job _buildTestJob2() => Job(
-      name: 'Job2',
-      schedule: CronParser(value: '*/2 * * * *'),
-      // You can set precondition to run this job.
-      precondition: JobPrecondition(),
-    )
-      ..nextStep(
-        Step(
-          name: 'Step1',
-          // You can set precondition to run this step.
-          precondition: StepPrecondition(),
-        )
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask()),
-      )
-      ..branchOnSucceeded(
-        to: Job(
-          name: 'Job3',
-          // You can set precondition to run this job.
-          precondition: JobPrecondition(),
-        )..nextStep(
-            Step(
-              name: 'Step1',
-              // You can set precondition to run this step.
-              precondition: StepPrecondition(),
-            )
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
-          ),
-      );
-
-class TestTask extends Task<TestTask> {
-  @override
-  void execute(ExecutionContext context) {
-    // This parameter is shared just in this step.
-    context.parameters['key'] = 'value';
-    // You can use shared parameters in any places.
-    info(context.findSharedParameter('key1'));
-    info(context.findSharedParameter('key2'));
-  }
-}
-
-class SayHelloTask extends Task<SayHelloTask> {
-  @override
-  void execute(ExecutionContext context) {
-    debug('Hello,');
-  }
-}
-
-class SayWorldTask extends Task<SayWorldTask> {
-  @override
-  void execute(ExecutionContext context) {
-    info('World!');
-    context.branchContribution.stepStatus = BranchStatus.failed;
-  }
-}
-
-class JobPrecondition extends Precondition {
-  @override
-  bool check() {
-    return true;
-  }
-}
-
-class StepPrecondition extends Precondition {
-  @override
-  bool check() {
-    return true;
-  }
-}
-```
+**_You can check the latest sample codes [here](https://pub.dev/packages/batch/example)!_**
 
 ## 1.4. Logging
 
@@ -283,16 +143,12 @@ class TestLogTask extends Task<TestLogTask> {
 For example, if you run [sample code](#133-use-batch-library) as described earlier, you will see the following log output.
 
 ```terminal
-yyyy-MM-dd 19:16:25.504323 [info ] - Logger instance has completed loading
-yyyy-MM-dd 19:16:25.504555 [info ] - Started Job scheduling on startup
-yyyy-MM-dd 19:16:25.504626 [info ] - Detected 2 Jobs on the root
-yyyy-MM-dd 19:16:25.504720 [info ] - Scheduling Job [name=Job1]
-yyyy-MM-dd 19:16:25.512262 [info ] - Scheduling Job [name=Job2]
-yyyy-MM-dd 19:16:25.512444 [info ] - Job scheduling has been completed and the batch application is now running
-yyyy-MM-dd 19:17:00.020004 [info ] - Job: [name=Job1] launched with the following parameters: [key1=value1, key2={any: object}]
-yyyy-MM-dd 19:17:00.020362 [info ] - Job1 has started.
-yyyy-MM-dd 19:17:00.021608 [info ] - Executing Step: [Job1 -> Step1]
-yyyy-MM-dd 19:17:00.022776 [info ] - Executing Task: [Job1 -> Step1 -> TestTask]
+yyyy-MM-dd 19:12:42.860904 [info ] (_BatchApplication.run:117:11  ) - Logger instance has completed loading
+yyyy-MM-dd 19:12:42.863685 [info ] (JobScheduler.run:37:9         ) - Started Job scheduling on startup
+yyyy-MM-dd 19:12:42.864049 [info ] (JobScheduler.run:38:9         ) - Detected 2 Jobs on the root
+yyyy-MM-dd 19:12:42.864413 [info ] (JobScheduler.run:45:11        ) - Scheduling Job [name=Job1]
+yyyy-MM-dd 19:12:42.880243 [info ] (JobScheduler.run:45:11        ) - Scheduling Job [name=Job2]
+yyyy-MM-dd 19:12:42.882694 [info ] (JobScheduler.run:55:9         ) - Job scheduling has been completed and the batch application is now running
 ```
 
 > Note:
