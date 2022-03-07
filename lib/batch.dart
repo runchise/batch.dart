@@ -13,7 +13,6 @@ export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';
 export 'package:batch/src/job/precondition.dart';
 export 'package:batch/src/job/schedule/parser/cron_parser.dart';
-export 'package:batch/src/job/process_status.dart' show ProcessStatus;
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';

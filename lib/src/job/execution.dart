@@ -11,18 +11,19 @@ class Execution<T extends Entity<T>> {
   /// Returns the new instance of [Execution].
   Execution({
     required this.name,
-    this.status = ProcessStatus.started,
+    ProcessStatus status = ProcessStatus.running,
     required this.startedAt,
     DateTime? updatedAt,
     this.finishedAt,
   })  : assert(name.isNotEmpty),
+        _status = status,
         _updatedAt = updatedAt;
 
   /// The name
   final String name;
 
   /// The process status
-  final ProcessStatus status;
+  final ProcessStatus _status;
 
   /// The branch status
   BranchStatus _branchStatus = BranchStatus.completed;
@@ -50,6 +51,15 @@ class Execution<T extends Entity<T>> {
 
   /// Updates branch status to completed.
   void branchToCompleted() => _updateBranchStatus(BranchStatus.completed);
+
+  /// Returns true if this execution is running, otherwise false.
+  bool get isRunning => _status == ProcessStatus.running;
+
+  /// Returns true if this execution is skipped, otherwise false.
+  bool get isSkipped => _status == ProcessStatus.skipped;
+
+  /// Returns true if this execution is completed, otherwise false.
+  bool get isCompleted => _status == ProcessStatus.completed;
 
   void _updateBranchStatus(final BranchStatus status) {
     _branchStatus = status;
