@@ -12,11 +12,11 @@ participant TaskLauncher
 participant TaskExecution
 participant StepExecution
 participant JobExecution
-participant "UserDefinedTask extends Task" as Task
 participant ExecutionContext
+participant SharedParameters
+participant "UserDefinedTask extends Task" as Task
 participant Step
 participant Job
-participant Repository
 
 activate main
 
@@ -35,9 +35,9 @@ group Initialize Required Instances
     create BatchApplication
     main -> BatchApplication: New with configuration
 
-    create Repository
-    BatchApplication -> Repository: Create singleton instance on load
-    activate Repository
+    create SharedParameters
+    BatchApplication -> SharedParameters: Create singleton instance on load
+    activate SharedParameters
 end
 
 group Register Jobs and Shared Parameters
@@ -53,9 +53,9 @@ group Register Jobs and Shared Parameters
     note over main, Job: Add Job objects on root
     main <-- BatchApplication
 
-    main -> Repository: addSharedParameter
-    note over main, Repository: Optional and this parameter will be shared all layers
-    main <-- Repository
+    main -> SharedParameters: addSharedParameter
+    note over main, SharedParameters: Optional and this parameter will be shared all layers
+    main <-- SharedParameters
 end
 
 group Framework Lifecycle
@@ -94,7 +94,6 @@ group Framework Lifecycle
 
                         create JobExecution
                         JobLauncher -> JobExecution: New
-                        JobExecution -> Repository: Register instance
                         activate JobExecution
 
                         group Step Execution
@@ -108,7 +107,6 @@ group Framework Lifecycle
 
                                 create StepExecution
                                 StepLauncher -> StepExecution: New
-                                StepExecution -> Repository: Register instance
                                 activate StepExecution
 
                                 group Task Execution
@@ -123,17 +121,14 @@ group Framework Lifecycle
 
                                         create TaskExecution
                                         TaskLauncher -> TaskExecution: New
-                                        TaskExecution -> Repository: Register instance
                                         activate TaskExecution
 
                                         activate Task
                                         Task -> ExecutionContext: Get JobExecution
-                                        ExecutionContext -> Repository: Get JobExecution
                                         note over Task, ExecutionContext
                                             References to data produced during the framework lifecycle
                                             from Tasks are made through the ExecutionContext.
                                         end note
-                                        ExecutionContext <-- Repository: JobExecution
                                         Task <-- ExecutionContext: JobExecution
 
                                         TaskLauncher <-- Task

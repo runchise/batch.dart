@@ -1,3 +1,3 @@
 # Batch Lifecycle
 
-![Batch Lifecycle](https://user-images.githubusercontent.com/13072231/156926729-cd0e1f75-28a0-45a5-8c1c-a96ff49143aa.png)
+![Batch Lifecycle](https://user-images.githubusercontent.com/13072231/157357816-4f45d967-ed8f-44aa-96d8-50deb350b52b.png)
