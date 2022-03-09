@@ -46,15 +46,15 @@ abstract class ContextSupport<T extends Entity<T>> {
     if (T == Job) {
       context.jobExecution = _finishedExecution(status: status);
       info(
-          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${(status ?? ProcessStatus.completed).toString()}]');
+          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${(status ?? ProcessStatus.completed).name}]');
     } else if (T == Step) {
       context.stepExecution = _finishedExecution(status: status);
       info(
-          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${(status ?? ProcessStatus.completed).toString()}]');
+          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${(status ?? ProcessStatus.completed).name}]');
     } else {
       context.taskExecution = _finishedExecution(status: status);
       info(
-          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${(status ?? ProcessStatus.completed).toString()}]');
+          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${(status ?? ProcessStatus.completed).name}]');
     }
   }
 
