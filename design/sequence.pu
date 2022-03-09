@@ -4,6 +4,7 @@ hide footbox
 
 participant main
 participant Logger
+participant BatchDiagnosis
 participant BatchApplication
 participant JobScheduler
 participant JobLauncher
@@ -20,43 +21,43 @@ participant Job
 
 activate main
 
-group Initialize Required Instances
-    create Job
-    main -> Job: new with unique name and schedule
-    activate Job
-    create Step
-    main -> Step: New with unique name
-    activate Step
+create Job
+main -> Job: new with unique name and schedule
+activate Job
+create Step
+main -> Step: New with unique name
+activate Step
 
-    create Task
-    main -> Task: New
-    activate Task
+create Task
+main -> Task: New
+activate Task
 
-    create BatchApplication
-    main -> BatchApplication: New with configuration
+create BatchApplication
+main -> BatchApplication: New with configuration
 
-    create SharedParameters
-    BatchApplication -> SharedParameters: Create singleton instance on load
-    activate SharedParameters
-end
+create SharedParameters
+BatchApplication -> SharedParameters: Create singleton instance on load
+activate SharedParameters
 
-group Register Jobs and Shared Parameters
-    main -> Step: Call addTask with Task instance as a parameter
-    note over main, Task: Add Task objects tied to the Step object
-    main <-- Step
+== Initialize ==
 
-    main -> Job: Call addStep with Step instance as a parameter
-    note over main, Step: Add Step objects tied to the Job object
-    main <-- Job
+main -> Step: Call addTask with Task instance as a parameter
+note over Task: Add Task objects tied to the Step object
+main <-- Step
 
-    main -> BatchApplication: Call addJob with Job instance as a parameter
-    note over main, Job: Add Job objects on root
-    main <-- BatchApplication
+main -> Job: Call addStep with Step instance as a parameter
+note over Step: Add Step objects tied to the Job object
+main <-- Job
 
-    main -> SharedParameters: addSharedParameter
-    note over main, SharedParameters: Optional and this parameter will be shared all layers
-    main <-- SharedParameters
-end
+main -> BatchApplication: Call addJob with Job instance as a parameter
+note over Job: Add Job objects on root
+main <-- BatchApplication
+
+main -> SharedParameters: addSharedParameter
+note over SharedParameters: Optional and this parameter will be shared all layers
+main <-- SharedParameters
+
+== Register Parameters ==
 
 group Framework Lifecycle
     main -> BatchApplication: Run
@@ -65,6 +66,15 @@ group Framework Lifecycle
     create Logger
     BatchApplication -> Logger: Load Logger
     activate Logger
+
+    create BatchDiagnosis
+    BatchApplication -> BatchDiagnosis: New
+    activate BatchDiagnosis
+
+    BatchApplication -> BatchDiagnosis: Check preconditions to run application
+    BatchApplication <-- BatchDiagnosis: Continue if nothing wrong
+    deactivate BatchDiagnosis
+    destroy BatchDiagnosis
 
     group Schedule And Executions
         create JobScheduler
