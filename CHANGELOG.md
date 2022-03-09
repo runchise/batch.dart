@@ -9,6 +9,10 @@
 - Improved log message from framework.
 - Added convenient method `shutdown()` to shutdown the application from `Task`.
 
+### Destructive Changes
+
+- Changed to define `Precondition` as an anonymous function.
+
 ## 0.3.0
 
 ### New Features
