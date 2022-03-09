@@ -7,7 +7,7 @@
 - Added `onStarted`, `onSucceeded`, `onError` and `onCompleted` callbacks for `Job`, `Step` and `Task`.
 - Added feature to specify the color of the message when logging out with `LogColor` and `ConsoleColor`.
 - Improved log message from framework.
-- Added convenient method `shutdown()` to shutdown the application from Task.
+- Added convenient method `shutdown()` to shutdown the application from `Task`.
 
 ## 0.3.0
 

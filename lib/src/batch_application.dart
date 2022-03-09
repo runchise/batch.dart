@@ -4,6 +4,7 @@
 
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
+import 'package:batch/src/batch_diagnosis.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
@@ -86,15 +87,7 @@ class _BatchApplication implements BatchApplication {
   final _jobs = <Job>[];
 
   @override
-  void addJob(final Job job) {
-    for (final registeredJob in _jobs) {
-      if (registeredJob.name == job.name) {
-        throw Exception('The job name "${job.name}" is already registered.');
-      }
-    }
-
-    _jobs.add(job);
-  }
+  void addJob(final Job job) => _jobs.add(job);
 
   @override
   void addSharedParameter({
@@ -116,6 +109,7 @@ class _BatchApplication implements BatchApplication {
 
       info('Logger instance has completed loading');
 
+      BatchDiagnosis(jobs: _jobs).run();
       JobScheduler(jobs: _jobs).run();
     } catch (e) {
       Logger.instance.dispose();

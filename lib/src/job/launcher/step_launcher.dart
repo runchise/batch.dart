@@ -23,10 +23,6 @@ class StepLauncher extends Launcher<Step> {
 
   @override
   Future<void> run() async {
-    if (_steps.isEmpty) {
-      throw Exception('The step to be launched is required.');
-    }
-
     for (final step in _steps) {
       await super.executeRecursively(
         entity: step,

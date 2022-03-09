@@ -9,8 +9,8 @@ void main(List<String> args) => BatchApplication(
         level: LogLevel.trace,
         output: ConsoleLogOutput(),
         color: LogColor(
-          info: ConsoleColor.cyan3,
-        ),
+            // info: ConsoleColor.cyan3,
+            ),
         printLog: true,
       ),
     )

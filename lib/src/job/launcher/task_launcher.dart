@@ -20,10 +20,6 @@ class TaskLauncher extends Launcher<Task> {
 
   @override
   Future<void> run() async {
-    if (_tasks.isEmpty) {
-      throw Exception('Register the task to be launched is required.');
-    }
-
     for (final task in _tasks) {
       await super.executeRecursively(
           entity: task, execute: (task) async => await task.execute(context));
