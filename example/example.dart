@@ -52,7 +52,11 @@ Job _buildTestJob1() => Job(
               ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
               ..branchOnCompleted(
-                to: Step(name: 'Step6')
+                to: Step(
+                  name: 'Step6',
+                  // You can set any preconditions to run Step.
+                  precondition: () => false,
+                )
                   ..nextTask(TestTask())
                   ..nextTask(SayHelloTask())
                   ..nextTask(SayWorldTask()),
@@ -89,29 +93,18 @@ Job _buildTestJob1() => Job(
 Job _buildTestJob2() => Job(
       name: 'Job2',
       schedule: CronParser(value: '*/2 * * * *'),
-      // You can set precondition to run this job.
-      precondition: JobPrecondition(),
+      // You can set any preconditions to run Job.
+      precondition: () => true,
     )
       ..nextStep(
-        Step(
-          name: 'Step1',
-          // You can set precondition to run this step.
-          precondition: StepPrecondition(),
-        )
+        Step(name: 'Step1')
           ..nextTask(SayHelloTask())
           ..nextTask(SayWorldTask()),
       )
       ..branchOnSucceeded(
-        to: Job(
-          name: 'Job3',
-          // You can set precondition to run this job.
-          precondition: JobPrecondition(),
-        )..nextStep(
-            Step(
-              name: 'Step1',
-              // You can set precondition to run this step.
-              precondition: StepPrecondition(),
-            )
+        to: Job(name: 'Job3')
+          ..nextStep(
+            Step(name: 'Step1')
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask())
               ..nextTask(ShutdownTask()),
@@ -172,19 +165,5 @@ class ShutdownTask extends Task<ShutdownTask> {
   @override
   void execute(ExecutionContext context) {
     super.shutdown();
-  }
-}
-
-class JobPrecondition extends Precondition {
-  @override
-  bool check() {
-    return true;
-  }
-}
-
-class StepPrecondition extends Precondition {
-  @override
-  bool check() {
-    return true;
   }
 }

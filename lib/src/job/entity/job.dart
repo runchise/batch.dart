@@ -6,7 +6,6 @@
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/step.dart';
-import 'package:batch/src/job/precondition.dart';
 import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 
 /// This class represents a job which is the largest unit in batch execution processing.
@@ -19,7 +18,7 @@ class Job extends Entity<Job> {
   Job({
     required String name,
     this.schedule,
-    Precondition? precondition,
+    bool Function()? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onCompleted,
   }) : super(

@@ -6,14 +6,13 @@
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/task.dart';
-import 'package:batch/src/job/precondition.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
 class Step extends Entity<Step> {
   /// Returns the new instance of [Step].
   Step({
     required String name,
-    Precondition? precondition,
+    bool Function()? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onCompleted,
   }) : super(

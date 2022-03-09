@@ -7,25 +7,24 @@ import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/builder/branch_builder.dart';
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/precondition.dart';
 
 /// This is an abstract class that represents an entity in Job execution.
 abstract class Entity<T extends Entity<T>> {
   /// Returns the new instance of [Entity].
   Entity({
     required this.name,
-    Precondition? precondition,
+    this.precondition,
     this.onStarted,
     this.onSucceeded,
     this.onError,
     this.onCompleted,
-  }) : _precondition = precondition;
+  });
 
   /// The name
   final String name;
 
   /// The precondition
-  final Precondition? _precondition;
+  final bool Function()? precondition;
 
   /// The callback when this process is started
   final Function(ExecutionContext context)? onStarted;
@@ -47,13 +46,7 @@ abstract class Entity<T extends Entity<T>> {
   final List<Branch<T>> branches = [];
 
   /// Returns true if this entity can launch, otherwise false.
-  bool canLaunch() {
-    if (_precondition == null) {
-      return true;
-    }
-
-    return _precondition!.check();
-  }
+  bool canLaunch() => precondition?.call() ?? true;
 
   /// Add a branch in case the parent process is succeeded.
   void branchOnSucceeded({required T to}) =>

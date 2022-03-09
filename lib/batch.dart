@@ -11,7 +11,6 @@ export 'package:batch/src/job/entity/step.dart';
 export 'package:batch/src/job/entity/task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';
-export 'package:batch/src/job/precondition.dart';
 export 'package:batch/src/job/schedule/parser/cron_parser.dart';
 
 // Logging features
