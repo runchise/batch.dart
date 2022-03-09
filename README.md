@@ -127,15 +127,13 @@ import 'package:batch/batch.dart';
 
 class TestLogTask extends Task<TestLogTask> {
   @override
-  Future<RepeatStatus> execute() async {
+  void execute() {
     trace('Test trace');
     debug('Test debug');
     info('Test info');
     warn('Test warning');
     error('Test error');
     fatal('Test fatal');
-
-    return RepeatStatus.finished;
   }
 }
 ```
