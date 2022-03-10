@@ -113,9 +113,9 @@ Examples of PR titles:
 - test: Add test for `Entity.dart`
 - refactor: Optimize the structure of job scheduling
 
-[github issue]: https://github.com/myConsciousness/batch.dart/issues/new
-[github issues]: https://github.com/myConsciousness/batch.dart/issues/new
-[prs]: https://github.com/myConsciousness/batch.dart/pulls
+[github issue]: https://github.com/batch-dart/batch.dart/issues/new
+[github issues]: https://github.com/batch-dart/batch.dart/issues/new
+[prs]: https://github.com/batch-dart/batch.dart/pulls
 [fork guide]: https://guides.github.com/activities/forking/#fork
 [pubspec doc]: https://dart.dev/tools/pub/pubspec
 [conventional commit]: https://www.conventionalcommits.org

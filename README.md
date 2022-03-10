@@ -1,23 +1,23 @@
 <p align="center">
-  <a href="https://github.com/myConsciousness/batch.dart">
+  <a href="https://github.com/batch-dart/batch.dart">
     <img alt="batch" width="500px" src="https://user-images.githubusercontent.com/13072231/157616062-6208b014-e104-49f4-8227-b491b7ef6d42.png">
   </a>
 </p>
 
 <p align="center">
-A lightweight and powerful Job Scheduling Framework written in Dart
+A lightweight and powerful Job Scheduling Framework.
 </p>
 
 ---
 
 [![pub package](https://img.shields.io/pub/v/batch.svg?logo=dart&logoColor=00b9fc)](https://pub.dartlang.org/packages/batch)
-[![Test](https://github.com/myConsciousness/batch.dart/actions/workflows/test.yml/badge.svg)](https://github.com/myConsciousness/batch.dart/actions/workflows/test.yml)
-[![Analyzer](https://github.com/myConsciousness/batch.dart/actions/workflows/analyzer.yml/badge.svg)](https://github.com/myConsciousness/batch.dart/actions/workflows/analyzer.yml)
-[![Last Commits](https://img.shields.io/github/last-commit/myConsciousness/batch.dart?logo=git&logoColor=white)](https://github.com/myConsciousness/batch.dart/commits/main)
-[![Pull Requests](https://img.shields.io/github/issues-pr/myConsciousness/batch.dart?logo=github&logoColor=white)](https://github.com/myConsciousness/batch.dart/pulls)
-[![Code size](https://img.shields.io/github/languages/code-size/myConsciousness/batch.dart?logo=github&logoColor=white)](https://github.com/myConsciousness/batch.dart)
-[![License](https://img.shields.io/github/license/myConsciousness/batch.dart?logo=open-source-initiative&logoColor=green)](https://github.com/myConsciousness/batch.dart/blob/main/LICENSE)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/myConsciousness/batch.dart/blob/main/CODE_OF_CONDUCT.md)
+[![Test](https://github.com/batch-dart/batch.dart/actions/workflows/test.yml/badge.svg)](https://github.com/batch-dart/batch.dart/actions/workflows/test.yml)
+[![Analyzer](https://github.com/batch-dart/batch.dart/actions/workflows/analyzer.yml/badge.svg)](https://github.com/batch-dart/batch.dart/actions/workflows/analyzer.yml)
+[![Last Commits](https://img.shields.io/github/last-commit/batch-dart/batch.dart?logo=git&logoColor=white)](https://github.com/batch-dart/batch.dart/commits/main)
+[![Pull Requests](https://img.shields.io/github/issues-pr/batch-dart/batch.dart?logo=github&logoColor=white)](https://github.com/batch-dart/batch.dart/pulls)
+[![Code size](https://img.shields.io/github/languages/code-size/batch-dart/batch.dart?logo=github&logoColor=white)](https://github.com/batch-dart/batch.dart)
+[![License](https://img.shields.io/github/license/batch-dart/batch.dart?logo=open-source-initiative&logoColor=green)](https://github.com/batch-dart/batch.dart/blob/main/LICENSE)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/batch-dart/batch.dart/blob/main/CODE_OF_CONDUCT.md)
 
 ---
 
@@ -196,7 +196,7 @@ BatchApplication(
 
 ## 1.5. Contribution
 
-If you would like to contribute to the development of this library, please create an [issue](https://github.com/myConsciousness/batch.dart/issues) or create a Pull Request.
+If you would like to contribute to the development of this library, please create an [issue](https://github.com/batch-dart/batch.dart/issues) or create a Pull Request.
 
 Developer will respond to issues and review pull requests as quickly as possible.
 
@@ -212,8 +212,8 @@ BSD-style license that can be found in the LICENSE file.
 
 `Batch` was designed and implemented by **_Kato Shinya_**.
 
-- [Creator Profile](https://github.com/myConsciousness)
-- [License](https://github.com/myConsciousness/batch.dart/blob/main/LICENSE)
+- [Creator Profile](https://github.com/batch-dart)
+- [License](https://github.com/batch-dart/batch.dart/blob/main/LICENSE)
 - [API Document](https://pub.dev/documentation/batch/latest/batch/batch-library.html)
-- [Release Note](https://github.com/myConsciousness/batch.dart/releases)
-- [Bug Report](https://github.com/myConsciousness/batch.dart/issues)
+- [Release Note](https://github.com/batch-dart/batch.dart/releases)
+- [Bug Report](https://github.com/batch-dart/batch.dart/issues)

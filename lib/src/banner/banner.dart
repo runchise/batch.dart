@@ -32,10 +32,10 @@ class Banner {
          ~~                       \\/____/                                       \\/____/                  \\/____/
 
 -------------------------------------------------------------------------------------------------------------------------------------------
-                            A lightweight and powerful Job Scheduling Framework written in Dart.
+                                       A lightweight and powerful Job Scheduling Framework.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-  Version: 0.4.0
+  Version: 0.5.0
   License: BSD 3-Clause
   Author : Kato Shinya (https://github.com/myConsciousness)
 

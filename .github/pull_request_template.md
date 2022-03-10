@@ -33,7 +33,7 @@ Indicate which of these issues are resolved or fixed by this PR, i.e. Fixes #xxx
 
 <!-- Links -->
 
-[issue database]: https://github.com/myConsciousness/batch.dart/issues
-[contributor guide]: https://github.com/myConsciousness/batch.dart/blob/main/CONTRIBUTING.md
-[batch.dart style guide]: https://github.com/myConsciousness/batch.dart/blob/main/STYLEGUIDE.md
+[issue database]: https://github.com/batch-dart/batch.dart/issues
+[contributor guide]: https://github.com/batch-dart/batch.dart/blob/main/CONTRIBUTING.md
+[batch.dart style guide]: https://github.com/batch-dart/batch.dart/blob/main/STYLEGUIDE.md
 [conventional commit]: https://conventionalcommits.org
