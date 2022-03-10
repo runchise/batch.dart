@@ -28,7 +28,7 @@
 
 ### 1.1.2. Bug Fix
 
-- If you'd like to submit a fix for a bug, please read the [How To](#how-to-contribute) for how to
+- If you'd like to submit a fix for a bug, please read the [How To](#12-how-to-contribute) for how to
   send a Pull Request.
 - Indicate on the open issue that you are working on fixing the bug and the issue will be assigned
   to you.
@@ -42,14 +42,14 @@
 - If you'd like to implement the new feature, please wait for feedback from the project maintainers
   before spending too much time writing the code. In some cases, enhancements may not align well
   with the project objectives at the time.
-- Implement the code for the new feature and please read the [How To](#how-to-contribute).
+- Implement the code for the new feature and please read the [How To](#12-how-to-contribute).
 
 ### 1.1.4. Documentation & Miscellaneous
 
 - If you have suggestions for improvements to the documentation, tutorial or examples (or something
   else), we would love to hear about it.
 - As always first file a [Github issue].
-- Implement the changes to the documentation, please read the [How To](#how-to-contribute).
+- Implement the changes to the documentation, please read the [How To](#12-how-to-contribute).
 
 ## 1.2. How To Contribute
 
