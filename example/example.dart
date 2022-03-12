@@ -108,7 +108,7 @@ Job _buildTestJob2() => Job(
             Step(name: 'Step1')
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask())
-              ..nextTask(ShutdownTask()),
+              ..shutdown(),
           ),
       );
 
@@ -159,12 +159,5 @@ class SayWorldTask extends Task<SayWorldTask> {
     info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
-  }
-}
-
-class ShutdownTask extends Task<ShutdownTask> {
-  @override
-  void execute(ExecutionContext context) {
-    super.shutdown();
   }
 }

@@ -6,6 +6,7 @@
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/task.dart';
+import 'package:batch/src/job/task/shutdown_task.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
 class Step extends Entity<Step> {
@@ -36,4 +37,7 @@ class Step extends Entity<Step> {
   ///
   /// Tasks added by this [nextTask] method are executed in the order in which they are stored.
   void nextTask(final Task task) => tasks.add(task);
+
+  /// Add a task to shutdown this application.
+  void shutdown() => tasks.add(ShutdownTask());
 }
