@@ -1,5 +1,11 @@
 # Release Note
 
+## 0.5.0
+
+### New Features
+
+- Added the feature to specify any exception type before application execution and skip exceptions that occur during application processing. Only classes that inherit from `Exception` are eligible; classes that inherit from `Error` are not eligible for this skip feature.
+
 ## 0.4.0
 
 ### New Features

@@ -38,16 +38,17 @@ class JobScheduler implements Runner {
     info('Detected ${_jobs.length} Jobs on the root');
 
     for (final job in _jobs) {
-      if (job.isNotScheduled) {
-        throw StateError('Be sure to specify a schedule for the root job.');
-      }
-
       info('Scheduling Job [name=${job.name}]');
 
-      _schedule(
-        job.schedule!.parse(),
-        () async => await JobLauncher(job: job).run(),
-      );
+      _schedule(job.schedule!.parse(), () async {
+        try {
+          await JobLauncher(job: job).run();
+        } catch (error, stackTrace) {
+          BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
+          fatal('Shut down the application due to a fatal exception', error,
+              stackTrace);
+        }
+      });
     }
 
     BatchInstance.instance.updateStatus(BatchStatus.running);

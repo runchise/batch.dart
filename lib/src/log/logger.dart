@@ -68,7 +68,8 @@ class Logger {
   void info(dynamic message) => _log(LogLevel.info, message);
 
   /// Log a message at warn level.
-  void warn(dynamic message) => _log(LogLevel.warn, message);
+  void warn(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
+      _log(LogLevel.warn, message, error, stackTrace);
 
   /// Log a message at error level.
   void error(dynamic message, [dynamic error, StackTrace? stackTrace]) =>

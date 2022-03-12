@@ -20,12 +20,19 @@ class Job extends Entity<Job> {
     this.schedule,
     bool Function()? precondition,
     Function(ExecutionContext context)? onStarted,
+    Function(ExecutionContext context)? onSucceeded,
+    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
+        onError,
     Function(ExecutionContext context)? onCompleted,
+    List<Exception> skippableExceptions = const [],
   }) : super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
+          onError: onError,
+          onSucceeded: onSucceeded,
           onCompleted: onCompleted,
+          skippableExceptions: skippableExceptions,
         );
 
   /// The schedule
