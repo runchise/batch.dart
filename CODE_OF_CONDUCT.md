@@ -1,6 +1,18 @@
-# Contributor Covenant Code of Conduct
+# 1. Contributor Covenant Code of Conduct
 
-## Our Pledge
+<!-- TOC -->
+
+- [1. Contributor Covenant Code of Conduct](#1-contributor-covenant-code-of-conduct)
+  - [1.1. Our Pledge](#11-our-pledge)
+  - [1.2. Our Standards](#12-our-standards)
+  - [1.3. Our Responsibilities](#13-our-responsibilities)
+  - [1.4. Scope](#14-scope)
+  - [1.5. Enforcement](#15-enforcement)
+  - [1.6. Attribution](#16-attribution)
+
+<!-- /TOC -->
+
+## 1.1. Our Pledge
 
 In the interest of fostering an open and welcoming environment, we as
 contributors and maintainers pledge to making participation in our project and
@@ -9,7 +21,7 @@ size, disability, ethnicity, sex characteristics, gender identity and expression
 level of experience, education, socio-economic status, nationality, personal
 appearance, race, religion, or sexual identity and orientation.
 
-## Our Standards
+## 1.2. Our Standards
 
 Examples of behavior that contributes to creating a positive environment
 include:
@@ -31,7 +43,7 @@ Examples of unacceptable behavior by participants include:
 - Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
-## Our Responsibilities
+## 1.3. Our Responsibilities
 
 Project maintainers are responsible for clarifying the standards of acceptable
 behavior and are expected to take appropriate and fair corrective action in
@@ -43,7 +55,7 @@ that are not aligned to this Code of Conduct, or to ban temporarily or
 permanently any contributor for other behaviors that they deem inappropriate,
 threatening, offensive, or harmful.
 
-## Scope
+## 1.4. Scope
 
 This Code of Conduct applies both within project spaces and in public spaces
 when an individual is representing the project or its community. Examples of
@@ -52,7 +64,7 @@ address, posting via an official social media account, or acting as an appointed
 representative at an online or offline event. Representation of a project may be
 further defined and clarified by project maintainers.
 
-## Enforcement
+## 1.5. Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported by contacting the project team at harm@aarts.email. All
@@ -65,7 +77,7 @@ Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.
 
-## Attribution
+## 1.6. Attribution
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
 available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html
