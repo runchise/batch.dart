@@ -12,6 +12,7 @@ export 'package:batch/src/job/entity/task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';
 export 'package:batch/src/job/schedule/parser/cron_parser.dart';
+export 'package:batch/src/job/config/skip_configuration.dart';
 
 // Logging features
 export 'package:batch/src/log/log_configuration.dart';

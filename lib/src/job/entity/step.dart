@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/task.dart';
@@ -19,7 +20,7 @@ class Step extends Entity<Step> {
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
         onError,
     Function(ExecutionContext context)? onCompleted,
-    List<Exception> skippableExceptions = const [],
+    SkipConfiguration? skipConfig,
   }) : super(
           name: name,
           precondition: precondition,
@@ -27,7 +28,7 @@ class Step extends Entity<Step> {
           onError: onError,
           onSucceeded: onSucceeded,
           onCompleted: onCompleted,
-          skippableExceptions: skippableExceptions,
+          skipConfig: skipConfig,
         );
 
   /// The tasks
