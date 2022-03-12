@@ -4,7 +4,7 @@
 
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
-import 'package:batch/src/batch_diagnosis.dart';
+import 'package:batch/src/diagnostics/boot_diagnostics.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
@@ -30,7 +30,7 @@ import 'package:batch/src/runner.dart';
 /// can be used in the Task class throughout the execution context.
 ///
 /// Also you can get more information about implementation on
-/// [example page](https://github.com/myConsciousness/batch.dart/blob/main/example/example.dart).
+/// [example page](https://github.com/batch-dart/batch.dart/blob/main/example/example.dart).
 ///
 /// These job configuration can be assembled in any way you like. For example,
 /// you can configure it as follows.
@@ -109,7 +109,7 @@ class _BatchApplication implements BatchApplication {
 
       info('Logger instance has completed loading');
 
-      BatchDiagnosis(jobs: _jobs).run();
+      BootDiagnostics(jobs: _jobs).run();
       JobScheduler(jobs: _jobs).run();
     } catch (e) {
       Logger.instance.dispose();

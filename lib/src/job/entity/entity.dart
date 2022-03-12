@@ -7,6 +7,7 @@ import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/builder/branch_builder.dart';
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/skippable_exceptions.dart';
 
 /// This is an abstract class that represents an entity in Job execution.
 abstract class Entity<T extends Entity<T>> {
@@ -18,7 +19,16 @@ abstract class Entity<T extends Entity<T>> {
     this.onSucceeded,
     this.onError,
     this.onCompleted,
-  });
+    List<Exception> skippableExceptions = const [],
+  }) :
+        //! The "is" modifier, which allows reference up to the parent of the target object,
+        //! is preferred for type determination, but the right side of the "is" modifier cannot be
+        //! a variable due to the Dart language specification. Therefore, type determination is currently
+        //! performed by comparing strings.
+        skippableExceptions = SkippableExceptions(
+            objects: skippableExceptions
+                .map((object) => object.toString())
+                .toList());
 
   /// The name
   final String name;
@@ -41,6 +51,9 @@ abstract class Entity<T extends Entity<T>> {
 
   /// The callback when this process is completed (regardless of success and failure)
   final Function(ExecutionContext context)? onCompleted;
+
+  /// The skippable exceptions
+  final SkippableExceptions skippableExceptions;
 
   /// The branches
   final List<Branch<T>> branches = [];

@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/exception/schedule_parse_exception.dart';
+import 'package:batch/src/job/error/schedule_parse_error.dart';
 import 'package:batch/src/job/schedule/model/cron.dart';
 import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 
@@ -43,7 +43,7 @@ class CronParser extends ScheduleParser<Cron> {
         .toList();
 
     if (fields.length < 5) {
-      throw ScheduleParseException(
+      throw ScheduleParseError(
         '''
 The Cron format needs to consist of 5 fields at least.
  -----------
@@ -149,6 +149,6 @@ The Cron format needs to consist of 5 fields at least.
       }
     }
 
-    throw ScheduleParseException('Unable to parse: $value');
+    throw ScheduleParseError('Unable to parse: $value');
   }
 }

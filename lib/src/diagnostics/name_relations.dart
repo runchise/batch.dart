@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/job/name/name_relation.dart';
+import 'package:batch/src/diagnostics/name_relation.dart';
 
 abstract class NameRelations {
   /// Returns the new instance of [NameRelations].

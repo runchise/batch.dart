@@ -3,23 +3,23 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/diagnostics/name_relation.dart';
+import 'package:batch/src/diagnostics/name_relations.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/entity/step.dart';
-import 'package:batch/src/job/exception/unique_constraint_exception.dart';
-import 'package:batch/src/job/name/name_relation.dart';
-import 'package:batch/src/job/name/name_relations.dart';
+import 'package:batch/src/job/error/unique_constraint_error.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
-abstract class BatchDiagnosis implements Runner {
-  /// Returns the new instance of [BatchDiagnosis].
-  factory BatchDiagnosis({required List<Job> jobs}) =>
-      _BatchDiagnosis(jobs: jobs);
+abstract class BootDiagnostics implements Runner {
+  /// Returns the new instance of [BootDiagnostics].
+  factory BootDiagnostics({required List<Job> jobs}) =>
+      _BootDiagnostics(jobs: jobs);
 }
 
-class _BatchDiagnosis implements BatchDiagnosis {
-  /// Returns the new instance of [_BatchDiagnosis].
-  _BatchDiagnosis({required List<Job> jobs}) : _jobs = jobs;
+class _BootDiagnostics implements BootDiagnostics {
+  /// Returns the new instance of [_BootDiagnostics].
+  _BootDiagnostics({required List<Job> jobs}) : _jobs = jobs;
 
   /// The jobs
   final List<Job> _jobs;
@@ -36,6 +36,10 @@ class _BatchDiagnosis implements BatchDiagnosis {
     }
 
     for (final job in _jobs) {
+      if (job.isNotScheduled) {
+        throw ArgumentError('Be sure to specify a schedule for the root job.');
+      }
+
       _checkJobRecursively(job: job);
     }
 
@@ -70,7 +74,7 @@ class _BatchDiagnosis implements BatchDiagnosis {
     );
 
     if (_nameRelations.has(relation)) {
-      throw UniqueConstraintException(
+      throw UniqueConstraintError(
           'The name relations between Job and Step must be unique: [duplicatedRelation=$relation]');
     }
 
