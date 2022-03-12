@@ -68,6 +68,11 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             stackTrace,
           );
 
+          super.finishExecution(
+            name: entity.name,
+            status: ProcessStatus.skipped,
+          );
+
           return;
         }
       }
