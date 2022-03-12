@@ -18,5 +18,6 @@ class _SkippableExceptions implements SkippableExceptions {
   final List<String> objects;
 
   @override
-  bool has(final Exception exception) => objects.contains(exception.toString());
+  bool has(final Exception exception) =>
+      objects.contains(exception.runtimeType.toString());
 }

@@ -27,7 +27,7 @@ abstract class Entity<T extends Entity<T>> {
         //! performed by comparing strings.
         skippableExceptions = SkippableExceptions(
             objects: skippableExceptions
-                .map((object) => object.toString())
+                .map((object) => object.runtimeType.toString())
                 .toList());
 
   /// The name
