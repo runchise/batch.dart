@@ -130,7 +130,6 @@ class TestTask extends Task<TestTask> {
 
   @override
   void execute(ExecutionContext context) {
-    throw Exception();
     // This parameter is shared just in this job.
     context.jobParameters['key'] = 'job_parameter';
     // This parameter is shared just in this step.
