@@ -2,8 +2,8 @@
 name: Feature request.
 about: Suggest a new feature for batch.dart.
 title: ""
-labels: "enhancement"
-assignees: ""
+labels: "Feedback: feature request"
+assignees: "myConsciousness"
 ---
 
 <!-- When reporting a feature, please read this complete template and fill all the questions in order to get a better response -->

@@ -2,8 +2,8 @@
 name: Bug report.
 about: You are creating an application with batch.dart but you are noticing some strange behavior, that it throws an unexpected exception, or that it is not working according to the specifications.
 title: ""
-labels: "bug"
-assignees: ""
+labels: "Problem: bug"
+assignees: "myConsciousness"
 ---
 
 <!-- When reporting a bug, please read this complete template and fill all the questions in order to get a better response -->

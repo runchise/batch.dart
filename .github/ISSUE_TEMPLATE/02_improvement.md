@@ -2,8 +2,8 @@
 name: Improvement suggestion.
 about: Something in batch.dart can be improved.
 title: ""
-labels: "enhancement"
-assignees: ""
+labels: "Feedback: improvement"
+assignees: "myConsciousness"
 ---
 
 <!-- When reporting a improvement, please read this complete template and fill all the questions in order to get a better response -->
