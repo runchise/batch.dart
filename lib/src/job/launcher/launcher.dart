@@ -61,7 +61,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
       //! Do not skip if it is an Error.
       //! Only Exception can be skipped.
       if (error is Exception) {
-        if (entity.skippableExceptions.has(error)) {
+        if (entity.skipPolicy.shouldSkip(error)) {
           warn(
             'An exception is detected on Entity [name=${entity.name}] but processing continues because it can be skipped',
             error,

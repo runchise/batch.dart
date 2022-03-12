@@ -29,7 +29,9 @@ Job _buildTestJob1() => Job(
           info('\n--------------- Job1 has started! ---------------'),
       onCompleted: (context) =>
           info('\n--------------- Job1 has completed! ---------------'),
-      skippableExceptions: [Exception()],
+      skipConfig: SkipConfiguration(
+        skippableExceptions: [Exception()],
+      ),
     )
       ..nextStep(
         Step(name: 'Step1')

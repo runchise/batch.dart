@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/entity/step.dart';
@@ -24,7 +25,7 @@ class Job extends Entity<Job> {
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
         onError,
     Function(ExecutionContext context)? onCompleted,
-    List<Exception> skippableExceptions = const [],
+    SkipConfiguration? skipConfig,
   }) : super(
           name: name,
           precondition: precondition,
@@ -32,7 +33,7 @@ class Job extends Entity<Job> {
           onError: onError,
           onSucceeded: onSucceeded,
           onCompleted: onCompleted,
-          skippableExceptions: skippableExceptions,
+          skipConfig: skipConfig,
         );
 
   /// The schedule
