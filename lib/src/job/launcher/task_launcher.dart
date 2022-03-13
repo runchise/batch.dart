@@ -22,7 +22,9 @@ class TaskLauncher extends Launcher<Task> {
   Future<void> run() async {
     for (final task in _tasks) {
       await super.executeRecursively(
-          entity: task, execute: (task) async => await task.execute(context));
+        entity: task,
+        execute: (task) async => await task.execute(context),
+      );
     }
   }
 }
