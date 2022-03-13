@@ -23,7 +23,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
     required T entity,
     required Function(dynamic entity) execute,
   }) async {
-    entity.onStarted?.call(context);
+    await entity.onStarted?.call(context);
     super.startNewExecution(name: entity.name);
 
     if (!await entity.shouldLaunch()) {
@@ -41,7 +41,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
     try {
       await execute.call(entity);
-      entity.onSucceeded?.call(context);
+      await entity.onSucceeded?.call(context);
 
       if (BatchInstance.instance.isRunning) {
         if (entity.hasBranch) {
@@ -56,7 +56,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
       super.finishExecution(name: entity.name);
     } catch (error, stackTrace) {
-      entity.onError?.call(context, error, stackTrace);
+      await entity.onError?.call(context, error, stackTrace);
 
       //! Do not skip if it is an Error.
       //! Only Exception can be skipped.
@@ -79,7 +79,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
       rethrow;
     } finally {
-      entity.onCompleted?.call(context);
+      await entity.onCompleted?.call(context);
     }
   }
 }
