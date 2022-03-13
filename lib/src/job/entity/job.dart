@@ -2,6 +2,9 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Dart imports:
+import 'dart:async';
+
 // Project imports:
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
@@ -19,7 +22,7 @@ class Job extends Entity<Job> {
   Job({
     required String name,
     this.schedule,
-    bool Function()? precondition,
+    FutureOr<bool> Function()? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?

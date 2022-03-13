@@ -26,7 +26,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
     entity.onStarted?.call(context);
     super.startNewExecution(name: entity.name);
 
-    if (!entity.canLaunch()) {
+    if (!await entity.shouldLaunch()) {
       info('Skipped ${entity.name} because the precondition is not met.');
       super.finishExecution(name: entity.name, status: ProcessStatus.skipped);
       return;

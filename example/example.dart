@@ -97,10 +97,13 @@ Job _buildTestJob2() => Job(
       name: 'Job2',
       schedule: CronParser(value: '*/2 * * * *'),
       // You can set any preconditions to run Job.
-      precondition: () => true,
+      precondition: () async => true,
     )
       ..nextStep(
-        Step(name: 'Step1')
+        Step(
+          name: 'Step1',
+          precondition: () => true,
+        )
           ..nextTask(SayHelloTask())
           ..nextTask(SayWorldTask()),
       )

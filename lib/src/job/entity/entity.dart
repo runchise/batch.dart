@@ -2,6 +2,9 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Dart imports:
+import 'dart:async';
+
 // Project imports:
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
@@ -32,7 +35,7 @@ abstract class Entity<T extends Entity<T>> {
   final String name;
 
   /// The precondition
-  final bool Function()? precondition;
+  final FutureOr<bool> Function()? precondition;
 
   /// The callback when this process is started
   final Function(ExecutionContext context)? onStarted;
@@ -57,7 +60,7 @@ abstract class Entity<T extends Entity<T>> {
   final List<Branch<T>> branches = [];
 
   /// Returns true if this entity can launch, otherwise false.
-  bool canLaunch() => precondition?.call() ?? true;
+  Future<bool> shouldLaunch() async => await precondition?.call() ?? true;
 
   /// Add a branch in case the parent process is succeeded.
   void branchOnSucceeded({required T to}) =>
