@@ -52,11 +52,6 @@ class _BootDiagnostics implements BootDiagnostics {
       throw ArgumentError('The step to be launched is required.');
     }
 
-    if (job.hasSkipPolicy && job.hasRetryPolicy) {
-      throw ArgumentError(
-          'You cannot set Skip and Retry at the same time in Job [name=${job.name}]');
-    }
-
     for (final step in job.steps) {
       _checkStepRecursively(job: job, step: step);
     }
