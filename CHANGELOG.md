@@ -4,7 +4,7 @@
 
 ### New Features
 
-- Added the feature to specify any exception type before application execution and skip exceptions that occur during application processing. Only classes that inherit from `Exception` are eligible; classes that inherit from `Error` are not eligible for this skip feature. ([#12](https://github.com/batch-dart/batch.dart/issues/12))
+- Added the feature to specify any exception type before application execution and skip exceptions that occur during application processing. Only classes that inherit from `Exception` are eligible; classes that inherit from `Error` are not eligible for this retry feature. ([#12](https://github.com/batch-dart/batch.dart/issues/12))
 - Added the feature to specify any exception type before application execution and retry when exception occurs during application processing. Only classes that inherit from `Exception` are eligible; classes that inherit from `Error` are not eligible for this skip feature. ([#20](https://github.com/batch-dart/batch.dart/issues/20))
 - Added convenient method `shutdown()` to shutdown application in `Step` ([#17](https://github.com/batch-dart/batch.dart/issues/17)).
 
