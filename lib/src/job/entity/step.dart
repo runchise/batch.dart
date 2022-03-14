@@ -6,6 +6,7 @@
 import 'dart:async';
 
 // Project imports:
+import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
@@ -24,6 +25,7 @@ class Step extends Entity<Step> {
         onError,
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
+    RetryConfiguration? retryConfig,
   }) : super(
           name: name,
           precondition: precondition,
@@ -32,6 +34,7 @@ class Step extends Entity<Step> {
           onSucceeded: onSucceeded,
           onCompleted: onCompleted,
           skipConfig: skipConfig,
+          retryConfig: retryConfig,
         );
 
   /// The tasks

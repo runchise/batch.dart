@@ -26,7 +26,11 @@ abstract class ContextSupport<T extends Entity<T>> {
   /// The execution stack
   final ExecutionStack _executionStack = ExecutionStack();
 
-  void startNewExecution({required String name}) {
+  void startNewExecution({required String name, required bool retry}) {
+    if (retry) {
+      return;
+    }
+
     if (T == Job) {
       context.jobExecution = _newExecution(name);
       info(
@@ -42,7 +46,15 @@ abstract class ContextSupport<T extends Entity<T>> {
     }
   }
 
-  void finishExecution({required String name, ProcessStatus? status}) {
+  void finishExecution({
+    required String name,
+    ProcessStatus? status,
+    required bool retry,
+  }) {
+    if (retry) {
+      return;
+    }
+
     if (T == Job) {
       context.jobExecution = _finishedExecution(status: status);
       info(

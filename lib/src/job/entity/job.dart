@@ -6,6 +6,7 @@
 import 'dart:async';
 
 // Project imports:
+import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
@@ -29,6 +30,7 @@ class Job extends Entity<Job> {
         onError,
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
+    RetryConfiguration? retryConfig,
   }) : super(
           name: name,
           precondition: precondition,
@@ -37,6 +39,7 @@ class Job extends Entity<Job> {
           onSucceeded: onSucceeded,
           onCompleted: onCompleted,
           skipConfig: skipConfig,
+          retryConfig: retryConfig,
         );
 
   /// The schedule

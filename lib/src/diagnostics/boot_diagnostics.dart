@@ -32,7 +32,7 @@ class _BootDiagnostics implements BootDiagnostics {
     info('Batch application diagnostics have been started');
 
     if (_jobs.isEmpty) {
-      throw ArgumentError();
+      throw ArgumentError('The job to be launched is required.');
     }
 
     for (final job in _jobs) {
@@ -52,6 +52,11 @@ class _BootDiagnostics implements BootDiagnostics {
       throw ArgumentError('The step to be launched is required.');
     }
 
+    if (job.hasSkipPolicy && job.hasRetryPolicy) {
+      throw ArgumentError(
+          'You cannot set Skip and Retry at the same time in Job [name=${job.name}]');
+    }
+
     for (final step in job.steps) {
       _checkStepRecursively(job: job, step: step);
     }
@@ -66,6 +71,18 @@ class _BootDiagnostics implements BootDiagnostics {
   void _checkStepRecursively({required Job job, required Step step}) {
     if (step.tasks.isEmpty) {
       throw ArgumentError('The task to be launched is required.');
+    }
+
+    if (step.hasSkipPolicy && step.hasRetryPolicy) {
+      throw ArgumentError(
+          'You cannot set Skip and Retry at the same time in Step [name=${step.name}]');
+    }
+
+    for (final task in step.tasks) {
+      if (task.hasSkipPolicy && task.hasRetryPolicy) {
+        throw ArgumentError(
+            'You cannot set Skip and Retry at the same time in Task [name=${task.name}]');
+      }
     }
 
     final relation = NameRelation(

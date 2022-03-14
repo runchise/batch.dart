@@ -29,13 +29,33 @@ Job _buildTestJob1() => Job(
           info('\n--------------- Job1 has started! ---------------'),
       onCompleted: (context) =>
           info('\n--------------- Job1 has completed! ---------------'),
-      skipConfig: SkipConfiguration(
-        skippableExceptions: [Exception()],
+      retryConfig: RetryConfiguration(
+        retryableExceptions: [Exception()],
       ),
     )
       ..nextStep(
-        Step(name: 'Step1')
-          ..nextTask(TestTask())
+        Step(
+          name: 'Step1',
+          skipConfig: SkipConfiguration(
+            skippableExceptions: [Exception()],
+          ),
+        )
+          ..nextTask(
+            RetryTask(
+              // You can define callbacks for each processing phase.
+              onStarted: (context) => info(
+                  '\n--------------- RetryTask has started! ---------------'),
+              onSucceeded: (context) => info(
+                  '\n--------------- RetryTask has succeeded! ---------------'),
+              onError: (context, _error, stackTrace) => error(
+                '\n--------------- Error RetryTask ---------------',
+                _error,
+                stackTrace,
+              ),
+              onCompleted: (context) => info(
+                  '\n--------------- RetryTask has completed! ---------------'),
+            ),
+          )
           ..nextTask(SayHelloTask())
           ..nextTask(SayWorldTask()),
       )
@@ -74,20 +94,7 @@ Job _buildTestJob1() => Job(
               onCompleted: (context) => info(
                   '\n--------------- Step5 has completed! ---------------'),
             )
-              ..nextTask(TestTask(
-                // You can define callbacks for each processing phase.
-                onStarted: (context) => info(
-                    '\n--------------- TestTask has started! ---------------'),
-                onSucceeded: (context) => info(
-                    '\n--------------- TestTask has succeeded! ---------------'),
-                onError: (context, error, stackTrace) => error(
-                  '\n--------------- Error ---------------',
-                  error,
-                  stackTrace,
-                ),
-                onCompleted: (context) => info(
-                    '\n--------------- TestTask has completed! ---------------'),
-              ))
+              ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
           ),
@@ -118,19 +125,6 @@ Job _buildTestJob2() => Job(
       );
 
 class TestTask extends Task<TestTask> {
-  TestTask({
-    Function(ExecutionContext context)? onStarted,
-    Function(ExecutionContext context)? onSucceeded,
-    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
-        onError,
-    Function(ExecutionContext context)? onCompleted,
-  }) : super(
-          onStarted: onStarted,
-          onSucceeded: onSucceeded,
-          onError: onError,
-          onCompleted: onCompleted,
-        );
-
   @override
   void execute(ExecutionContext context) {
     // This parameter is shared just in this job.
@@ -164,5 +158,33 @@ class SayWorldTask extends Task<SayWorldTask> {
     info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
+  }
+}
+
+class RetryTask extends Task<RetryTask> {
+  RetryTask({
+    Function(ExecutionContext context)? onStarted,
+    Function(ExecutionContext context)? onSucceeded,
+    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
+        onError,
+    Function(ExecutionContext context)? onCompleted,
+  }) : super(
+          onStarted: onStarted,
+          onSucceeded: onSucceeded,
+          onError: onError,
+          onCompleted: onCompleted,
+        );
+
+  /// The count for retry test
+  static int count = 0;
+
+  @override
+  void execute(ExecutionContext context) {
+    if (count < 3) {
+      count++;
+      throw Exception();
+    } else {
+      count = 0;
+    }
   }
 }

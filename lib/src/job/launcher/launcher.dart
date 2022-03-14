@@ -9,7 +9,7 @@ import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
 import 'package:batch/src/job/process_status.dart';
-import 'package:batch/src/log/logger_provider.dart';
+import 'package:batch/src/log/logger_provider.dart' as log;
 import 'package:batch/src/runner.dart';
 
 abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
@@ -19,24 +19,41 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
     required ExecutionContext context,
   }) : super(context: context);
 
-  Future<void> executeRecursively({
+  /// The retry count
+  int _retryCount = 0;
+
+  Future<bool> executeRecursively({
     required T entity,
     required Function(dynamic entity) execute,
+    bool retry = false,
   }) async {
-    await entity.onStarted?.call(context);
-    super.startNewExecution(name: entity.name);
+    if (!retry) {
+      await entity.onStarted?.call(context);
+    }
+
+    super.startNewExecution(name: entity.name, retry: retry);
 
     if (!await entity.shouldLaunch()) {
-      info('Skipped ${entity.name} because the precondition is not met.');
-      super.finishExecution(name: entity.name, status: ProcessStatus.skipped);
-      return;
+      log.info('Skipped ${entity.name} because the precondition is not met.');
+      super.finishExecution(
+        name: entity.name,
+        status: ProcessStatus.skipped,
+        retry: retry,
+      );
+
+      return true;
     }
 
     if (BatchInstance.instance.isShuttingDown) {
-      info(
+      log.info(
           'Skipped ${entity.name} because this batch application is shutting down.');
-      super.finishExecution(name: entity.name, status: ProcessStatus.skipped);
-      return;
+      super.finishExecution(
+        name: entity.name,
+        status: ProcessStatus.skipped,
+        retry: retry,
+      );
+
+      return true;
     }
 
     try {
@@ -54,15 +71,18 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
         }
       }
 
-      super.finishExecution(name: entity.name);
+      _retryCount = 0;
+      super.finishExecution(name: entity.name, retry: retry);
+
+      return true;
     } catch (error, stackTrace) {
       await entity.onError?.call(context, error, stackTrace);
 
-      //! Do not skip if it is an Error.
-      //! Only Exception can be skipped.
+      //! Do not skip and retry if it is an Error.
+      //! Only Exception can be skipped and retried.
       if (error is Exception) {
-        if (entity.skipPolicy.shouldSkip(error)) {
-          warn(
+        if (entity.hasSkipPolicy && entity.skipPolicy!.shouldSkip(error)) {
+          log.warn(
             'An exception is detected on Entity [name=${entity.name}] but processing continues because it can be skipped',
             error,
             stackTrace,
@@ -71,15 +91,55 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
           super.finishExecution(
             name: entity.name,
             status: ProcessStatus.skipped,
+            retry: retry,
           );
 
-          return;
-        }
-      }
+          return true;
+        } else if (entity.hasRetryPolicy &&
+            entity.retryPolicy!.shouldRetry(error)) {
+          if (entity.retryPolicy!.isExceeded(_retryCount)) {
+            log.error(
+              'The maximum number of retry attempts has been reached on Entity [name=${entity.name}]',
+              error,
+              stackTrace,
+            );
 
-      rethrow;
+            rethrow;
+          }
+
+          log.warn(
+            'An exception is detected on Entity [name=${entity.name}] but processing retries',
+            error,
+            stackTrace,
+          );
+
+          _retryCount++;
+
+          if (await executeRecursively(
+            entity: entity,
+            execute: execute,
+            retry: true,
+          )) {
+            if (!retry) {
+              super.finishExecution(
+                name: entity.name,
+                status: ProcessStatus.completed,
+                retry: retry,
+              );
+            }
+
+            return true;
+          }
+        }
+
+        rethrow;
+      }
     } finally {
-      await entity.onCompleted?.call(context);
+      if (!retry) {
+        await entity.onCompleted?.call(context);
+      }
     }
+
+    return true;
   }
 }
