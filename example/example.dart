@@ -120,7 +120,7 @@ Job _buildTestJob2() => Job(
           ..nextStep(Step(name: 'Step1')
                 ..nextTask(SayHelloTask())
                 ..nextTask(SayWorldTask())
-              // ..shutdown(),
+                ..shutdown(),
               ),
       );
 
