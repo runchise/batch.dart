@@ -7,6 +7,7 @@ abstract class RetryConfiguration {
   factory RetryConfiguration({
     required List<Exception> retryableExceptions,
     int maxAttempt = 5,
+    Duration? backOff,
   }) =>
       _RetryConfiguration(
         //! The "is" modifier, which allows reference up to the parent of the target object,
@@ -17,6 +18,7 @@ abstract class RetryConfiguration {
             .map((exception) => exception.runtimeType.toString())
             .toList(),
         maxAttempt: maxAttempt,
+        backOff: backOff,
       );
 
   /// Returns the retryable exceptions.
@@ -24,6 +26,9 @@ abstract class RetryConfiguration {
 
   /// Returns the max attempt of retry.
   int get maxAttempt;
+
+  /// Returns the back off duration.
+  Duration? get backOff;
 }
 
 class _RetryConfiguration implements RetryConfiguration {
@@ -31,11 +36,15 @@ class _RetryConfiguration implements RetryConfiguration {
   _RetryConfiguration({
     required this.retryableExceptions,
     required this.maxAttempt,
+    required this.backOff,
   });
 
   @override
   final List<String> retryableExceptions;
 
   @override
-  int maxAttempt;
+  final int maxAttempt;
+
+  @override
+  final Duration? backOff;
 }

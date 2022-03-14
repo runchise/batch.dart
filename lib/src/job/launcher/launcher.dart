@@ -8,7 +8,6 @@ import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
-import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/log/logger_provider.dart' as log;
 import 'package:batch/src/runner.dart';
 
@@ -35,24 +34,14 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
     if (!await entity.shouldLaunch()) {
       log.info('Skipped ${entity.name} because the precondition is not met.');
-      super.finishExecution(
-        name: entity.name,
-        status: ProcessStatus.skipped,
-        retry: retry,
-      );
-
+      super.finishExecutionAsSkipped(name: entity.name, retry: retry);
       return true;
     }
 
     if (BatchInstance.instance.isShuttingDown) {
       log.info(
           'Skipped ${entity.name} because this batch application is shutting down.');
-      super.finishExecution(
-        name: entity.name,
-        status: ProcessStatus.skipped,
-        retry: retry,
-      );
-
+      super.finishExecutionAsSkipped(name: entity.name, retry: retry);
       return true;
     }
 
@@ -72,7 +61,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
       }
 
       _retryCount = 0;
-      super.finishExecution(name: entity.name, retry: retry);
+      super.finishExecutionAsCompleted(name: entity.name, retry: retry);
 
       return true;
     } catch (error, stackTrace) {
@@ -88,11 +77,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             stackTrace,
           );
 
-          super.finishExecution(
-            name: entity.name,
-            status: ProcessStatus.skipped,
-            retry: retry,
-          );
+          super.finishExecutionAsSkipped(name: entity.name, retry: retry);
 
           return true;
         } else if (entity.hasRetryPolicy &&
@@ -113,6 +98,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             stackTrace,
           );
 
+          await entity.retryPolicy!.wait();
           _retryCount++;
 
           if (await executeRecursively(
@@ -121,11 +107,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             retry: true,
           )) {
             if (!retry) {
-              super.finishExecution(
-                name: entity.name,
-                status: ProcessStatus.completed,
-                retry: retry,
-              );
+              super.finishExecutionAsCompleted(name: entity.name, retry: retry);
             }
 
             return true;

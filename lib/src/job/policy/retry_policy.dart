@@ -4,11 +4,15 @@
 
 // Project imports:
 import 'package:batch/src/job/config/retry_configuration.dart';
+import 'package:batch/src/log/logger_provider.dart';
 
 abstract class RetryPolicy {
   /// Returns the new instance of [RetryPolicy].
   factory RetryPolicy({required RetryConfiguration retryConfig}) =>
       _RetryPolicy(retryConfig: retryConfig);
+
+  /// Waits for the specified duration.
+  Future<void> wait();
 
   /// Returns true if [exception] passed as a parameter is a retryable, otherwise false.
   bool shouldRetry(final Exception exception);
@@ -24,6 +28,16 @@ class _RetryPolicy implements RetryPolicy {
 
   /// The retry configuration
   final RetryConfiguration retryConfig;
+
+  @override
+  Future<void> wait() async {
+    if (retryConfig.backOff == null) {
+      return;
+    }
+
+    warn('Wait ${retryConfig.backOff} before execute retry');
+    await Future.delayed(retryConfig.backOff!);
+  }
 
   @override
   bool shouldRetry(final Exception exception) => retryConfig.retryableExceptions

@@ -29,15 +29,16 @@ Job _buildTestJob1() => Job(
           info('\n--------------- Job1 has started! ---------------'),
       onCompleted: (context) =>
           info('\n--------------- Job1 has completed! ---------------'),
-      retryConfig: RetryConfiguration(
-        retryableExceptions: [Exception()],
+      skipConfig: SkipConfiguration(
+        skippableExceptions: [Exception()],
       ),
     )
       ..nextStep(
         Step(
           name: 'Step1',
-          skipConfig: SkipConfiguration(
-            skippableExceptions: [Exception()],
+          retryConfig: RetryConfiguration(
+            retryableExceptions: [Exception()],
+            backOff: Duration(seconds: 30),
           ),
         )
           ..nextTask(
@@ -116,12 +117,11 @@ Job _buildTestJob2() => Job(
       )
       ..branchOnSucceeded(
         to: Job(name: 'Job3')
-          ..nextStep(
-            Step(name: 'Step1')
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask())
-              ..shutdown(),
-          ),
+          ..nextStep(Step(name: 'Step1')
+                ..nextTask(SayHelloTask())
+                ..nextTask(SayWorldTask())
+              // ..shutdown(),
+              ),
       );
 
 class TestTask extends Task<TestTask> {
