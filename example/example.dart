@@ -29,16 +29,12 @@ Job _buildTestJob1() => Job(
           info('\n--------------- Job1 has started! ---------------'),
       onCompleted: (context) =>
           info('\n--------------- Job1 has completed! ---------------'),
-      skipConfig: SkipConfiguration(
-        skippableExceptions: [Exception()],
-      ),
     )
       ..nextStep(
         Step(
           name: 'Step1',
-          retryConfig: RetryConfiguration(
-            retryableExceptions: [Exception()],
-            backOff: Duration(seconds: 30),
+          skipConfig: SkipConfiguration(
+            skippableExceptions: [Exception()],
           ),
         )
           ..nextTask(
@@ -55,6 +51,10 @@ Job _buildTestJob1() => Job(
               ),
               onCompleted: (context) => info(
                   '\n--------------- RetryTask has completed! ---------------'),
+              retryConfig: RetryConfiguration(
+                retryableExceptions: [Exception()],
+                backOff: Duration(seconds: 30),
+              ),
             ),
           )
           ..nextTask(SayHelloTask())
@@ -117,11 +117,12 @@ Job _buildTestJob2() => Job(
       )
       ..branchOnSucceeded(
         to: Job(name: 'Job3')
-          ..nextStep(Step(name: 'Step1')
-                ..nextTask(SayHelloTask())
-                ..nextTask(SayWorldTask())
-                ..shutdown(),
-              ),
+          ..nextStep(
+            Step(name: 'Step1')
+              ..nextTask(SayHelloTask())
+              ..nextTask(SayWorldTask())
+              ..shutdown(),
+          ),
       );
 
 class TestTask extends Task<TestTask> {
@@ -168,11 +169,13 @@ class RetryTask extends Task<RetryTask> {
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
         onError,
     Function(ExecutionContext context)? onCompleted,
+    RetryConfiguration? retryConfig,
   }) : super(
           onStarted: onStarted,
           onSucceeded: onSucceeded,
           onError: onError,
           onCompleted: onCompleted,
+          retryConfig: retryConfig,
         );
 
   /// The count for retry test
