@@ -9,8 +9,10 @@ import 'dart:async';
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/builder/branch_builder.dart';
+import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/policy/retry_policy.dart';
 import 'package:batch/src/job/policy/skip_policy.dart';
 
 /// This is an abstract class that represents an entity in Job execution.
@@ -24,12 +26,11 @@ abstract class Entity<T extends Entity<T>> {
     this.onError,
     this.onCompleted,
     SkipConfiguration? skipConfig,
-  }) : skipPolicy = SkipPolicy(
-          skipConfig: skipConfig ??
-              SkipConfiguration(
-                skippableExceptions: [],
-              ),
-        );
+    RetryConfiguration? retryConfig,
+  })  : skipPolicy =
+            skipConfig != null ? SkipPolicy(skipConfig: skipConfig) : null,
+        retryPolicy =
+            retryConfig != null ? RetryPolicy(retryConfig: retryConfig) : null;
 
   /// The name
   final String name;
@@ -54,7 +55,10 @@ abstract class Entity<T extends Entity<T>> {
   final Function(ExecutionContext context)? onCompleted;
 
   /// The skip policy
-  final SkipPolicy skipPolicy;
+  final SkipPolicy? skipPolicy;
+
+  /// The retry policy
+  final RetryPolicy? retryPolicy;
 
   /// The branches
   final List<Branch<T>> branches = [];
@@ -75,8 +79,14 @@ abstract class Entity<T extends Entity<T>> {
   void branchOnCompleted({required T to}) =>
       _addNewBranch(on: BranchStatus.completed, to: to);
 
-  /// Returns true if this step has branch, otherwise false.
+  /// Returns true if this entity has branch, otherwise false.
   bool get hasBranch => branches.isNotEmpty;
+
+  /// Returns true if this entity has skip policy, otherwise false.
+  bool get hasSkipPolicy => skipPolicy != null;
+
+  /// Returns true if this entity has retry policy, otherwise false.
+  bool get hasRetryPolicy => retryPolicy != null;
 
   /// Adds new [Branch] based on [on] and [to].
   void _addNewBranch({required BranchStatus on, required T to}) =>

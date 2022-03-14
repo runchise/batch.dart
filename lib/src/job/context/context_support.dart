@@ -26,7 +26,11 @@ abstract class ContextSupport<T extends Entity<T>> {
   /// The execution stack
   final ExecutionStack _executionStack = ExecutionStack();
 
-  void startNewExecution({required String name}) {
+  void startNewExecution({required String name, required bool retry}) {
+    if (retry) {
+      return;
+    }
+
     if (T == Job) {
       context.jobExecution = _newExecution(name);
       info(
@@ -42,19 +46,39 @@ abstract class ContextSupport<T extends Entity<T>> {
     }
   }
 
-  void finishExecution({required String name, ProcessStatus? status}) {
+  void finishExecutionAsCompleted({
+    required String name,
+    required bool retry,
+  }) =>
+      _finishExecution(name: name, status: ProcessStatus.skipped, retry: retry);
+
+  void finishExecutionAsSkipped({
+    required String name,
+    required bool retry,
+  }) =>
+      _finishExecution(name: name, status: ProcessStatus.skipped, retry: retry);
+
+  void _finishExecution({
+    required String name,
+    required ProcessStatus status,
+    required bool retry,
+  }) {
+    if (retry) {
+      return;
+    }
+
     if (T == Job) {
       context.jobExecution = _finishedExecution(status: status);
       info(
-          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${(status ?? ProcessStatus.completed).name}]');
+          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${status.name}]');
     } else if (T == Step) {
       context.stepExecution = _finishedExecution(status: status);
       info(
-          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${(status ?? ProcessStatus.completed).name}]');
+          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${status.name}]');
     } else {
       context.taskExecution = _finishedExecution(status: status);
       info(
-          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${(status ?? ProcessStatus.completed).name}]');
+          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${status.name}]');
     }
   }
 
@@ -76,6 +100,7 @@ abstract class ContextSupport<T extends Entity<T>> {
     );
   }
 
+  /// Returns the branch status.
   BranchStatus get branchStatus {
     final execution = _executionStack.pop();
     _executionStack.push(execution);

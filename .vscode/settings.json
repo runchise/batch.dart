@@ -6,6 +6,7 @@
     "logfilter",
     "logoutput",
     "microtask",
+    "retryable",
     "Shinya",
     "Skippable",
     "writeln"

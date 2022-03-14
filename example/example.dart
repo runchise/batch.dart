@@ -34,8 +34,29 @@ Job _buildTestJob1() => Job(
       ),
     )
       ..nextStep(
-        Step(name: 'Step1')
-          ..nextTask(TestTask())
+        Step(
+          name: 'Step1',
+          retryConfig: RetryConfiguration(
+            retryableExceptions: [Exception()],
+            backOff: Duration(seconds: 30),
+          ),
+        )
+          ..nextTask(
+            RetryTask(
+              // You can define callbacks for each processing phase.
+              onStarted: (context) => info(
+                  '\n--------------- RetryTask has started! ---------------'),
+              onSucceeded: (context) => info(
+                  '\n--------------- RetryTask has succeeded! ---------------'),
+              onError: (context, _error, stackTrace) => error(
+                '\n--------------- Error RetryTask ---------------',
+                _error,
+                stackTrace,
+              ),
+              onCompleted: (context) => info(
+                  '\n--------------- RetryTask has completed! ---------------'),
+            ),
+          )
           ..nextTask(SayHelloTask())
           ..nextTask(SayWorldTask()),
       )
@@ -74,20 +95,7 @@ Job _buildTestJob1() => Job(
               onCompleted: (context) => info(
                   '\n--------------- Step5 has completed! ---------------'),
             )
-              ..nextTask(TestTask(
-                // You can define callbacks for each processing phase.
-                onStarted: (context) => info(
-                    '\n--------------- TestTask has started! ---------------'),
-                onSucceeded: (context) => info(
-                    '\n--------------- TestTask has succeeded! ---------------'),
-                onError: (context, error, stackTrace) => error(
-                  '\n--------------- Error ---------------',
-                  error,
-                  stackTrace,
-                ),
-                onCompleted: (context) => info(
-                    '\n--------------- TestTask has completed! ---------------'),
-              ))
+              ..nextTask(TestTask())
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask()),
           ),
@@ -109,28 +117,14 @@ Job _buildTestJob2() => Job(
       )
       ..branchOnSucceeded(
         to: Job(name: 'Job3')
-          ..nextStep(
-            Step(name: 'Step1')
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask())
-              ..shutdown(),
-          ),
+          ..nextStep(Step(name: 'Step1')
+                ..nextTask(SayHelloTask())
+                ..nextTask(SayWorldTask())
+                ..shutdown(),
+              ),
       );
 
 class TestTask extends Task<TestTask> {
-  TestTask({
-    Function(ExecutionContext context)? onStarted,
-    Function(ExecutionContext context)? onSucceeded,
-    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
-        onError,
-    Function(ExecutionContext context)? onCompleted,
-  }) : super(
-          onStarted: onStarted,
-          onSucceeded: onSucceeded,
-          onError: onError,
-          onCompleted: onCompleted,
-        );
-
   @override
   void execute(ExecutionContext context) {
     // This parameter is shared just in this job.
@@ -164,5 +158,33 @@ class SayWorldTask extends Task<SayWorldTask> {
     info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
+  }
+}
+
+class RetryTask extends Task<RetryTask> {
+  RetryTask({
+    Function(ExecutionContext context)? onStarted,
+    Function(ExecutionContext context)? onSucceeded,
+    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
+        onError,
+    Function(ExecutionContext context)? onCompleted,
+  }) : super(
+          onStarted: onStarted,
+          onSucceeded: onSucceeded,
+          onError: onError,
+          onCompleted: onCompleted,
+        );
+
+  /// The count for retry test
+  static int count = 0;
+
+  @override
+  void execute(ExecutionContext context) {
+    if (count < 3) {
+      count++;
+      throw Exception();
+    } else {
+      count = 0;
+    }
   }
 }

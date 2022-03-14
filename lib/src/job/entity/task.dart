@@ -5,6 +5,7 @@
 // Project imports:
 import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/batch_status.dart';
+import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/entity.dart';
@@ -24,6 +25,7 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
         onError,
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
+    RetryConfiguration? retryConfig,
   }) : super(
           name: T.toString(),
           onStarted: onStarted,
@@ -31,6 +33,7 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
           onError: onError,
           onCompleted: onCompleted,
           skipConfig: skipConfig,
+          retryConfig: retryConfig,
         );
 
   /// Runs this [Task].
