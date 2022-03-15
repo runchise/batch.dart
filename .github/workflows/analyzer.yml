@@ -16,4 +16,3 @@ jobs:
       run: dart pub get
     - name: analyzer
       run: dart analyze --fatal-infos --fatal-warnings .
-  
