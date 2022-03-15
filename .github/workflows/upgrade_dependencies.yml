@@ -11,6 +11,7 @@ jobs:
   upgrade_dart_dependencies:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
     steps:
       - uses: actions/checkout@v3
       - uses: dart-lang/setup-dart@v1
@@ -34,6 +35,6 @@ jobs:
             See: https://github.com/peter-evans/create-pull-request/blob/master/docs/concepts-guidelines.md#triggering-further-workflow-runs
           branch: cron_upgrade_dart_dependencies
           delete-branch: true
-          labels: dependencies
+          labels: GitHub Actions
           assignees: myConsciousness
           reviewers: myConsciousness
