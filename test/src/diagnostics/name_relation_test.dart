@@ -20,6 +20,7 @@ void main() {
     final relation2 = NameRelation(job: 'Job', step: 'Step');
     final relation3 = NameRelation(job: 'Job', step: '_Step');
 
+    expect(relation1 == relation1, true);
     expect(relation1 == relation2, true);
     expect(relation1 == relation3, false);
   });
