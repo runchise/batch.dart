@@ -12,4 +12,4 @@ updates:
       interval: "daily"
       timezone: "Asia/Tokyo"
       time: "12:00"
-    labels: ["GitHub Actions", "dependencies"]
+    labels: ["dependabot"]
