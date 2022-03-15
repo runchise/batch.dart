@@ -11,10 +11,10 @@ import 'package:batch/src/batch_status.dart';
 void main() {
   test('Test BatchStatus', () {
     final values = BatchStatus.values;
-    expect(4, values.length);
-    expect('pending', BatchStatus.pending.name);
-    expect('running', BatchStatus.running.name);
-    expect('shuttingDown', BatchStatus.shuttingDown.name);
-    expect('shutdown', BatchStatus.shutdown.name);
+    expect(values.length, 4);
+    expect(BatchStatus.pending.name, 'pending');
+    expect(BatchStatus.running.name, 'running');
+    expect(BatchStatus.shuttingDown.name, 'shuttingDown');
+    expect(BatchStatus.shutdown.name, 'shutdown');
   });
 }

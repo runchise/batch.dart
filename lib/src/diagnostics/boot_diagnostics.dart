@@ -70,13 +70,13 @@ class _BootDiagnostics implements BootDiagnostics {
 
     if (step.hasSkipPolicy && step.hasRetryPolicy) {
       throw ArgumentError(
-          'You cannot set Skip and Retry at the same time in Step [name=${step.name}]');
+          'You cannot set Skip and Retry at the same time in Step [name=${step.name}].');
     }
 
     for (final task in step.tasks) {
       if (task.hasSkipPolicy && task.hasRetryPolicy) {
         throw ArgumentError(
-            'You cannot set Skip and Retry at the same time in Task [name=${task.name}]');
+            'You cannot set Skip and Retry at the same time in Task [name=${task.name}].');
       }
     }
 
@@ -87,7 +87,7 @@ class _BootDiagnostics implements BootDiagnostics {
 
     if (_nameRelations.has(relation)) {
       throw UniqueConstraintError(
-          'The name relations between Job and Step must be unique: [duplicatedRelation=$relation]');
+          'The name relations between Job and Step must be unique: [duplicatedRelation=$relation].');
     }
 
     _nameRelations.add(relation);

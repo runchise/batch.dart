@@ -12,22 +12,22 @@ import 'package:batch/src/batch_status.dart';
 void main() {
   test('Test singleton instance', () {
     final batchInstance = BatchInstance.instance;
-    expect(true, batchInstance == BatchInstance.instance);
+    expect(batchInstance == BatchInstance.instance, true);
   });
 
   test('Test updateStatus', () {
     final batchInstance = BatchInstance.instance;
-    expect(false, batchInstance.isRunning);
+    expect(batchInstance.isRunning, false);
 
     batchInstance.updateStatus(BatchStatus.running);
-    expect(true, batchInstance.isRunning);
+    expect(batchInstance.isRunning, true);
 
     batchInstance.updateStatus(BatchStatus.shuttingDown);
-    expect(false, batchInstance.isRunning);
-    expect(true, batchInstance.isShuttingDown);
+    expect(batchInstance.isRunning, false);
+    expect(batchInstance.isShuttingDown, true);
 
     batchInstance.updateStatus(BatchStatus.shutdown);
-    expect(false, batchInstance.isRunning);
-    expect(false, batchInstance.isShuttingDown);
+    expect(batchInstance.isRunning, false);
+    expect(batchInstance.isShuttingDown, false);
   });
 }

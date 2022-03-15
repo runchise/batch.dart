@@ -18,6 +18,6 @@ void main() {
   test('Test Runner', () {
     final runner = TestRunner();
     runner.run();
-    expect(true, runner.result);
+    expect(runner.result, true);
   });
 }
