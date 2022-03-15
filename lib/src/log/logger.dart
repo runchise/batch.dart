@@ -35,7 +35,7 @@ class Logger {
   }
 
   /// Returns the singleton instance of [Logger].
-  static get instance => _singletonInstance!;
+  static get instance => _singletonInstance;
 
   /// The singleton instance of this [Logger].
   static Logger? _singletonInstance;
