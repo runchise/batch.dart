@@ -7,7 +7,6 @@ import 'package:test/test.dart';
 
 // Project imports:
 import 'package:batch/batch.dart';
-import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/policy/retry_policy.dart';
 import 'package:batch/src/log/logger.dart';
 
