@@ -15,7 +15,7 @@ void main() {
   test('Test ShutdownTask', () {
     BatchInstance.instance.updateStatus(BatchStatus.running);
     expect(BatchInstance.instance.isRunning, true);
-    ShutdownTask().execute(ExecutionContext());
+    expect(() => ShutdownTask().execute(ExecutionContext()), returnsNormally);
     expect(BatchInstance.instance.isRunning, false);
     expect(BatchInstance.instance.isShuttingDown, true);
   });
