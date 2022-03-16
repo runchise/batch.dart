@@ -13,5 +13,5 @@ class UniqueConstraintError implements Error {
   final StackTrace? stackTrace;
 
   @override
-  String toString() => 'UniqueConstraintException: $message';
+  String toString() => 'UniqueConstraintError: $message';
 }

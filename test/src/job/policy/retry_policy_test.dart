@@ -1,0 +1,46 @@
+// Copyright (c) 2022, Kato Shinya. All rights reserved.
+// Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
+// Package imports:
+import 'package:test/test.dart';
+
+// Project imports:
+import 'package:batch/batch.dart';
+import 'package:batch/src/job/config/retry_configuration.dart';
+import 'package:batch/src/job/policy/retry_policy.dart';
+import 'package:batch/src/log/logger.dart';
+
+void main() {
+  test('Test RetryPolicy', () {
+    final retryPolicy = RetryPolicy(
+      retryConfig: RetryConfiguration(retryableExceptions: [FormatException()]),
+    );
+
+    expect(retryPolicy.shouldRetry(FormatException()), true);
+    expect(retryPolicy.shouldRetry(_TestException()), false);
+    expect(() async => await retryPolicy.wait(), returnsNormally);
+  });
+  test('Test RetryPolicy with back off', () {
+    final duration = Duration(seconds: 3);
+    final retryPolicy = RetryPolicy(
+      retryConfig: RetryConfiguration(
+        retryableExceptions: [FormatException()],
+        backOff: duration,
+        maxAttempt: 20,
+      ),
+    );
+
+    //! Required to load to run wait() with back off.
+    Logger.loadFrom(config: LogConfiguration(printLog: false));
+
+    expect(retryPolicy.shouldRetry(FormatException()), true);
+    expect(retryPolicy.shouldRetry(_TestException()), false);
+    expect(retryPolicy.isExceeded(21), true);
+    expect(retryPolicy.isExceeded(20), true);
+    expect(retryPolicy.isExceeded(19), false);
+    expect(() async => await retryPolicy.wait(), returnsNormally);
+  });
+}
+
+class _TestException implements Exception {}

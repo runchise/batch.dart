@@ -7,11 +7,15 @@ import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
 // Project imports:
+import 'package:batch/src/batch_instance.dart';
+import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/entity/task.dart';
 import 'package:batch/src/job/execution.dart';
+import 'package:batch/src/log/log_configuration.dart';
+import 'package:batch/src/log/logger.dart';
 
 void main() {
   test('Test Task', () async {
@@ -58,5 +62,15 @@ class _Task extends Task<_Task> {
   void execute(ExecutionContext context) {
     expect(context.jobExecution != null, true);
     expect(context.jobExecution!.name, 'test');
+
+    BatchInstance.instance.updateStatus(BatchStatus.running);
+    expect(BatchInstance.instance.isRunning, true);
+
+    //! Required to load to run super.shutdown().
+    Logger.loadFrom(config: LogConfiguration(printLog: false));
+
+    expect(() => super.shutdown(), returnsNormally);
+    expect(BatchInstance.instance.isRunning, false);
+    expect(BatchInstance.instance.isShuttingDown, true);
   }
 }
