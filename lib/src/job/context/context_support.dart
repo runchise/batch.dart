@@ -47,19 +47,16 @@ abstract class ContextSupport<T extends Entity<T>> {
   }
 
   void finishExecutionAsCompleted({
-    required String name,
     required bool retry,
   }) =>
-      _finishExecution(name: name, status: ProcessStatus.skipped, retry: retry);
+      _finishExecution(status: ProcessStatus.completed, retry: retry);
 
   void finishExecutionAsSkipped({
-    required String name,
     required bool retry,
   }) =>
-      _finishExecution(name: name, status: ProcessStatus.skipped, retry: retry);
+      _finishExecution(status: ProcessStatus.skipped, retry: retry);
 
   void _finishExecution({
-    required String name,
     required ProcessStatus status,
     required bool retry,
   }) {
@@ -70,15 +67,15 @@ abstract class ContextSupport<T extends Entity<T>> {
     if (T == Job) {
       context.jobExecution = _finishedExecution(status: status);
       info(
-          'Job:  [name=$name] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${status.name}]');
+          'Job:  [name=${context.jobExecution!.name}] finished with the following shared parameters: ${SharedParameters.instance} and the status: [${status.name}]');
     } else if (T == Step) {
       context.stepExecution = _finishedExecution(status: status);
       info(
-          'Step: [name=$name] finished with the following job parameters: ${context.jobParameters} and the status: [${status.name}]');
+          'Step: [name=${context.stepExecution!.name}] finished with the following job parameters: ${context.jobParameters} and the status: [${status.name}]');
     } else {
       context.taskExecution = _finishedExecution(status: status);
       info(
-          'Task: [name=$name] finished with the following step parameters: ${context.stepParameters} and the status: [${status.name}]');
+          'Task: [name=${context.taskExecution!.name}] finished with the following step parameters: ${context.stepParameters} and the status: [${status.name}]');
     }
   }
 

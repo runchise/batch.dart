@@ -7,11 +7,11 @@ import 'package:batch/src/job/parameter/parameter.dart';
 
 class Parameters {
   /// The objects
-  final objects = <Parameter>[];
+  final _objects = <Parameter>[];
 
   /// Returns the parameter value associated with [key].
   dynamic operator [](final String key) {
-    for (final parameter in objects) {
+    for (final parameter in _objects) {
       if (parameter.key == key) {
         return parameter.value;
       }
@@ -22,11 +22,17 @@ class Parameters {
 
   /// Adds [value] as a parameter associated with [key].
   void operator []=(final String key, final dynamic value) =>
-      objects.add(Parameter(key: key, value: value));
+      _objects.add(Parameter(key: key, value: value));
 
   /// Removes all parameters.
-  void removeAll() => objects.removeRange(0, objects.length);
+  void removeAll() => _objects.removeRange(0, _objects.length);
+
+  // Returns true if this object has no parameter, otherwise false.
+  bool get isEmpty => _objects.isEmpty;
+
+  /// Returns true if this object has parameter, otherwise false.
+  bool get isNotEmpty => _objects.isNotEmpty;
 
   @override
-  String toString() => objects.toString();
+  String toString() => _objects.toString();
 }

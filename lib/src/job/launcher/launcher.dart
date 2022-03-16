@@ -34,14 +34,14 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
 
     if (!await entity.shouldLaunch()) {
       log.info('Skipped ${entity.name} because the precondition is not met.');
-      super.finishExecutionAsSkipped(name: entity.name, retry: retry);
+      super.finishExecutionAsSkipped(retry: retry);
       return true;
     }
 
     if (BatchInstance.instance.isShuttingDown) {
       log.info(
           'Skipped ${entity.name} because this batch application is shutting down.');
-      super.finishExecutionAsSkipped(name: entity.name, retry: retry);
+      super.finishExecutionAsSkipped(retry: retry);
       return true;
     }
 
@@ -61,7 +61,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
       }
 
       _retryCount = 0;
-      super.finishExecutionAsCompleted(name: entity.name, retry: retry);
+      super.finishExecutionAsCompleted(retry: retry);
 
       return true;
     } catch (error, stackTrace) {
@@ -77,7 +77,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             stackTrace,
           );
 
-          super.finishExecutionAsSkipped(name: entity.name, retry: retry);
+          super.finishExecutionAsSkipped(retry: retry);
 
           return true;
         } else if (entity.hasRetryPolicy &&
@@ -107,7 +107,7 @@ abstract class Launcher<T extends Entity<T>> extends ContextSupport<T>
             retry: true,
           )) {
             if (!retry) {
-              super.finishExecutionAsCompleted(name: entity.name, retry: retry);
+              super.finishExecutionAsCompleted(retry: retry);
             }
 
             return true;
