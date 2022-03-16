@@ -35,7 +35,7 @@ class _RetryPolicy implements RetryPolicy {
       return;
     }
 
-    warn('Wait ${retryConfig.backOff} before execute retry');
+    warn('Wait [duration=${retryConfig.backOff}] before execute retry');
     await Future.delayed(retryConfig.backOff!);
   }
 

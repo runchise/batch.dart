@@ -12,7 +12,7 @@ class Parameters {
   /// Returns the parameter value associated with [key].
   dynamic operator [](final String key) {
     if (!contains(key)) {
-      throw ArgumentError('There is no parameter associated with $key.');
+      throw ArgumentError('There is no parameter associated with [key=$key].');
     }
 
     for (final parameter in _objects) {

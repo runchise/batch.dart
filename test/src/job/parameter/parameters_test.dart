@@ -26,7 +26,7 @@ void main() {
         allOf(
           isA<ArgumentError>(),
           predicate((dynamic e) =>
-              e.message == 'There is no parameter associated with test.'),
+              e.message == 'There is no parameter associated with [key=test].'),
         ),
       ),
     );
