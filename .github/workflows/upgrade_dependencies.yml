@@ -4,8 +4,7 @@ name: Upgrade Dart Dependencies
 
 on:
   schedule:
-    - cron: '0 1 * * *'
-  workflow_dispatch:
+    - cron: '0 3 * * *'
 
 jobs:
   upgrade_dart_dependencies:
