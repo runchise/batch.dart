@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.5.1
+
+- Improved coloring process for log output. Added `logColor` field to `LogOutput` and modified the class `ConsoleLogOutput` to get the console color. ([#31](https://github.com/batch-dart/batch.dart/issues/31))
+
 ## v0.5.0
 
 ### New Features

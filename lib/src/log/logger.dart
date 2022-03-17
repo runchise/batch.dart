@@ -22,13 +22,13 @@ class Logger {
   })  : _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
         _output = config.output ?? ConsoleLogOutput(),
-        _color = config.color ?? LogColor(),
         _printLog = config.printLog {
     _filter.init();
     _printer.init();
     _output.init();
 
     _filter.level = config.level ?? LogLevel.trace;
+    _output.logColor = config.color ?? LogColor();
 
     // Holds the Logger instance.
     _singletonInstance = this;
@@ -48,9 +48,6 @@ class Logger {
 
   /// The output
   final LogOutput _output;
-
-  /// The color
-  final LogColor _color;
 
   /// The flag represents this logger should print log or not
   final bool _printLog;
@@ -119,7 +116,7 @@ class Logger {
       if (output.isNotEmpty) {
         final outputEvent = OutputLogEvent(
           level: level,
-          lines: output.map((message) => _color[level](message)).toList(),
+          lines: output,
         );
 
         try {

@@ -27,7 +27,7 @@ void main() {
   });
 }
 
-class _LogOutput implements LogOutput {
+class _LogOutput extends LogOutput {
   @override
   void init() {}
 
