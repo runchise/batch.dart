@@ -2,15 +2,17 @@ name: Analyzer
 
 on:
   push:
-    branches: [ main ]
+    # staging and trying branches are for Bors config
+    branches: [ main, staging, trying ]
   pull_request:
-    # staging, and trying branches are for Bors config
+    # staging and trying branches are for Bors config
     branches: [ main, staging, trying ]
   schedule:
     - cron: '0 3 * * *'
 
 jobs:
   analyze:
+    name: analyzer
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3

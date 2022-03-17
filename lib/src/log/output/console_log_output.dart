@@ -11,5 +11,8 @@ import 'package:batch/src/log/output_log_event.dart';
 /// It sends everything to the system console.
 class ConsoleLogOutput extends LogOutput {
   @override
-  void output(final OutputLogEvent event) => event.lines.forEach(print);
+  void output(final OutputLogEvent event) => event.lines
+      .map((message) => logColor![event.level](message))
+      .toList()
+      .forEach(print);
 }
