@@ -1,6 +1,6 @@
 # Release Note
 
-## 0.5.0
+## v0.5.0
 
 ### New Features
 
@@ -13,7 +13,7 @@
 - Precondition callback now supports asynchronous processing. ([#21](https://github.com/batch-dart/batch.dart/issues/21))
 - Callbacks (onStarted, onSucceeded, onError, onCompleted) now support asynchronous processing. ([#23](https://github.com/batch-dart/batch.dart/issues/23))
 
-## 0.4.0
+## v0.4.0
 
 ### New Features
 
@@ -26,7 +26,7 @@
 
 - Changed to define `Precondition` as an anonymous function.
 
-## 0.3.0
+## v0.3.0
 
 ### New Features
 
@@ -38,7 +38,7 @@
 
 - Changed the type of the argument when specifying `Job` scheduling. Now you can use `CronParser` to specify the schedule in Cron format.
 
-## 0.2.1
+## v0.2.1
 
 ### New Features
 
@@ -49,7 +49,7 @@
 
 - Deleted `DevelopmentLogFilter` and `ProductionLogFilter`.
 
-## 0.2.0
+## v0.2.0
 
 ### New Features
 
@@ -62,11 +62,11 @@
 - Refactored the structure, made `JobLauncher` private and released `BatchApplication` as new entry point.
 - Added ExecutionContext as an argument to the execute method of the Task class.
 
-## 0.1.0
+## v0.1.0
 
 - Improved documents.
 - Wrapped the return value of execute with `Future` to allow asynchronous processing in `Task`. Asynchronous processing defined in `Task` is safely controlled by the `batch` library, so you don't need to be aware of it when running `JobLauncher`.
 
-## 0.0.1
+## v0.0.1
 
 - First Release!
