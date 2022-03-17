@@ -1,5 +1,5 @@
 status = [
-    'run test',
+    'test',
     'analyzer'
 ]
 
