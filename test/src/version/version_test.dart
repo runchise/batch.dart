@@ -2,10 +2,14 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Dart imports:
 import 'dart:io';
 
-import 'package:batch/src/version.dart';
+// Package imports:
 import 'package:test/test.dart';
+
+// Project imports:
+import 'package:batch/src/version/version.dart';
 
 void main() {
   final versionRegex = RegExp(
@@ -19,6 +23,5 @@ void main() {
 
     expect(version != null, true);
     expect(Version().current, version);
-    expect(Version().qualifiedVersion, 'batch.dart (v$version)');
   });
 }

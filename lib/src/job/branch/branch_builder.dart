@@ -3,9 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
+import 'package:batch/src/builder.dart';
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/builder/builder.dart';
 import 'package:batch/src/job/entity/entity.dart';
 
 class BranchBuilder<T extends Entity<T>> extends Builder<Branch<T>> {

@@ -104,7 +104,7 @@ class _BatchApplication implements BatchApplication {
       Logger.loadFrom(config: _logConfig ?? LogConfiguration());
 
       info(
-        '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner.layout}',
+        '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner().build()}',
       );
 
       info('Logger instance has completed loading');

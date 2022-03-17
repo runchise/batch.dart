@@ -7,8 +7,8 @@ import 'dart:async';
 
 // Project imports:
 import 'package:batch/src/job/branch/branch.dart';
+import 'package:batch/src/job/branch/branch_builder.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/builder/branch_builder.dart';
 import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';

@@ -2,13 +2,39 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-class Banner {
-  /// Set it to private because there is no need to create an instance.
-  Banner._();
+// Project imports:
+import 'package:batch/src/builder.dart';
+import 'package:batch/src/version/version.dart';
 
-  /// The banner layout
-  static const layout = '''
--------------------------------------------------------------------------------------------------------------------------------------------
+abstract class Banner implements Builder<String> {
+  /// Returns the new instance of [Banner].
+  factory Banner() => _Banner();
+
+  /// Returns the line.
+  String get line;
+
+  /// Returns the logo.
+  String get logo;
+
+  /// Returns the description of library.
+  String get description;
+
+  /// Returns the credit.
+  String get credit;
+}
+
+class _Banner implements Banner {
+  @override
+  String build() {
+    return '$line\n$logo\n$line\n${description.padLeft(description.length + 36)}\n$line\n\n$credit\n\n$line\n';
+  }
+
+  @override
+  String get line =>
+      '-------------------------------------------------------------------------------------------------------------------------------------------';
+
+  @override
+  final String logo = '''
           _____                    _____                _____                    _____                    _____
          /\\    \\                  /\\    \\              /\\    \\                  /\\    \\                  /\\    \\
         /::\\    \\                /::\\    \\            /::\\    \\                /::\\    \\                /::\\____\\
@@ -30,15 +56,14 @@ class Banner {
        \\::::/    /               /:::/    /                                   \\:::\\____\\                /:::/    /
         \\::/____/                \\::/    /                                     \\::/    /                \\::/    /
          ~~                       \\/____/                                       \\/____/                  \\/____/
-
--------------------------------------------------------------------------------------------------------------------------------------------
-                                       A lightweight and powerful Job Scheduling Framework.
--------------------------------------------------------------------------------------------------------------------------------------------
-
-  Version: 0.5.1
-  License: BSD 3-Clause
-  Author : Kato Shinya (https://github.com/myConsciousness)
-
--------------------------------------------------------------------------------------------------------------------------------------------
 ''';
+
+  @override
+  String get description =>
+      'A lightweight and powerful Job Scheduling Framework.';
+
+  @override
+  String get credit => '''  Version: ${Version().current}
+  License: BSD 3-Clause
+  Author : Kato Shinya (https://github.com/myConsciousness)''';
 }

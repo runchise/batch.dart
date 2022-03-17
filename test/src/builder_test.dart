@@ -6,7 +6,7 @@
 import 'package:test/test.dart';
 
 // Project imports:
-import 'package:batch/src/job/builder/builder.dart';
+import 'package:batch/src/builder.dart';
 
 void main() {
   test('Test Builder', () {

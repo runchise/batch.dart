@@ -6,8 +6,8 @@
 import 'package:test/test.dart';
 
 // Project imports:
+import 'package:batch/src/job/branch/branch_builder.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/builder/branch_builder.dart';
 import 'package:batch/src/job/entity/job.dart';
 
 void main() {
