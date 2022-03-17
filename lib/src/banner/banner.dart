@@ -35,7 +35,7 @@ class Banner {
                                        A lightweight and powerful Job Scheduling Framework.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-  Version: 0.5.0
+  Version: 0.5.1
   License: BSD 3-Clause
   Author : Kato Shinya (https://github.com/myConsciousness)
 

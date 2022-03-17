@@ -15,7 +15,7 @@ abstract class Version {
 
 class _Version implements Version {
   @override
-  final String current = '0.5.0';
+  final String current = '0.5.1';
 
   @override
   String get qualifiedVersion => "batch.dart (v$current)";
