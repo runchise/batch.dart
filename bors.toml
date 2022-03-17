@@ -1,0 +1,7 @@
+status = [
+    'run test',
+    'analyzer'
+]
+
+# 1 hour timeout
+timeout-sec = 3600
