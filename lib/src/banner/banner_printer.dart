@@ -24,8 +24,8 @@ class _BannerPrinter implements BannerPrinter {
   ╔════════════════════════════════════════════════════════════════════════════╗
   ║ A new version of batch is available!                                       ║
   ║                                                                            ║
-  ║ See the latest release at https://pub.dev/packages/batch                   ║
-  ║ Or to update to the latest version, run "dart pub upgrade"                 ║
+  ║ * See the latest release at https://pub.dev/packages/batch                 ║
+  ║ * Or to update to the latest version, run "dart pub upgrade"               ║
   ╚════════════════════════════════════════════════════════════════════════════╝
 ''';
 
