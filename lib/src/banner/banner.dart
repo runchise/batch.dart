@@ -3,10 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/builder.dart';
 import 'package:batch/src/version/version.dart';
 
-abstract class Banner implements Builder<String> {
+abstract class Banner {
   /// Returns the new instance of [Banner].
   factory Banner() => _Banner();
 
@@ -24,11 +23,6 @@ abstract class Banner implements Builder<String> {
 }
 
 class _Banner implements Banner {
-  @override
-  String build() {
-    return '$line\n$logo\n$line\n${description.padLeft(description.length + 36)}\n$line\n\n$credit\n\n$line\n';
-  }
-
   @override
   String get line =>
       '-------------------------------------------------------------------------------------------------------------------------------------------';

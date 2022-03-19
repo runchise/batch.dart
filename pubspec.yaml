@@ -9,6 +9,8 @@ environment:
 dependencies:
   clock: ^1.1.0
   console_color: ^1.0.0
+  http: ^0.13.4
+  json_response: ^2.3.2
 
 dev_dependencies:
   lints: ^1.0.1

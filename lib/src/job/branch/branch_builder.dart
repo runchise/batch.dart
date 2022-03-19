@@ -3,12 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/builder.dart';
 import 'package:batch/src/job/branch/branch.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/entity/entity.dart';
 
-class BranchBuilder<T extends Entity<T>> extends Builder<Branch<T>> {
+class BranchBuilder<T extends Entity<T>> {
   /// The status as a basis for this branching
   BranchStatus? _on;
 
@@ -27,7 +26,6 @@ class BranchBuilder<T extends Entity<T>> extends Builder<Branch<T>> {
     return this;
   }
 
-  @override
   Branch<T> build() {
     if (_on == null) {
       throw ArgumentError('Set the branch status for this branch.');

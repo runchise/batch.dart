@@ -4,6 +4,7 @@
 
 // Project imports:
 import 'package:batch/src/banner/banner.dart';
+import 'package:batch/src/banner/banner_printer.dart';
 import 'package:batch/src/diagnostics/boot_diagnostics.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
@@ -97,16 +98,15 @@ class _BatchApplication implements BatchApplication {
       SharedParameters.instance[key] = value;
 
   @override
-  void run() {
+  void run() async {
     try {
       //! The logging functionality provided by the batch library
       //! will be available when this loading process is complete.
       Logger.loadFrom(config: _logConfig ?? LogConfiguration());
 
-      info(
-        '🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀\n${Banner().build()}',
-      );
+      await BannerPrinter(banner: Banner()).execute();
 
+      info('🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀');
       info('Logger instance has completed loading');
 
       BootDiagnostics(jobs: _jobs).run();
