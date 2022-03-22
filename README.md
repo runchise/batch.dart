@@ -212,9 +212,20 @@ Use of this source code is governed by a
 BSD-style license that can be found in the LICENSE file.
 ```
 
+Or for contributors and collaborators.
+
+```license
+Copyright (c) 2022, the batch.dart project authors. All rights reserved.
+Use of this source code is governed by a
+BSD-style license that can be found in the LICENSE file.
+```
+
+> Note:
+> License notices in the source are strictly validated based on `.github/header-checker-lint.yml`. Please check [header-checker-lint.yml](https://github.com/batch-dart/batch.dart/tree/main/.github/header-checker-lint.yml) for the permitted standards.
+
 ## 1.7. More Information
 
-`Batch` was designed and implemented by **_Kato Shinya_**.
+`batch.dart` was designed and implemented by **_Kato Shinya_**.
 
 - [Creator Profile](https://github.com/batch-dart)
 - [License](https://github.com/batch-dart/batch.dart/blob/main/LICENSE)
