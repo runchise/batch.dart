@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 // Project imports:
 import 'package:batch/src/banner/default_banner.dart';
+import 'package:batch/src/version/version.dart';
 
 void main() {
   test('Test DefaultBanner', () {
@@ -43,7 +44,7 @@ const _builtBanner = '''
                                     A lightweight and powerful Job Scheduling Framework.
 -------------------------------------------------------------------------------------------------------------------------------------------
 
-  Version: 0.5.1
+  Version: ${Version.current}
   License: BSD 3-Clause
   Author : Kato Shinya (https://github.com/myConsciousness)
 
