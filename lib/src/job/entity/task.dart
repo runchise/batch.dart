@@ -42,6 +42,6 @@ abstract class Task<T extends Task<T>> extends Entity<Task> {
   /// Shutdown this batch application safely.
   void shutdown() {
     BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
-    info('The shutdown command was notified by Task: [name=${T.toString()}]');
+    warn('The shutdown command was notified by Task: [name=${T.toString()}]');
   }
 }
