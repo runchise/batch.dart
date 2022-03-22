@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Checking if current tag matches the package version
-current_tag=$(echo $GITHUB_REF | tr -d 'refs/tags/v')
+current_tag=$(echo "$GITHUB_REF" | sed -e 's%refs/tags/v%%g')
 
 file1='pubspec.yaml'
-file2='lib/src/version.dart'
+file2='lib/src/version/version.dart'
 changelog_file='CHANGELOG.md'
 ret=0
 
@@ -17,10 +17,12 @@ if [ "$current_tag" != "$file_tag1" ] || [ "$current_tag" != "$file_tag2" ]; the
   ret=1
 fi
 
+check_changelog () {
 # Checking the CHANGELOG file was updated
 grep -q "$current_tag" "$changelog_file"
+}
 
-if [ "$?" -ne 0 ]; then
+if ! check_changelog; then
   echo "There is no description of the $current_tag release in $changelog_file"
   ret=1
 fi
