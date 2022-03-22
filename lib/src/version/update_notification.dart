@@ -7,7 +7,6 @@ import 'package:meta/meta.dart';
 
 // Project imports:
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/version/version.dart';
 import 'package:batch/src/version/version_status.dart';
 
 abstract class UpdateNotification {
