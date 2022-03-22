@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // Project imports:
-import 'package:batch/src/banner/banner.dart';
 import 'package:batch/src/banner/banner_printer.dart';
+import 'package:batch/src/banner/default_banner.dart';
 import 'package:batch/src/diagnostics/boot_diagnostics.dart';
 import 'package:batch/src/job/entity/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
@@ -13,6 +13,8 @@ import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
+import 'package:batch/src/version/update_notification.dart';
+import 'package:batch/src/version/version.dart';
 
 /// This is a batch application that manages the execution of arbitrarily defined jobs
 /// with own lifecycle.
@@ -104,7 +106,8 @@ class _BatchApplication implements BatchApplication {
       //! will be available when this loading process is complete.
       Logger.loadFrom(config: _logConfig ?? LogConfiguration());
 
-      await BannerPrinter(banner: Banner()).execute();
+      await BannerPrinter(banner: DefaultBanner()).execute();
+      await UpdateNotification().printIfNecessary(await Version().status);
 
       info('🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀');
       info('Logger instance has completed loading');

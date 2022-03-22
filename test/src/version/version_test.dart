@@ -12,16 +12,21 @@ import 'package:test/test.dart';
 import 'package:batch/src/version/version.dart';
 
 void main() {
-  final versionRegex = RegExp(
-      r"version\:.(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?");
-
   test('Matches with the current package version in pubspec.yaml', () {
+    final versionRegex = RegExp(
+        r"version\:.(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?");
+
     final path = '${Directory.current.path}/pubspec.yaml';
     String data = File(path).readAsStringSync();
     String? version =
         versionRegex.stringMatch(data)?.replaceFirst('version: ', '');
 
     expect(version != null, true);
-    expect(Version().current, version);
+    expect(Version.current, version);
+  });
+
+  test('Test get status when network is connected', () async {
+    final status = await Version().status;
+    expect(status, isNotNull);
   });
 }

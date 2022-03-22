@@ -2,22 +2,28 @@
 // Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// Package imports:
+import 'package:json_response/json_response.dart';
+import 'package:meta/meta.dart';
+
+// Project imports:
+import 'package:batch/src/version/version.dart';
+
 abstract class VersionStatus {
   /// Returns the new instance of [VersionStatus].
-  factory VersionStatus({
-    required String currentVersion,
-    required String latestVersion,
-  }) =>
-      _VersionStatus(
-        currentVersion: currentVersion,
-        latestVersion: latestVersion,
+  factory VersionStatus.fromJson({required Json json}) => _VersionStatus(
+        version: json.getString(
+          key: latestVersionKey,
+          defaultValue: Version.current,
+        ),
       );
 
-  /// Returns the current version.
-  String get currentVersion;
+  /// Returns the new instance of [VersionStatus] as the latest.
+  factory VersionStatus.asLatest() => _VersionStatus(version: Version.current);
 
-  /// Returns the latest version.
-  String get latestVersion;
+  /// The key for version in JSON response
+  @visibleForTesting
+  static const latestVersionKey = 'latestStableVersion';
 
   /// Returns true if this library is the latest, otherwise false.
   bool get isLatest;
@@ -25,16 +31,8 @@ abstract class VersionStatus {
 
 class _VersionStatus implements VersionStatus {
   /// Returns the new instance of [_VersionStatus].
-  _VersionStatus({
-    required this.currentVersion,
-    required this.latestVersion,
-  }) : isLatest = currentVersion == latestVersion;
-
-  @override
-  final String currentVersion;
-
-  @override
-  final String latestVersion;
+  _VersionStatus({required String version})
+      : isLatest = Version.current == version;
 
   @override
   final bool isLatest;
