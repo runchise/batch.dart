@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.6.0
+
+- Added the feature to log notifications at application startup when there are library updates. ([#32](https://github.com/batch-dart/batch.dart/issues/32))
+
 ## v0.5.1
 
 - Improved coloring process for log output. Added `logColor` field to `LogOutput` and modified the class `ConsoleLogOutput` to get the console color. ([#31](https://github.com/batch-dart/batch.dart/issues/31))
