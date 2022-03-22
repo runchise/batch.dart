@@ -3,6 +3,7 @@
 ## v0.6.0
 
 - Added the feature to log notifications at application startup when there are library updates. ([#32](https://github.com/batch-dart/batch.dart/issues/32))
+- Changed the log level of the system log regarding application shutdown from `info` to `warn`. ([#45](https://github.com/batch-dart/batch.dart/issues/45))
 
 ## v0.5.1
 

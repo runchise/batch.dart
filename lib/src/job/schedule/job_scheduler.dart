@@ -95,14 +95,14 @@ class JobScheduler implements Runner {
   }
 
   void _dispose() {
-    info('Preparing for shutdown the batch application safely');
+    warn('Preparing for shutdown the batch application safely');
 
     for (final scheduledTask in _scheduledTasks) {
       scheduledTask.dispose();
     }
 
-    info('Allocation memory is releasing');
-    info('Shutdown the batch application');
+    warn('Allocation memory is releasing');
+    warn('Shutdown the batch application');
     Logger.instance.dispose();
     BatchInstance.instance.updateStatus(BatchStatus.shutdown);
   }
