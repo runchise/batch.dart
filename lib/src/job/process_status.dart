@@ -1,6 +1,6 @@
-// Copyright (c) 2022, Kato Shinya. All rights reserved.
-// Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
+// Copyright 2022 Kato Shinya. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided the conditions.
 
 /// The enum represents status of batch processing.
 enum ProcessStatus {
