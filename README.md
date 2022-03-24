@@ -208,11 +208,9 @@ Developer will respond to issues and review pull requests as quickly as possible
 ## 1.6. License
 
 ```license
-Copyright (c) 2022, Kato Shinya
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided the conditions.
+Copyright 2022 Kato Shinya. All rights reserved.
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided the conditions.
 ```
 
 > Note:

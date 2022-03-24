@@ -1,10 +1,6 @@
-// Copyright (c) 2022, Kato Shinya
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without modification,
-// are permitted provided the conditions.
-//
-// See more details at https://github.com/batch-dart/batch.dart/blob/main/LICENSE
+// Copyright 2022 Kato Shinya. All rights reserved.
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided the conditions.
 
 // Project imports:
 import 'package:batch/src/job/error/schedule_parse_error.dart';
