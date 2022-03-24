@@ -11,6 +11,7 @@ A lightweight and powerful Job Scheduling Framework.
 ---
 
 [![pub package](https://img.shields.io/pub/v/batch.svg?logo=dart&logoColor=00b9fc)](https://pub.dartlang.org/packages/batch)
+[![Dart SDK Version](https://badgen.net/pub/sdk-version/batch)](https://pub.dev/packages/batch/)
 [![Test](https://github.com/batch-dart/batch.dart/actions/workflows/test.yml/badge.svg)](https://github.com/batch-dart/batch.dart/actions/workflows/test.yml)
 [![Analyzer](https://github.com/batch-dart/batch.dart/actions/workflows/analyzer.yml/badge.svg)](https://github.com/batch-dart/batch.dart/actions/workflows/analyzer.yml)
 [![codecov](https://codecov.io/gh/batch-dart/batch.dart/branch/main/graph/badge.svg?token=J5GT1PF9Y3)](https://codecov.io/gh/batch-dart/batch.dart)
