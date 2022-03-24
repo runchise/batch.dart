@@ -2,23 +2,23 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-// Dart imports:
-import 'dart:async';
-
 // Project imports:
+import 'package:batch/src/batch_instance.dart';
+import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/entity/entity.dart';
-import 'package:batch/src/job/entity/task.dart';
-import 'package:batch/src/job/task/shutdown_task.dart';
+import 'package:batch/src/job/event/event.dart';
+import 'package:batch/src/log/logger_provider.dart';
 
-/// This class represents the processing of each step that constitutes a job in batch processing.
-class Step extends Entity<Step> {
-  /// Returns the new instance of [Step].
-  Step({
-    required String name,
-    FutureOr<bool> Function()? precondition,
+/// This abstract class represents the smallest unit of processing that is
+/// included in the steps when a job is executed.
+///
+/// The processing of each step of the job should be defined by overriding
+/// [execute] in a class that inherits from this [Task].
+abstract class Task<T extends Task<T>> extends Event<Task> {
+  /// Returns the new instance of [Task].
+  Task({
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
@@ -27,24 +27,21 @@ class Step extends Entity<Step> {
     SkipConfiguration? skipConfig,
     RetryConfiguration? retryConfig,
   }) : super(
-          name: name,
-          precondition: precondition,
+          name: T.toString(),
           onStarted: onStarted,
-          onError: onError,
           onSucceeded: onSucceeded,
+          onError: onError,
           onCompleted: onCompleted,
           skipConfig: skipConfig,
           retryConfig: retryConfig,
         );
 
-  /// The tasks
-  final List<Task> tasks = [];
+  /// Runs this [Task].
+  void execute(final ExecutionContext context);
 
-  /// Adds next [Task].
-  ///
-  /// Tasks added by this [nextTask] method are executed in the order in which they are stored.
-  void nextTask(final Task task) => tasks.add(task);
-
-  /// Add a task to shutdown this application.
-  void shutdown() => tasks.add(ShutdownTask());
+  /// Shutdown this batch application safely.
+  void shutdown() {
+    BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
+    warn('The shutdown command was notified by Task: [name=${T.toString()}]');
+  }
 }
