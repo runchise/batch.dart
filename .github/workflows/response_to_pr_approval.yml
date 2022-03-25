@@ -22,4 +22,4 @@ jobs:
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{github.event.pull_request.number}}
-          body: 'Pull request approved! bors merge'
+          body: 'bors merge'
