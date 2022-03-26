@@ -2,6 +2,9 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Package imports:
+import 'package:args/args.dart';
+
 // Project imports:
 import 'package:batch/src/banner/banner_printer.dart';
 import 'package:batch/src/banner/default_banner.dart';
@@ -66,8 +69,8 @@ import 'package:batch/src/version/version.dart';
 /// ```
 abstract class BatchApplication implements Runner {
   /// Returns the new instance of [BatchApplication].
-  factory BatchApplication({LogConfiguration? logConfig}) =>
-      _BatchApplication(logConfig: logConfig);
+  factory BatchApplication({ArgResults? args, LogConfiguration? logConfig}) =>
+      _BatchApplication(args: args, logConfig: logConfig);
 
   /// Adds [Job].
   void addJob(final Job job);
@@ -81,7 +84,12 @@ abstract class BatchApplication implements Runner {
 
 class _BatchApplication implements BatchApplication {
   /// Returns the new instance of [_BatchApplication].
-  _BatchApplication({LogConfiguration? logConfig}) : _logConfig = logConfig;
+  _BatchApplication({ArgResults? args, LogConfiguration? logConfig})
+      : _args = args,
+        _logConfig = logConfig;
+
+  /// The parsed args
+  final ArgResults? _args;
 
   /// The configuration for logging
   final LogConfiguration? _logConfig;
@@ -113,6 +121,13 @@ class _BatchApplication implements BatchApplication {
       info('Logger instance has completed loading');
 
       BootDiagnostics(jobs: _jobs).run();
+
+      if (_args != null) {
+        for (final option in _args!.options) {
+          addSharedParameter(key: option, value: _args![option]);
+        }
+      }
+
       JobScheduler(jobs: _jobs).run();
     } catch (e) {
       Logger.instance.dispose();

@@ -5,6 +5,7 @@
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication(
+      args: _argParser.parse(args),
       logConfig: LogConfiguration(
         level: LogLevel.trace,
         output: ConsoleLogOutput(),
@@ -17,11 +18,22 @@ void main(List<String> args) => BatchApplication(
       // You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..addJob(_buildTestJob1())
-      ..addJob(_buildTestJob2())
+      ..addJob(_testJob1)
+      ..addJob(_testJob2)
       ..run();
 
-Job _buildTestJob1() => Job(
+ArgParser get _argParser {
+  // The well-known "args" library can be used as standard.
+  // See more information about "args" at https://pub.dev/packages/args.
+  final parser = ArgParser();
+  parser.addOption('userName', abbr: 'u');
+  parser.addOption('appName', abbr: 'a');
+  parser.addFlag('release', abbr: 'r', defaultsTo: false);
+
+  return parser;
+}
+
+Job get _testJob1 => Job(
       name: 'Job1',
       schedule: CronParser(value: '*/1 * * * *'),
       // You can define callbacks for each processing phase.
@@ -101,7 +113,7 @@ Job _buildTestJob1() => Job(
           ),
       );
 
-Job _buildTestJob2() => Job(
+Job get _testJob2 => Job(
       name: 'Job2',
       schedule: CronParser(value: '*/2 * * * *'),
       // You can set any preconditions to run Job.
