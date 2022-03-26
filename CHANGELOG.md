@@ -5,6 +5,7 @@
 - Added the feature to log notifications at application startup when there are library updates. ([#32](https://github.com/batch-dart/batch.dart/issues/32))
 - Changed the log level of the system log regarding application shutdown from `info` to `warn`. ([#45](https://github.com/batch-dart/batch.dart/issues/45))
 - Standardized notation regarding licenses. ([#44](https://github.com/batch-dart/batch.dart/issues/44))
+- Command line arguments can now be easily passed to batch applications. Command line arguments can be used throughout the framework lifecycle as `SharedParameters`. ([#13](https://github.com/batch-dart/batch.dart/issues/13))
 
 ## v0.5.1
 

@@ -2,6 +2,10 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Third parties
+export 'package:args/args.dart';
+export 'package:console_color/console_color.dart' show ConsoleColor;
+
 // Main feature
 export 'package:batch/src/batch_application.dart';
 
@@ -25,4 +29,3 @@ export 'package:batch/src/log/filter/log_filter.dart';
 export 'package:batch/src/log/output/console_log_output.dart';
 export 'package:batch/src/log/output/file_log_output.dart';
 export 'package:batch/src/log/color/log_color.dart';
-export 'package:console_color/console_color.dart' show ConsoleColor;
