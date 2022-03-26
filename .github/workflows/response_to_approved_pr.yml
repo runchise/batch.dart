@@ -1,4 +1,4 @@
-name: Response to PR approval
+name: Response to approved PR
 
 on:
   pull_request_review:
@@ -15,11 +15,20 @@ jobs:
         with:
           issue-number: ${{github.event.pull_request.number}}
           comment-author: 'github-actions[bot]'
-          body-includes: 'bors merge'
+          body-includes: 'Congratulations, this pull request has been approved and is ready for merging!'
 
       - name: Comment
         if: steps.find-last-comment.outputs.comment-id == ''
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{github.event.pull_request.number}}
-          body: 'bors merge'
+          body: 'Congratulations, this pull request has been approved and is ready for merging!'
+
+  remove_label:
+    if: github.event.review.state == 'approved' && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-remove-labels@v1
+        with:
+          labels: do not merge yet
