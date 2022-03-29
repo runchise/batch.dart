@@ -12,7 +12,7 @@ import 'package:async_task/async_task.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
 
-class ParallelExecutor extends AsyncTask<void, void> {
+class ParallelExecutor extends AsyncTask<String, void> {
   /// Returns the new instance of [ParallelExecutor].
   ParallelExecutor({required this.parallelTask});
 
@@ -20,13 +20,15 @@ class ParallelExecutor extends AsyncTask<void, void> {
   final ParallelTask parallelTask;
 
   @override
-  AsyncTask<void, void> instantiate(void parameters,
+  AsyncTask<String, void> instantiate(String parameters,
       [Map<String, SharedData>? sharedData]) {
     return this;
   }
 
   @override
-  void parameters() {}
+  String parameters() {
+    return '';
+  }
 
   @override
   FutureOr<void> run() async {

@@ -22,7 +22,7 @@ void main(List<String> args) => BatchApplication(
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
       ..addJob(_testJob1)
       ..addJob(_testJob2)
-      ..addJob(_testJob3)
+      ..addJob(_testJob4)
       ..run();
 
 ArgParser get _argParser {
@@ -140,8 +140,8 @@ Job get _testJob2 => Job(
           ),
       );
 
-Job get _testJob3 => Job(
-      name: 'Job3',
+Job get _testJob4 => Job(
+      name: 'Job4',
       schedule: CronParser(value: '*/1 * * * *'),
       // You can set any preconditions to run Job.
       precondition: () async => true,
