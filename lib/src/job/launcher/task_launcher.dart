@@ -23,7 +23,7 @@ class TaskLauncher extends Launcher<Task> {
     for (final task in _tasks) {
       await super.executeRecursively(
         event: task,
-        execute: (task) async => await task.invoke(context),
+        execute: (task) async => await task.execute(context),
       );
     }
   }

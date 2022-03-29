@@ -40,7 +40,7 @@ abstract class Task<T extends Task<T>> extends Event<Task> {
         );
 
   /// Runs this [Task].
-  FutureOr<void> invoke(final ExecutionContext context);
+  FutureOr<void> execute(final ExecutionContext context);
 
   /// Shutdown this batch application safely.
   void shutdown() {

@@ -24,7 +24,7 @@ void main() {
 
     final context = ExecutionContext();
     context.jobExecution = Execution(name: 'test', startedAt: DateTime.now());
-    expect(() => task.invoke(context), returnsNormally);
+    expect(() => task.execute(context), returnsNormally);
 
     expect(task.precondition, null);
     expect(task.onStarted, null);
@@ -59,7 +59,7 @@ class _Task extends Task<_Task> {
         );
 
   @override
-  void invoke(ExecutionContext context) {
+  void execute(ExecutionContext context) {
     expect(context.jobExecution != null, true);
     expect(context.jobExecution!.name, 'test');
 

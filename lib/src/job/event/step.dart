@@ -41,18 +41,15 @@ class Step extends Event<Step> {
   /// The tasks
   final List<Task> tasks = [];
 
-  /// The parallel
-  Parallel? parallel;
+  /// The parallels
+  final List<Parallel> parallels = [];
 
   /// Adds next [Task].
   void nextTask(final Task task) => tasks.add(task);
 
   /// Stores next [Parallel].
-  void nextParallel(final Parallel parallel) => this.parallel = parallel;
+  void nextParallel(final Parallel parallel) => parallels.add(parallel);
 
   /// Add a task to shutdown this application.
   void shutdown() => tasks.add(ShutdownTask());
-
-  /// Returns true if this step has parallel, otherwise false.
-  bool get hasParallel => parallel != null;
 }

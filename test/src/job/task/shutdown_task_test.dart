@@ -22,7 +22,7 @@ void main() {
     Logger.loadFrom(config: LogConfiguration(printLog: false));
 
     final task = ShutdownTask();
-    expect(() => task.invoke(ExecutionContext()), returnsNormally);
+    expect(() => task.execute(ExecutionContext()), returnsNormally);
     expect(BatchInstance.instance.isRunning, false);
     expect(BatchInstance.instance.isShuttingDown, true);
   });

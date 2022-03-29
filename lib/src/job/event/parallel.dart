@@ -8,13 +8,14 @@ import 'dart:async';
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
+import 'package:batch/src/job/parallel/parallel_executor.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
 
 class Parallel extends Event<Parallel> {
   /// Returns the new instance of [Parallel].
   Parallel({
     required String name,
-    required this.tasks,
+    required List<ParallelTask> tasks,
     FutureOr<bool> Function()? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -28,10 +29,14 @@ class Parallel extends Event<Parallel> {
           onSucceeded: onSucceeded,
           onError: onError,
           onCompleted: onCompleted,
-        );
+        ) {
+    for (final task in tasks) {
+      executors.add(ParallelExecutor(parallelTask: task));
+    }
+  }
 
-  /// The parallel tasks
-  final List<ParallelTask> tasks;
+  /// The parallel executors
+  final List<ParallelExecutor> executors = [];
 
   @override
   @Deprecated('not supported operation and always UnsupportedError throws')

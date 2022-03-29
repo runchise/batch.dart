@@ -274,5 +274,5 @@ class TestTask extends Task<TestTask> {
   }) : super(skipConfig: skipConfig, retryConfig: retryConfig);
 
   @override
-  void invoke(ExecutionContext context) {}
+  void execute(ExecutionContext context) {}
 }

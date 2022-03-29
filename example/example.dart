@@ -164,7 +164,7 @@ Job get _testJob3 => Job(
 
 class TestTask extends Task<TestTask> {
   @override
-  void invoke(ExecutionContext context) {
+  void execute(ExecutionContext context) {
     // This parameter is shared just in this job.
     context.jobParameters['key'] = 'job_parameter';
     // This parameter is shared just in this step.
@@ -185,14 +185,14 @@ class TestTask extends Task<TestTask> {
 
 class SayHelloTask extends Task<SayHelloTask> {
   @override
-  void invoke(ExecutionContext context) {
+  void execute(ExecutionContext context) {
     debug('Hello,');
   }
 }
 
 class SayWorldTask extends Task<SayWorldTask> {
   @override
-  void invoke(ExecutionContext context) {
+  void execute(ExecutionContext context) {
     info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
@@ -219,7 +219,7 @@ class RetryTask extends Task<RetryTask> {
   static int count = 0;
 
   @override
-  void invoke(ExecutionContext context) {
+  void execute(ExecutionContext context) {
     if (count < 3) {
       count++;
       throw Exception();
@@ -231,7 +231,7 @@ class RetryTask extends Task<RetryTask> {
 
 class TestParallelTask extends ParallelTask<TestParallelTask> {
   @override
-  FutureOr<void> invoke(ExecutionContext context) {
+  FutureOr<void> invoke() {
     int i = 0;
     while (i < 10000000000) {
       i++;

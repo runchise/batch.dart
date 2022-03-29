@@ -9,5 +9,5 @@ import 'package:batch/src/job/event/task.dart';
 /// This is a convenience class that only notifies about application shutdown.
 class ShutdownTask extends Task<ShutdownTask> {
   @override
-  void invoke(ExecutionContext context) => super.shutdown();
+  void execute(ExecutionContext context) => super.shutdown();
 }

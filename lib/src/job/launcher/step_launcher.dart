@@ -28,10 +28,10 @@ class StepLauncher extends Launcher<Step> {
       await super.executeRecursively(
         event: step,
         execute: (step) async {
-          if (step.hasParallel) {
+          if (step.parallels.isNotEmpty) {
             await ParallelLauncher(
               context: context,
-              parallel: step.parallel,
+              parallels: step.parallels,
             ).run();
           } else {
             await TaskLauncher(
