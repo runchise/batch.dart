@@ -3,9 +3,6 @@
 // modification, are permitted provided the conditions.
 
 // Project imports:
-import 'package:batch/src/job/event/job.dart';
-import 'package:batch/src/job/event/step.dart';
-import 'package:batch/src/job/event/task.dart';
 import 'package:batch/src/job/execution.dart';
 import 'package:batch/src/job/parameter/parameters.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
@@ -14,13 +11,13 @@ import 'package:batch/src/job/parameter/shared_parameters.dart';
 /// as a batch application is executed.
 class ExecutionContext {
   /// The current job execution
-  Execution<Job>? jobExecution;
+  Execution? jobExecution;
 
   /// The current step execution
-  Execution<Step>? stepExecution;
+  Execution? stepExecution;
 
   /// The current task execution
-  Execution<Task>? taskExecution;
+  Execution? taskExecution;
 
   /// The shared parameters
   final Parameters sharedParameters = SharedParameters.instance;

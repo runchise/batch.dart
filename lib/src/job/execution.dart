@@ -4,10 +4,9 @@
 
 // Project imports:
 import 'package:batch/src/job/branch/branch_status.dart';
-import 'package:batch/src/job/event/event.dart';
 import 'package:batch/src/job/process_status.dart';
 
-class Execution<T extends Event<T>> {
+class Execution {
   /// Returns the new instance of [Execution].
   Execution({
     required this.name,

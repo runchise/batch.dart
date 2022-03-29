@@ -80,7 +80,7 @@ abstract class ContextSupport<T extends Event<T>> {
   }
 
   dynamic _newExecution(final String name) {
-    final execution = Execution<T>(name: name, startedAt: DateTime.now());
+    final execution = Execution(name: name, startedAt: DateTime.now());
     _executionStack.push(execution);
     return execution;
   }
@@ -88,7 +88,7 @@ abstract class ContextSupport<T extends Event<T>> {
   dynamic _finishedExecution({required ProcessStatus? status}) {
     final execution = _executionStack.pop();
 
-    return Execution<T>(
+    return Execution(
       name: execution.name,
       status: status ?? ProcessStatus.completed,
       startedAt: execution.startedAt,

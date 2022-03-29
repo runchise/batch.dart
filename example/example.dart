@@ -2,6 +2,8 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+import 'dart:async';
+
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication(
@@ -20,6 +22,7 @@ void main(List<String> args) => BatchApplication(
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
       ..addJob(_testJob1)
       ..addJob(_testJob2)
+      ..addJob(_testJob4)
       ..run();
 
 ArgParser get _argParser {
@@ -115,7 +118,7 @@ Job get _testJob1 => Job(
 
 Job get _testJob2 => Job(
       name: 'Job2',
-      schedule: CronParser(value: '*/2 * * * *'),
+      schedule: CronParser(value: '*/5 * * * *'),
       // You can set any preconditions to run Job.
       precondition: () async => true,
     )
@@ -134,6 +137,28 @@ Job get _testJob2 => Job(
               ..nextTask(SayHelloTask())
               ..nextTask(SayWorldTask())
               ..shutdown(),
+          ),
+      );
+
+Job get _testJob4 => Job(
+      name: 'Job4',
+      schedule: CronParser(value: '*/1 * * * *'),
+      // You can set any preconditions to run Job.
+      precondition: () async => true,
+    )..nextStep(
+        Step(
+          name: 'Parallel Step',
+          precondition: () => true,
+        )..nextParallel(
+            Parallel(
+              name: 'Parallel Tasks',
+              tasks: [
+                TestParallelTask(),
+                TestParallelTask(),
+                TestParallelTask(),
+                TestParallelTask(),
+              ],
+            ),
           ),
       );
 
@@ -200,6 +225,16 @@ class RetryTask extends Task<RetryTask> {
       throw Exception();
     } else {
       count = 0;
+    }
+  }
+}
+
+class TestParallelTask extends ParallelTask<TestParallelTask> {
+  @override
+  FutureOr<void> invoke() {
+    int i = 0;
+    while (i < 10000000000) {
+      i++;
     }
   }
 }

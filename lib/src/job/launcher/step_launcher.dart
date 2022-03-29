@@ -6,6 +6,7 @@
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
+import 'package:batch/src/job/launcher/parallel_launcher.dart';
 import 'package:batch/src/job/launcher/task_launcher.dart';
 
 class StepLauncher extends Launcher<Step> {
@@ -27,10 +28,17 @@ class StepLauncher extends Launcher<Step> {
       await super.executeRecursively(
         event: step,
         execute: (step) async {
-          await TaskLauncher(
-            context: context,
-            tasks: step.tasks,
-          ).run();
+          if (step.parallels.isNotEmpty) {
+            await ParallelLauncher(
+              context: context,
+              parallels: step.parallels,
+            ).run();
+          } else {
+            await TaskLauncher(
+              context: context,
+              tasks: step.tasks,
+            ).run();
+          }
 
           // Removes step scope parameters set within the step executed last time.
           super.context.stepParameters.removeAll();

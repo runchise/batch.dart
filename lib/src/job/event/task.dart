@@ -2,6 +2,9 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Dart imports:
+import 'dart:async';
+
 // Project imports:
 import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/batch_status.dart';
@@ -37,11 +40,11 @@ abstract class Task<T extends Task<T>> extends Event<Task> {
         );
 
   /// Runs this [Task].
-  void execute(final ExecutionContext context);
+  FutureOr<void> execute(final ExecutionContext context);
 
   /// Shutdown this batch application safely.
   void shutdown() {
     BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
-    warn('The shutdown command was notified by Task: [name=${T.toString()}]');
+    warn('The shutdown command was notified by Task: [name=$name]');
   }
 }
