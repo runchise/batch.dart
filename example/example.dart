@@ -2,6 +2,8 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+import 'dart:async';
+
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication(
@@ -20,6 +22,7 @@ void main(List<String> args) => BatchApplication(
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
       ..addJob(_testJob1)
       ..addJob(_testJob2)
+      ..addJob(_testJob3)
       ..run();
 
 ArgParser get _argParser {
@@ -115,7 +118,7 @@ Job get _testJob1 => Job(
 
 Job get _testJob2 => Job(
       name: 'Job2',
-      schedule: CronParser(value: '*/2 * * * *'),
+      schedule: CronParser(value: '*/5 * * * *'),
       // You can set any preconditions to run Job.
       precondition: () async => true,
     )
@@ -137,9 +140,31 @@ Job get _testJob2 => Job(
           ),
       );
 
+Job get _testJob3 => Job(
+      name: 'Job3',
+      schedule: CronParser(value: '*/1 * * * *'),
+      // You can set any preconditions to run Job.
+      precondition: () async => true,
+    )..nextStep(
+        Step(
+          name: 'Parallel Step',
+          precondition: () => true,
+        )..nextParallel(
+            Parallel(
+              name: 'Parallel Tasks',
+              tasks: [
+                TestParallelTask(),
+                TestParallelTask(),
+                TestParallelTask(),
+                TestParallelTask(),
+              ],
+            ),
+          ),
+      );
+
 class TestTask extends Task<TestTask> {
   @override
-  void execute(ExecutionContext context) {
+  void invoke(ExecutionContext context) {
     // This parameter is shared just in this job.
     context.jobParameters['key'] = 'job_parameter';
     // This parameter is shared just in this step.
@@ -160,14 +185,14 @@ class TestTask extends Task<TestTask> {
 
 class SayHelloTask extends Task<SayHelloTask> {
   @override
-  void execute(ExecutionContext context) {
+  void invoke(ExecutionContext context) {
     debug('Hello,');
   }
 }
 
 class SayWorldTask extends Task<SayWorldTask> {
   @override
-  void execute(ExecutionContext context) {
+  void invoke(ExecutionContext context) {
     info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
@@ -194,12 +219,22 @@ class RetryTask extends Task<RetryTask> {
   static int count = 0;
 
   @override
-  void execute(ExecutionContext context) {
+  void invoke(ExecutionContext context) {
     if (count < 3) {
       count++;
       throw Exception();
     } else {
       count = 0;
+    }
+  }
+}
+
+class TestParallelTask extends ParallelTask<TestParallelTask> {
+  @override
+  FutureOr<void> invoke(ExecutionContext context) {
+    int i = 0;
+    while (i < 10000000000) {
+      i++;
     }
   }
 }

@@ -168,7 +168,9 @@ void main() {
         throwsA(allOf(
           isArgumentError,
           predicate(
-            (dynamic e) => e.message == 'The task to be launched is required.',
+            (dynamic e) =>
+                e.message ==
+                'The task or parallel task to be launched is required.',
           ),
         )),
       );
@@ -272,5 +274,5 @@ class TestTask extends Task<TestTask> {
   }) : super(skipConfig: skipConfig, retryConfig: retryConfig);
 
   @override
-  void execute(ExecutionContext context) {}
+  void invoke(ExecutionContext context) {}
 }

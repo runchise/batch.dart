@@ -1,5 +1,15 @@
 # Release Note
 
+## v0.7.0
+
+### New Features
+
+- Added feature to allow to execute `parallel` processing. ([#25](https://github.com/batch-dart/batch.dart/issues/25))
+
+### Destructive Changes
+
+- `Task` execution method has been changed from `execute` to `invoke`; classes using `Task` should change the overriding method name from `execute` to `invoke`.
+
 ## v0.6.0
 
 - Added the feature to log notifications at application startup when there are library updates. ([#32](https://github.com/batch-dart/batch.dart/issues/32))

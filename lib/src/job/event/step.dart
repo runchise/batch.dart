@@ -10,6 +10,7 @@ import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
+import 'package:batch/src/job/event/parallel.dart';
 import 'package:batch/src/job/event/task.dart';
 import 'package:batch/src/job/task/shutdown_task.dart';
 
@@ -40,11 +41,18 @@ class Step extends Event<Step> {
   /// The tasks
   final List<Task> tasks = [];
 
+  /// The parallel
+  Parallel? parallel;
+
   /// Adds next [Task].
-  ///
-  /// Tasks added by this [nextTask] method are executed in the order in which they are stored.
   void nextTask(final Task task) => tasks.add(task);
+
+  /// Stores next [Parallel].
+  void nextParallel(final Parallel parallel) => this.parallel = parallel;
 
   /// Add a task to shutdown this application.
   void shutdown() => tasks.add(ShutdownTask());
+
+  /// Returns true if this step has parallel, otherwise false.
+  bool get hasParallel => parallel != null;
 }

@@ -64,8 +64,16 @@ class _BootDiagnostics implements BootDiagnostics {
   }
 
   void _checkStepRecursively({required Job job, required Step step}) {
-    if (step.tasks.isEmpty) {
-      throw ArgumentError('The task to be launched is required.');
+    if (step.tasks.isEmpty && !step.hasParallel) {
+      throw ArgumentError(
+        'The task or parallel task to be launched is required.',
+      );
+    }
+
+    if (step.tasks.isNotEmpty && step.hasParallel) {
+      throw ArgumentError(
+        'A task and a parallel cannot be registered in one step at the same time.',
+      );
     }
 
     if (step.hasSkipPolicy && step.hasRetryPolicy) {
@@ -73,10 +81,17 @@ class _BootDiagnostics implements BootDiagnostics {
           'You cannot set Skip and Retry at the same time in Step [name=${step.name}].');
     }
 
-    for (final task in step.tasks) {
-      if (task.hasSkipPolicy && task.hasRetryPolicy) {
+    if (step.tasks.isNotEmpty) {
+      for (final task in step.tasks) {
+        if (task.hasSkipPolicy && task.hasRetryPolicy) {
+          throw ArgumentError(
+              'You cannot set Skip and Retry at the same time in Task [name=${task.name}].');
+        }
+      }
+    } else {
+      if (step.parallel!.hasSkipPolicy && step.parallel!.hasRetryPolicy) {
         throw ArgumentError(
-            'You cannot set Skip and Retry at the same time in Task [name=${task.name}].');
+            'You cannot set Skip and Retry at the same time in Parallel Task [name=${step.parallel!.name}].');
       }
     }
 

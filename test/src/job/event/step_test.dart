@@ -53,5 +53,5 @@ void main() {
 
 class _Task extends Task<_Task> {
   @override
-  void execute(ExecutionContext context) {}
+  void invoke(ExecutionContext context) {}
 }
