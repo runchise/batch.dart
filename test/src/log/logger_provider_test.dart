@@ -22,18 +22,27 @@ void main() {
 
   test('Test LoggerProvider after load logger', () {
     final logger = Logger.loadFrom(config: LogConfiguration());
-    expect(trace != null, true);
-    expect(debug != null, true);
-    expect(info != null, true);
-    expect(warn != null, true);
-    expect(error != null, true);
-    expect(fatal != null, true);
 
-    expect(trace == logger.trace, true);
-    expect(debug == logger.debug, true);
-    expect(info == logger.info, true);
-    expect(warn == logger.warn, true);
-    expect(error == logger.error, true);
-    expect(fatal == logger.fatal, true);
+    expect(trace, isNotNull);
+    expect(debug, isNotNull);
+    expect(info, isNotNull);
+    expect(warn, isNotNull);
+    expect(error, isNotNull);
+    expect(fatal, isNotNull);
+
+    expect(log.trace, isNotNull);
+    expect(log.debug, isNotNull);
+    expect(log.info, isNotNull);
+    expect(log.warn, isNotNull);
+    expect(log.error, isNotNull);
+    expect(log.fatal, isNotNull);
+
+    expect(log == logger, isTrue);
+    expect(trace == logger.trace, isTrue);
+    expect(debug == logger.debug, isTrue);
+    expect(info == logger.info, isTrue);
+    expect(warn == logger.warn, isTrue);
+    expect(error == logger.error, isTrue);
+    expect(fatal == logger.fatal, isTrue);
   });
 }

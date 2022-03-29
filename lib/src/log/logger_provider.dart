@@ -5,6 +5,9 @@
 // Project imports:
 import 'package:batch/src/log/logger.dart';
 
+/// The logger
+final Logger log = Logger.instance;
+
 /// Logging function for trace level.
 final trace = Logger.instance.trace;
 

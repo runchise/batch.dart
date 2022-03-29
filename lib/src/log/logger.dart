@@ -2,6 +2,9 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Package imports:
+import 'package:meta/meta.dart';
+
 // Project imports:
 import 'package:batch/src/log/color/log_color.dart';
 import 'package:batch/src/log/filter/default_log_filter.dart';
@@ -76,6 +79,7 @@ class Logger {
   void fatal(dynamic message, [dynamic error, StackTrace? stackTrace]) =>
       _log(LogLevel.fatal, message, error, stackTrace);
 
+  @visibleForTesting
   void dispose() {
     _active = false;
     _filter.dispose();

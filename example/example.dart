@@ -59,9 +59,9 @@ Job get _testJob1 => Job(
                   '\n--------------- RetryTask has started! ---------------'),
               onSucceeded: (context) => info(
                   '\n--------------- RetryTask has succeeded! ---------------'),
-              onError: (context, _error, stackTrace) => error(
+              onError: (context, error, stackTrace) => log.error(
                 '\n--------------- Error RetryTask ---------------',
-                _error,
+                error,
                 stackTrace,
               ),
               onCompleted: (context) => info(
