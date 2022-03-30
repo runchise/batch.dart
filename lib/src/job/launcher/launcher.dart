@@ -23,7 +23,7 @@ abstract class Launcher<T extends Event<T>> extends ContextSupport<T>
 
   Future<bool> executeRecursively({
     required T event,
-    required Function(dynamic event) execute,
+    required Function(T event) execute,
     bool retry = false,
   }) async {
     if (!retry) {
