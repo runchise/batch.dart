@@ -39,6 +39,11 @@ class ParallelLauncher extends Launcher<Parallel> {
 
           asyncExecutor.logger.enabled = true;
 
+          for (final executor in parallel.executors) {
+            //! Apply log configuration to isolated zones.
+            executor.logConfig = log.config;
+          }
+
           try {
             final executions = asyncExecutor.executeAll(parallel.executors);
             await Future.wait(executions);

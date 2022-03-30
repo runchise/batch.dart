@@ -232,9 +232,13 @@ class RetryTask extends Task<RetryTask> {
 class TestParallelTask extends ParallelTask<TestParallelTask> {
   @override
   FutureOr<void> invoke() {
+    log.info('start parallel task.');
+
     int i = 0;
     while (i < 10000000000) {
       i++;
     }
+
+    info('complete parallel task.');
   }
 }
