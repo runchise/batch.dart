@@ -11,6 +11,8 @@ import 'package:async_task/async_task.dart';
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
+import 'package:batch/src/log/log_configuration.dart';
+import 'package:batch/src/log/logger.dart';
 
 class ParallelExecutor extends AsyncTask<String, void> {
   /// Returns the new instance of [ParallelExecutor].
@@ -18,6 +20,9 @@ class ParallelExecutor extends AsyncTask<String, void> {
 
   /// The parallel task
   final ParallelTask parallelTask;
+
+  /// The log configuration from main thread
+  LogConfiguration? logConfig;
 
   @override
   AsyncTask<String, void> instantiate(String parameters,
@@ -32,6 +37,9 @@ class ParallelExecutor extends AsyncTask<String, void> {
 
   @override
   FutureOr<void> run() async {
+    assert(logConfig != null);
+    Logger.loadFrom(config: logConfig!);
+
     try {
       await parallelTask.execute(ExecutionContext());
     } catch (e) {
