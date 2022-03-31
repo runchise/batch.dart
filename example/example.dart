@@ -13,7 +13,7 @@ void main(List<String> args) => BatchApplication(
         level: LogLevel.trace,
         output: MultiLogOutput([
           ConsoleLogOutput(),
-          FileLogOutput(File('./test.txt')),
+          FileLogOutput(file: File('./test.txt')),
         ]),
         color: LogColor(
           info: ConsoleColor.cyan3,

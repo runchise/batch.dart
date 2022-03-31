@@ -12,8 +12,8 @@ import 'package:batch/src/log/output_log_event.dart';
 
 class FileLogOutput extends LogOutput {
   /// Returns the new instance of [FileLogOutput].
-  FileLogOutput(
-    this.file, {
+  FileLogOutput({
+    required this.file,
     this.overwrite = false,
     this.encoding = utf8,
   });

@@ -16,7 +16,7 @@ import 'package:batch/src/log/output_log_event.dart';
 void main() {
   test('Test FileLogOutput', () {
     final logFile = File('./test.txt');
-    final fileOutput = FileLogOutput(logFile);
+    final fileOutput = FileLogOutput(file: logFile);
 
     expect(
       () {
