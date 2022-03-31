@@ -4,6 +4,7 @@
 
 - Added feature to allow to execute `parallel` processing. ([#25](https://github.com/batch-dart/batch.dart/issues/25), [#74](https://github.com/batch-dart/batch.dart/issues/74))
 - Added a convenient reference to `logger_provider`. Now you can access to logging features with `log.`prefix like `log.debug('debug')`. ([#73](https://github.com/batch-dart/batch.dart/issues/73))
+- Added `MultiLogOutput` to allow multiple log output methods. ([#82](https://github.com/batch-dart/batch.dart/issues/82))
 
 ## v0.6.0
 

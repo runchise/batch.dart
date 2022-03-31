@@ -3,6 +3,7 @@
 // modification, are permitted provided the conditions.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:batch/batch.dart';
 
@@ -10,7 +11,10 @@ void main(List<String> args) => BatchApplication(
       args: _argParser.parse(args),
       logConfig: LogConfiguration(
         level: LogLevel.trace,
-        output: ConsoleLogOutput(),
+        output: MultiLogOutput([
+          ConsoleLogOutput(),
+          FileLogOutput(File('./test.txt')),
+        ]),
         color: LogColor(
           info: ConsoleColor.cyan3,
         ),
@@ -232,13 +236,9 @@ class RetryTask extends Task<RetryTask> {
 class TestParallelTask extends ParallelTask<TestParallelTask> {
   @override
   FutureOr<void> invoke() {
-    log.info('start parallel task.');
-
     int i = 0;
     while (i < 10000000000) {
       i++;
     }
-
-    info('complete parallel task.');
   }
 }

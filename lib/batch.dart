@@ -30,4 +30,5 @@ export 'package:batch/src/log/output_log_event.dart';
 export 'package:batch/src/log/filter/log_filter.dart';
 export 'package:batch/src/log/output/console_log_output.dart';
 export 'package:batch/src/log/output/file_log_output.dart';
+export 'package:batch/src/log/output/multi_log_output.dart';
 export 'package:batch/src/log/color/log_color.dart';
