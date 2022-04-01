@@ -21,7 +21,7 @@ import 'package:batch/src/log/printer/log_printer.dart';
 class Logger {
   /// Returns the new instance of [Logger].
   Logger.loadFrom({
-    required this.config,
+    required LogConfiguration config,
   })  : _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
         _output = config.output ?? ConsoleLogOutput(),
@@ -42,9 +42,6 @@ class Logger {
 
   /// The singleton instance of this [Logger].
   static Logger? _singletonInstance;
-
-  /// The log configuration
-  final LogConfiguration config;
 
   /// The filter
   final LogFilter _filter;
