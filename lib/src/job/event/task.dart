@@ -44,7 +44,7 @@ abstract class Task<T extends Task<T>> extends Event<Task> {
 
   /// Shutdown this batch application safely.
   void shutdown() {
-    BatchInstance.instance.updateStatus(BatchStatus.shuttingDown);
+    BatchInstance.updateStatus(BatchStatus.shuttingDown);
     warn('The shutdown command was notified by Task: [name=$name]');
   }
 }

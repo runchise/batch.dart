@@ -63,14 +63,14 @@ class _Task extends Task<_Task> {
     expect(context.jobExecution != null, true);
     expect(context.jobExecution!.name, 'test');
 
-    BatchInstance.instance.updateStatus(BatchStatus.running);
-    expect(BatchInstance.instance.isRunning, true);
+    BatchInstance.updateStatus(BatchStatus.running);
+    expect(BatchInstance.isRunning, true);
 
     //! Required to load to run super.shutdown().
     Logger.loadFrom(config: LogConfiguration(printLog: false));
 
     expect(() => super.shutdown(), returnsNormally);
-    expect(BatchInstance.instance.isRunning, false);
-    expect(BatchInstance.instance.isShuttingDown, true);
+    expect(BatchInstance.isRunning, false);
+    expect(BatchInstance.isShuttingDown, true);
   }
 }

@@ -17,14 +17,20 @@ class BatchInstance {
   static final _singletonInstance = BatchInstance._internal();
 
   /// The batch status
-  BatchStatus _status = BatchStatus.pending;
+  static BatchStatus _status = BatchStatus.pending;
 
   /// Updates batch status to [status].
-  void updateStatus(final BatchStatus status) => _status = status;
+  static void updateStatus(final BatchStatus status) => _status = status;
+
+  /// Returns true if this batch application is pending, otherwise false.
+  static bool get isPending => _status == BatchStatus.pending;
+
+  /// Returns true if this batch application is starting, otherwise false.
+  static bool get isStarting => _status == BatchStatus.starting;
 
   /// Returns true if this batch application is running, otherwise false.
-  bool get isRunning => _status == BatchStatus.running;
+  static bool get isRunning => _status == BatchStatus.running;
 
   /// Returns true if this batch application is shutting down, otherwise false.
-  bool get isShuttingDown => _status == BatchStatus.shuttingDown;
+  static bool get isShuttingDown => _status == BatchStatus.shuttingDown;
 }
