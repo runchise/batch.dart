@@ -28,7 +28,7 @@ abstract class ParallelTask<T extends Task<T>> extends Task<T> {
 
   /// Sends [message] to main thread as [LogLevel.info].
   void sendMessageAsTrace(String message) =>
-      _sendMessage(LogLevel.info, message);
+      _sendMessage(LogLevel.trace, message);
 
   /// Sends [message] to main thread as [LogLevel.debug].
   void sendMessageAsDebug(String message) =>
