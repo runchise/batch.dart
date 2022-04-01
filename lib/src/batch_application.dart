@@ -8,6 +8,8 @@ import 'package:args/args.dart';
 // Project imports:
 import 'package:batch/src/banner/banner_printer.dart';
 import 'package:batch/src/banner/default_banner.dart';
+import 'package:batch/src/batch_instance.dart';
+import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/diagnostics/boot_diagnostics.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
@@ -109,6 +111,13 @@ class _BatchApplication implements BatchApplication {
 
   @override
   void run() async {
+    if (!BatchInstance.isPending) {
+      throw StateError(
+          'This batch application has already been executed from the "run()" method. Multiple launches of batch applications are not allowed.');
+    }
+
+    BatchInstance.updateStatus(BatchStatus.starting);
+
     try {
       //! The logging functionality provided by the batch library
       //! will be available when this loading process is complete.

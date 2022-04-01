@@ -7,6 +7,9 @@ enum BatchStatus {
   /// Pending
   pending,
 
+  /// Starting
+  starting,
+
   /// Running
   running,
 

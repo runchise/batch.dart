@@ -16,18 +16,20 @@ void main() {
   });
 
   test('Test updateStatus', () {
-    final batchInstance = BatchInstance.instance;
-    expect(batchInstance.isRunning, false);
+    expect(BatchInstance.isPending, true);
 
-    batchInstance.updateStatus(BatchStatus.running);
-    expect(batchInstance.isRunning, true);
+    BatchInstance.updateStatus(BatchStatus.starting);
+    expect(BatchInstance.isStarting, true);
 
-    batchInstance.updateStatus(BatchStatus.shuttingDown);
-    expect(batchInstance.isRunning, false);
-    expect(batchInstance.isShuttingDown, true);
+    BatchInstance.updateStatus(BatchStatus.running);
+    expect(BatchInstance.isRunning, true);
 
-    batchInstance.updateStatus(BatchStatus.shutdown);
-    expect(batchInstance.isRunning, false);
-    expect(batchInstance.isShuttingDown, false);
+    BatchInstance.updateStatus(BatchStatus.shuttingDown);
+    expect(BatchInstance.isRunning, false);
+    expect(BatchInstance.isShuttingDown, true);
+
+    BatchInstance.updateStatus(BatchStatus.shutdown);
+    expect(BatchInstance.isRunning, false);
+    expect(BatchInstance.isShuttingDown, false);
   });
 }

@@ -38,8 +38,8 @@ abstract class Launcher<T extends Event<T>> extends ContextSupport<T>
       return true;
     }
 
-    if (BatchInstance.instance.isShuttingDown) {
-      log.info(
+    if (BatchInstance.isShuttingDown) {
+      log.warn(
           'Skipped ${event.name} because this batch application is shutting down.');
       super.finishExecutionAsSkipped(retry: retry);
       return true;
@@ -49,7 +49,7 @@ abstract class Launcher<T extends Event<T>> extends ContextSupport<T>
       await execute.call(event);
       await event.onSucceeded?.call(context);
 
-      if (BatchInstance.instance.isRunning) {
+      if (BatchInstance.isRunning) {
         if (event.hasBranch) {
           for (final branch in event.branches) {
             if (branch.on == super.branchStatus ||
