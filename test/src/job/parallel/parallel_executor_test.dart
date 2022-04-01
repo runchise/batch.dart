@@ -11,13 +11,11 @@ import 'package:test/test.dart';
 // Project imports:
 import 'package:batch/src/job/parallel/parallel_executor.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
-import 'package:batch/src/log/log_configuration.dart';
 
 void main() {
   test('Test ParallelExecutor', () {
     final task = _ParallelTask();
     final executor = ParallelExecutor(parallelTask: task);
-    executor.logConfig = LogConfiguration();
 
     expect(executor.parallelTask, task);
     expect(executor.instantiate(''), executor);
@@ -28,7 +26,6 @@ void main() {
   test('Test ParallelExecutor with error', () {
     final task = _ParallelTaskWithError();
     final executor = ParallelExecutor(parallelTask: task);
-    executor.logConfig = LogConfiguration();
 
     expect(executor.parallelTask, task);
     expect(executor.instantiate(''), executor);

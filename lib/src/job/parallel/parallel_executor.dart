@@ -10,22 +10,18 @@ import 'package:async_task/async_task.dart';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/parallel/isolated_log_message.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
-import 'package:batch/src/log/log_configuration.dart';
-import 'package:batch/src/log/logger.dart';
 
-class ParallelExecutor extends AsyncTask<String, void> {
+class ParallelExecutor extends AsyncTask<String, List<IsolatedLogMessage>> {
   /// Returns the new instance of [ParallelExecutor].
   ParallelExecutor({required this.parallelTask});
 
   /// The parallel task
   final ParallelTask parallelTask;
 
-  /// The log configuration from main thread
-  LogConfiguration? logConfig;
-
   @override
-  AsyncTask<String, void> instantiate(String parameters,
+  AsyncTask<String, List<IsolatedLogMessage>> instantiate(String parameters,
       [Map<String, SharedData>? sharedData]) {
     return this;
   }
@@ -36,14 +32,19 @@ class ParallelExecutor extends AsyncTask<String, void> {
   }
 
   @override
-  FutureOr<void> run() async {
-    assert(logConfig != null);
-    Logger.loadFrom(config: logConfig!);
+  FutureOr<List<IsolatedLogMessage>> run() async {
+    final isolatedMessages = <IsolatedLogMessage>[];
+    final context = ExecutionContext();
+    context.stepParameters['isolatedLogMessages'] = isolatedMessages;
 
     try {
-      await parallelTask.execute(ExecutionContext());
+      await parallelTask.execute(context);
     } catch (e) {
       rethrow;
+    } finally {
+      context.stepParameters.removeAll();
     }
+
+    return isolatedMessages;
   }
 }
