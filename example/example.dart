@@ -240,5 +240,18 @@ class TestParallelTask extends ParallelTask<TestParallelTask> {
     while (i < 10000000000) {
       i++;
     }
+
+    // The logging functions provided by frameworks such as "log.info" and "info" cannot be
+    // used in parallel processing. Instead, use the "sendMessage" method corresponding
+    // to the log level as below.
+    //
+    // Messages sent by the following "sendMessage" method are logged out at once after
+    // parallel processing is completed.
+    super.sendMessageAsTrace('Trace');
+    super.sendMessageAsDebug('Debug');
+    super.sendMessageAsInfo('Info');
+    super.sendMessageAsWarn('Warn');
+    super.sendMessageAsError('Error');
+    super.sendMessageAsFatal('Fatal');
   }
 }

@@ -10,21 +10,26 @@ import 'package:test/test.dart';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/parallel/isolated_log_message.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
 
 void main() {
   test('Test ParallelTask', () {
     final task = _ParallelTask();
+    final context = ExecutionContext();
+    context.stepParameters['isolatedLogMessages'] = <IsolatedLogMessage>[];
 
-    expect(() async => await task.execute(ExecutionContext()), returnsNormally);
+    expect(() async => await task.execute(context), returnsNormally);
     expect(() async => await task.invoke(), returnsNormally);
   });
 
   test('Test ParallelTask with error', () {
     final task = _ParallelTaskWithError();
+    final context = ExecutionContext();
+    context.stepParameters['isolatedLogMessages'] = <IsolatedLogMessage>[];
 
     expect(
-        () async => await task.execute(ExecutionContext()),
+        () async => await task.execute(context),
         throwsA(allOf(isA<UnimplementedError>(),
             predicate((dynamic e) => e.message == 'success'))));
     expect(
