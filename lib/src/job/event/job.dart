@@ -40,7 +40,10 @@ class Job extends Event<Job> {
   final ScheduleParser? schedule;
 
   /// The steps
-  final List<Step> steps = [];
+  final List<Step> _steps = [];
+
+  /// Returns the copied steps.
+  List<Step> get steps => List.from(_steps);
 
   /// Adds [Step].
   ///
@@ -48,7 +51,7 @@ class Job extends Event<Job> {
   ///
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
-  void nextStep(final Step step) => steps.add(step);
+  void nextStep(final Step step) => _steps.add(step);
 
   /// Returns true if this job is not scheduled, otherwise false.
   bool get isNotScheduled => schedule == null;

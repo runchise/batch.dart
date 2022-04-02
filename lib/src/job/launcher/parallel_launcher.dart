@@ -16,18 +16,16 @@ class ParallelLauncher extends Launcher<Parallel> {
   /// Returns the new instance of [ParallelLauncher].
   ParallelLauncher({
     required ExecutionContext context,
-    required List<Parallel> parallels,
-  })  : _parallels = parallels,
+    required Parallel parallel,
+  })  : _parallel = parallel,
         super(context: context);
 
-  /// The parallels
-  final List<Parallel> _parallels;
+  /// The parallel
+  final Parallel _parallel;
 
   @override
-  Future<void> run() async {
-    for (final parallel in _parallels) {
-      await super.executeRecursively(
-        event: parallel,
+  Future<void> run() async => await super.executeRecursively(
+        event: _parallel,
         execute: (parallel) async {
           final asyncExecutor = AsyncExecutor(
             parallelism: parallel.executors.length,
@@ -53,6 +51,4 @@ class ParallelLauncher extends Launcher<Parallel> {
           }
         },
       );
-    }
-  }
 }

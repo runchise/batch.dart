@@ -31,12 +31,15 @@ class Parallel extends Event<Parallel> {
           onCompleted: onCompleted,
         ) {
     for (final task in tasks) {
-      executors.add(ParallelExecutor(parallelTask: task));
+      _executors.add(ParallelExecutor(parallelTask: task));
     }
   }
 
   /// The parallel executors
-  final List<ParallelExecutor> executors = [];
+  final List<ParallelExecutor> _executors = [];
+
+  /// Returns the copied executors.
+  List<ParallelExecutor> get executors => List.from(_executors);
 
   @override
   @Deprecated('not supported operation and always UnsupportedError throws')
