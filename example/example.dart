@@ -153,7 +153,8 @@ Job get _testJob4 => Job(
         Step(
           name: 'Parallel Step',
           precondition: () => true,
-        )..nextParallel(
+        )
+          ..nextParallel(
             Parallel(
               name: 'Parallel Tasks',
               tasks: [
@@ -163,7 +164,9 @@ Job get _testJob4 => Job(
                 TestParallelTask(),
               ],
             ),
-          ),
+          )
+          ..nextTask(SayHelloTask())
+          ..nextTask(SayWorldTask()),
       );
 
 class TestTask extends Task<TestTask> {

@@ -38,18 +38,18 @@ class Step extends Event<Step> {
           retryConfig: retryConfig,
         );
 
-  /// The tasks
-  final List<Task> tasks = [];
+  /// The tasks include parallels
+  final List<dynamic> _tasks = [];
 
-  /// The parallels
-  final List<Parallel> parallels = [];
+  /// Returns the copied tasks.
+  List<dynamic> get tasks => List.from(_tasks);
 
   /// Adds next [Task].
-  void nextTask(final Task task) => tasks.add(task);
+  void nextTask(final Task task) => _tasks.add(task);
 
   /// Stores next [Parallel].
-  void nextParallel(final Parallel parallel) => parallels.add(parallel);
+  void nextParallel(final Parallel parallel) => _tasks.add(parallel);
 
   /// Add a task to shutdown this application.
-  void shutdown() => tasks.add(ShutdownTask());
+  void shutdown() => _tasks.add(ShutdownTask());
 }

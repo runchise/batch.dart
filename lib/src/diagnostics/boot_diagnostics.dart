@@ -64,15 +64,9 @@ class _BootDiagnostics implements BootDiagnostics {
   }
 
   void _checkStepRecursively({required Job job, required Step step}) {
-    if (step.tasks.isEmpty && step.parallels.isEmpty) {
+    if (step.tasks.isEmpty) {
       throw ArgumentError(
-        'The task or parallel task to be launched is required.',
-      );
-    }
-
-    if (step.tasks.isNotEmpty && step.parallels.isNotEmpty) {
-      throw ArgumentError(
-        'A task and a parallel cannot be registered in one step at the same time.',
+        'The task or parallel to be launched is required.',
       );
     }
 

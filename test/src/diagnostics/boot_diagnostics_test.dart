@@ -169,8 +169,7 @@ void main() {
           isArgumentError,
           predicate(
             (dynamic e) =>
-                e.message ==
-                'The task or parallel task to be launched is required.',
+                e.message == 'The task or parallel to be launched is required.',
           ),
         )),
       );
