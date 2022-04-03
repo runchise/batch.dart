@@ -77,17 +77,13 @@ The concepts in the table above are in hierarchical order, with the top concepts
 
 ### 1.3.1. Install Library
 
-**_With Dart:_**
-
 ```terminal
  dart pub add batch
 ```
 
-**_With Flutter:_**
+> Note:
+> pub.dev labels the library as usable in Flutter in an automatic determination at release time, but the framework specification makes it difficult to use in a Flutter application.
 
-```terminal
- flutter pub add batch
-```
 
 ### 1.3.2. Import It
 
