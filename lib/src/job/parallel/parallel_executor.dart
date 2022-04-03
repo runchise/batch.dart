@@ -33,18 +33,14 @@ class ParallelExecutor extends AsyncTask<String, List<IsolatedLogMessage>> {
 
   @override
   FutureOr<List<IsolatedLogMessage>> run() async {
-    final isolatedMessages = <IsolatedLogMessage>[];
     final context = ExecutionContext();
-    context.stepParameters['isolatedLogMessages'] = isolatedMessages;
 
     try {
       await parallelTask.execute(context);
     } catch (e) {
       rethrow;
-    } finally {
-      context.stepParameters.removeAll();
     }
 
-    return isolatedMessages;
+    return context.stepParameters['isolatedLogMessages'];
   }
 }
