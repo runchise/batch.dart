@@ -138,7 +138,7 @@ class DoSomethingTask extends Task<DoSomethingTask> {
 
 The above example is a very simple, and so you should refer to another document for more detailed specifications and implementation instructions.
 
-**_You can see more details at [official documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)._**
+**_You can see more details at [Official Documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)._**
 
 #### 1.3.4.2. Parallel Process
 
@@ -254,7 +254,7 @@ yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job schedu
 
 #### 1.3.5.2. On Parallel Process
 
-Parallel processing cannot directly use the convenient logging features described [above](#1341-on-sequential-process). This is because parallel processing in the Dart language **_does not share_** any instances.
+Parallel processing cannot directly use the convenient logging features described [above](#1351-on-sequential-process). This is because parallel processing in the Dart language **_does not share_** any instances.
 
 Instead, use the following methods in classes that extend `ParallelTask` for parallel processing.
 
