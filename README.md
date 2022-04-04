@@ -30,50 +30,45 @@ A lightweight and powerful Job Scheduling Framework.
 <!-- TOC -->
 
 - [1. About](#1-about)
-  - [1.1. Features](#11-features)
-  - [1.2. Basic Concepts](#12-basic-concepts)
-  - [1.3. Introduction](#13-introduction)
+  - [1.1. Mission](#11-mission)
+  - [1.2. Features](#12-features)
+  - [1.3. Basic Usage](#13-basic-usage)
     - [1.3.1. Install Library](#131-install-library)
-    - [1.3.2. Import It](#132-import-it)
-    - [1.3.3. Use Batch library](#133-use-batch-library)
+    - [1.3.2. Import](#132-import)
+    - [1.3.3. Configure Job Schedules](#133-configure-job-schedules)
   - [1.4. Logging](#14-logging)
     - [1.4.1. Customize Log Configuration](#141-customize-log-configuration)
     - [1.4.2. LogOutput](#142-logoutput)
   - [1.5. Contribution](#15-contribution)
-  - [1.6. License](#16-license)
-  - [1.7. More Information](#17-more-information)
+  - [1.6. Support](#16-support)
+  - [1.7. License](#17-license)
+  - [1.8. More Information](#18-more-information)
 
 <!-- /TOC -->
 
 # 1. About
 
-The `batch` library was created to make it easier to develop `job scheduling` and `batch` program in Dart language. It supports easy scheduling using `Cron` and it is a very lightweight and powerful.
+The `Batch.dart` specification is large and more detailed documentation can be found from [official references](https://github.com/batch-dart/docs/blob/main/README.md).
+Also you can find detail examples of implementation at [here](https://pub.dev/packages/batch/example).
 
-> Caution:
-> This framework is still in beta and so may contain disruptive changes in the release.
+## 1.1. Mission
 
-## 1.1. Features
+The goal of this project is to provide a **_high-performance_** and **_intuitive_** job scheduling framework in the Dart language ecosystem that anyone can use in the world.
 
-- Very powerful batch library written in Dart.
-- Multiple job schedules can be easily defined.
-- Intuitive and easy to understand job definitions.
-- Easy scheduling of job execution in Cron format.
-- Powerful and customizable logging functions without the need for third-party libraries.
-- **_You can develop with Dart's resources!_**
+And the development concept of this framework is "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)", "[KISS](https://en.wikipedia.org/wiki/KISS_principle)" and "[YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)", which has been said in software engineering circles for a long time.
 
-## 1.2. Basic Concepts
+## 1.2. Features
 
-The processing of the `batch` library is mainly performed using the following elements.
+- Easy and intuitive job scheduling.
+- Scheduling in Cron format provided as standard (Customizable).
+- Powerful logging feature provided as standard (Customizable).
+- You can easily define parallel processes.
+- There are no hard-to-understand configuration files.
+- Supports conditional branching of jobs.
+- Extensive callback functions are provided at each step.
+- Supports skipping and retrying according to user defined conditions.
 
-|          | Description                                                                                                                                                          |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Job**  | `Job` is defined as the largest unit in a batch execution process in `batch` library. `Job` has a unique name and manages multiple `Step`.                           |
-| **Step** | `Step` is defined as middle unit in a batch execution process in `batch` library. `Step` has a unique name and manages multiple `Task`.                              |
-| **Task** | `Task` is defined as the smallest unit in a batch execution process in `batch` library. `Task` defines the specific process to be performed in the batch processing. |
-
-The concepts in the table above are in hierarchical order, with the top concepts encompassing the lower elements. However, this hierarchy only represents the layers of processing, and the higher level processing does not affect the lower level processing and vice versa.
-
-## 1.3. Introduction
+## 1.3. Basic Usage
 
 ### 1.3.1. Install Library
 
@@ -82,47 +77,82 @@ The concepts in the table above are in hierarchical order, with the top concepts
 ```
 
 > Note:
-> pub.dev labels the library as usable in Flutter in an automatic determination at release time, but the framework specification makes it difficult to use in a Flutter application.
+> In pub.dev, the automatic determination at the time of release of this library labels it as usable in Flutter, but it is not suitable by any stretch of the imagination.
 
+### 1.3.2. Import
 
-### 1.3.2. Import It
+The following import will provide all the materials for developing job scheduling using `Batch.dart`.
 
 ```dart
 import 'package:batch/batch.dart';
 ```
 
-### 1.3.3. Use Batch library
+### 1.3.3. Configure Job Schedules
 
-The easiest way to use the `batch` library is to create a class that implements `Task` and register it to Step and Job in the order you want to execute.
+The easiest way to use the `Batch.dart` is to create a class that implements `Task` and register it to `Step` and `Job` in the order you want to execute.
 
 The execution schedule is specified for each job when creating a `Job` instance in the form of [Cron](https://en.wikipedia.org/wiki/Cron).
 
 When creating `Job` and `Task` instances, the names should be unique. However, you can use the same name for steps contained in different `Job`.
 
-**_You can check the latest sample codes [here](https://pub.dev/packages/batch/example)!_**
+**_Example_**
+
+```dart
+import 'package:batch/batch.dart';
+
+void main() => BatchApplication(
+      logConfig: LogConfiguration(
+        level: LogLevel.trace,
+        output: MultiLogOutput([
+          ConsoleLogOutput(),
+          FileLogOutput(file: File('./test.txt')),
+        ]),
+        color: LogColor(
+          info: ConsoleColor.cyan3,
+        ),
+      ),
+    )
+      // You can add any parameters that is shared in this batch application.
+      ..addSharedParameter(key: 'key1', value: 'value1')
+      ..addSharedParameter(key: 'key2', value: {'any': 'object'})
+      ..addJob(
+        // Scheduled to start every minute in Cron format
+        Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
+          ..nextStep(
+            Step(name: 'Step')..nextTask(DoSomethingTask()),
+          ),
+      )
+      ..run();
+
+
+class DoSomethingTask extends Task<DoSomethingTask> {
+  @override
+  void execute(ExecutionContext) {
+    // Write your code here.
+  }
+}
+```
+
+The above example is a very simple, and so you should refer to another document for more detailed specifications and implementation instructions.
+
+**_You can see more details at [official documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)_**.
 
 ## 1.4. Logging
 
-The `batch` library supports logging since version `0.2.0`.
+The `Batch.dart` provides the following well-known logging features as a standard.
 
-The logging system provided by the `batch` library is a customized library of [Logger](https://pub.dev/packages/logger), and is optimized for the `batch` library specification. Also the logging system provided by the `batch` library inherits many elements from [Logger](https://pub.dev/packages/logger) from this background.
+- **_trace_**
+- **_debug_**
+- **_info_**
+- **_warn_**
+- **_error_**
+- **_fatal_**
 
-The `batch` library provides the following logging methods.
+The logging methods provided by the `Batch.dart` can be used from any class that imports `batch.dart`. **_And there is no need to instantiate any Loggers by yourself_**!
 
-|           | Description                                                                                                                                                                        |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **trace** | A log level describing events showing step by step execution of your code that can be ignored during the standard operation, but may be useful during extended debugging sessions. |
-| **debug** | A log level used for events considered to be useful during software debugging when more granular information is needed.                                                            |
-| **info**  | An event happened, and the event is purely informative and can be ignored during normal operations.                                                                                |
-| **warn**  | Unexpected behavior happened inside the application, but it is continuing its work and the key business features are operating as expected.                                        |
-| **error** | One or more functionalities are not working, preventing some functionalities from working correctly.                                                                               |
-| **fatal** | One or more key business functionalities are not working and the whole system doesn’t fulfill the business functionalities.                                                        |
+All you need to specify about logging in `Batch.dart` is the configuration of the log before run `BatchApplication`, and the Logger is provided safely under the lifecycle of the `Batch.dart`.
 
-The logging methods provided by the `batch` library can be used from any class that imports `batch.dart`. Besides there is no need to instantiate an Logger by yourself.
-
-All you need to specify about logging in `batch` library is the configuration of the log, and the Logger is provided safely under the lifecycle of the `batch` library.
-
-See the sample code below for the simplest usage.
+See the sample below for the simplest usage.
 
 ```dart
 import 'package:batch/batch.dart';
@@ -136,19 +166,27 @@ class TestLogTask extends Task<TestLogTask> {
     warn('Test warning');
     error('Test error');
     fatal('Test fatal');
+
+    // You can add "log." as a prefix.
+    log.trace('Test trace');
   }
 }
 ```
 
-For example, if you run [sample code](#133-use-batch-library) as described earlier, you will see the following log output.
+For example, if you run [example code](https://pub.dev/packages/batch/example), you will get the following log output.
 
 ```terminal
-yyyy-MM-dd 19:12:42.860904 [info ] (_BatchApplication.run:117:11  ) - Logger instance has completed loading
-yyyy-MM-dd 19:12:42.863685 [info ] (JobScheduler.run:37:9         ) - Started Job scheduling on startup
-yyyy-MM-dd 19:12:42.864049 [info ] (JobScheduler.run:38:9         ) - Detected 2 Jobs on the root
-yyyy-MM-dd 19:12:42.864413 [info ] (JobScheduler.run:45:11        ) - Scheduling Job [name=Job1]
-yyyy-MM-dd 19:12:42.880243 [info ] (JobScheduler.run:45:11        ) - Scheduling Job [name=Job2]
-yyyy-MM-dd 19:12:42.882694 [info ] (JobScheduler.run:55:9         ) - Job scheduling has been completed and the batch application is now running
+yyyy-MM-dd 19:25:10.575109 [info ] (_BatchApplication.run:129:11  ) - 🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀
+yyyy-MM-dd 19:25:10.579318 [info ] (_BatchApplication.run:130:11  ) - Logger instance has completed loading
+yyyy-MM-dd 19:25:10.580177 [info ] (_BootDiagnostics.run:32:9     ) - Batch application diagnostics have been started
+yyyy-MM-dd 19:25:10.583234 [info ] (_BootDiagnostics.run:46:9     ) - Batch application diagnostics have been completed
+yyyy-MM-dd 19:25:10.583344 [info ] (_BootDiagnostics.run:47:9     ) - Batch applications can be started securely
+yyyy-MM-dd 19:25:10.585729 [info ] (JobScheduler.run:37:9         ) - Started Job scheduling on startup
+yyyy-MM-dd 19:25:10.585921 [info ] (JobScheduler.run:38:9         ) - Detected 3 Jobs on the root
+yyyy-MM-dd 19:25:10.586023 [info ] (JobScheduler.run:41:11        ) - Scheduling Job [name=Job1]
+yyyy-MM-dd 19:25:10.595706 [info ] (JobScheduler.run:41:11        ) - Scheduling Job [name=Job2]
+yyyy-MM-dd 19:25:10.597471 [info ] (JobScheduler.run:41:11        ) - Scheduling Job [name=Job4]
+yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job scheduling has been completed and the batch application is now running
 ```
 
 > Note:
@@ -181,10 +219,11 @@ Also, the `batch` library provides several classes that implement these abstract
 
 ### 1.4.2. LogOutput
 
-|                      | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| **ConsoleLogOutput** | Provides features to output log to console. This filter is used by default. |
-| **FileLogOutput**    | Provides features to output the log to the specified file.                  |
+|                      | Description                                                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **ConsoleLogOutput** | Provides features to output log to console. This filter is used by default.                                                      |
+| **FileLogOutput**    | Provides features to output the log to the specified file.                                                                       |
+| **MultiLogOutput**   | Allows multiple log outputs. This is useful, for example, when you want to have console output and file output at the same time. |
 
 **_Example_**
 
@@ -196,25 +235,52 @@ BatchApplication(
 );
 ```
 
+**_With MultiLogOutput_**
+
+```dart
+BatchApplication(
+  logConfig: LogConfiguration(
+    output: MultiLogOutput([
+      ConsoleLogOutput(),
+      FileLogOutput(file: File('./test.txt')),
+    ]),
+  ),
+);
+```
+
 ## 1.5. Contribution
 
-If you would like to contribute to the development of this library, please create an [issue](https://github.com/batch-dart/batch.dart/issues) or create a Pull Request.
+If you would like to contribute to `Batch.dart`, please create an [issue](https://github.com/batch-dart/batch.dart/issues) or create a Pull Request.
 
-Developer will respond to issues and review pull requests as quickly as possible.
+Owner will respond to issues and review pull requests as quickly as possible.
 
-## 1.6. License
+## 1.6. Support
+
+The simplest way to show us your support is by giving the project a star at [here](https://github.com/batch-dart/batch.dart).
+
+And I'm always looking for sponsors to support this project. I am not asking for royalties for use in providing this framework, but I do need support to continue ongoing open source development.
+
+Sponsors can be individuals or corporations, and the amount is optional.
+
+If you would like to sponsor me, please check my [sponsorship page](https://github.com/sponsors/myConsciousness) on GitHub or contact me at kato.shinya.dev@gmail.com.
+
+## 1.7. License
+
+All resources of `Batch.dart` is provided under the `BSD-3` license.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbatch-dart%2Fbatch.dart.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbatch-dart%2Fbatch.dart?ref=badge_large)
 
 > Note:
 > License notices in the source are strictly validated based on `.github/header-checker-lint.yml`. Please check [header-checker-lint.yml](https://github.com/batch-dart/batch.dart/tree/main/.github/header-checker-lint.yml) for the permitted standards.
 
-## 1.7. More Information
+## 1.8. More Information
 
-`batch.dart` was designed and implemented by **_Kato Shinya_**.
+`Batch.dart` was designed and implemented by **_Kato Shinya_**.
 
-- [Creator Profile](https://github.com/batch-dart)
+- [Creator Profile](https://github.com/myConsciousness)
 - [License](https://github.com/batch-dart/batch.dart/blob/main/LICENSE)
 - [API Document](https://pub.dev/documentation/batch/latest/batch/batch-library.html)
+- [Official Documents](https://github.com/batch-dart/docs/blob/main/README.md)
+- [Wikipedia](https://ja.wikipedia.org/wiki/Batch.dart)
 - [Release Note](https://github.com/batch-dart/batch.dart/releases)
 - [Bug Report](https://github.com/batch-dart/batch.dart/issues)
