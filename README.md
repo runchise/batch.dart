@@ -35,13 +35,14 @@ A lightweight and powerful Job Scheduling Framework.
   - [1.3. Basic Usage](#13-basic-usage)
     - [1.3.1. Install Library](#131-install-library)
     - [1.3.2. Import](#132-import)
-    - [1.3.3. Configure Job Schedules](#133-configure-job-schedules)
-      - [1.3.3.1. Sequential Process](#1331-sequential-process)
-      - [1.3.3.2. Parallel Process](#1332-parallel-process)
-    - [1.3.4. Logging](#134-logging)
-      - [1.3.4.1. On Sequential Process](#1341-on-sequential-process)
-      - [1.3.4.2. On Parallel Process](#1342-on-parallel-process)
-    - [1.3.5. Branch](#135-branch)
+    - [1.3.3. Basic Concept](#133-basic-concept)
+    - [1.3.4. Configure Job Schedules](#134-configure-job-schedules)
+      - [1.3.4.1. Sequential Process](#1341-sequential-process)
+      - [1.3.4.2. Parallel Process](#1342-parallel-process)
+    - [1.3.5. Logging](#135-logging)
+      - [1.3.5.1. On Sequential Process](#1351-on-sequential-process)
+      - [1.3.5.2. On Parallel Process](#1352-on-parallel-process)
+    - [1.3.6. Branch](#136-branch)
   - [1.4. Contribution](#14-contribution)
   - [1.5. Support](#15-support)
   - [1.6. License](#16-license)
@@ -51,7 +52,7 @@ A lightweight and powerful Job Scheduling Framework.
 
 # 1. About
 
-The `Batch.dart` specification is large and more detailed documentation can be found from [official references](https://github.com/batch-dart/docs/blob/main/README.md).
+The `Batch.dart` specification is large and more detailed documentation can be found from [Official Documents](https://github.com/batch-dart/docs/blob/main/README.md).
 Also you can find detail examples of implementation at [here](https://pub.dev/packages/batch/example).
 
 ## 1.1. Mission
@@ -65,8 +66,8 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 - Easy and intuitive job scheduling.
 - Scheduling in Cron format provided as standard (Customizable).
 - Powerful logging feature provided as standard (Customizable).
-- You can easily define parallel processes.
-- There are no hard-to-understand configuration files.
+- Easily define parallel processes.
+- No complicated configuration files.
 - Supports conditional branching of jobs.
 - Extensive callback functions are provided at each step.
 - Supports skipping and retrying according to user defined conditions.
@@ -90,9 +91,21 @@ The following import will provide all the materials for developing job schedulin
 import 'package:batch/batch.dart';
 ```
 
-### 1.3.3. Configure Job Schedules
+### 1.3.3. Basic Concept
 
-#### 1.3.3.1. Sequential Process
+`Batch.dart` represents the unit of scheduled processing as an `Event`.
+And `Event` is composed of the following elements.
+
+1. **Job** - The largest unit.
+2. **Step** - The intermediate unit.
+3. **Task** - The smallest unit.
+4. **Parallel** - It's kind of Task but represents parallel processes.
+
+**_You can see more information about `Event` at [Official Documents](https://github.com/batch-dart/docs/blob/main/resources/01_fundamentals.md#11-event)._**
+
+### 1.3.4. Configure Job Schedules
+
+#### 1.3.4.1. Sequential Process
 
 **_Example_**
 
@@ -123,9 +136,9 @@ class DoSomethingTask extends Task<DoSomethingTask> {
 
 The above example is a very simple, and so you should refer to another document for more detailed specifications and implementation instructions.
 
-**_You can see more details at [official documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)_**.
+**_You can see more details at [official documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)._**
 
-#### 1.3.3.2. Parallel Process
+#### 1.3.4.2. Parallel Process
 
 `Batch.dart` supports powerful parallel processing and is easy to define.
 
@@ -173,7 +186,7 @@ class DoHeavyTask extends ParallelTask<DoHeavyTask> {
 }
 ```
 
-### 1.3.4. Logging
+### 1.3.5. Logging
 
 The `Batch.dart` provides the following well-known logging features as a standard.
 And the default log level is **trace**.
@@ -187,7 +200,7 @@ And the default log level is **trace**.
 
 The logging feature provided by `Batch.dart` has extensive customization options. For more information, you can refer to the [Official Documents](https://github.com/batch-dart/docs/blob/main/resources/02_logging.md) describing logging on `Batch.dart`.
 
-#### 1.3.4.1. On Sequential Process
+#### 1.3.5.1. On Sequential Process
 
 It's very easy to use logging functions on sequential process.
 
@@ -237,7 +250,7 @@ yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job schedu
 > If you want to use the logging feature outside the life cycle of the `batch` library,
 > be sure to do so after executing the `run` method of the `BatchApplication`.
 
-#### 1.3.4.2. On Parallel Process
+#### 1.3.5.2. On Parallel Process
 
 Parallel processing cannot directly use the convenient logging features described [above](#1341-on-sequential-process). This is because parallel processing in the Dart language **_does not share_** any instances.
 
@@ -281,7 +294,7 @@ yyyy-MM-dd 10:05:06.662947 [error] (solatedLogMessage.output:48:13) - Received f
 yyyy-MM-dd 10:05:06.663039 [fatal] (solatedLogMessage.output:51:13) - Received from the isolated thread [message=Fatal]
 ```
 
-### 1.3.5. Branch
+### 1.3.6. Branch
 
 `Batch.dart` supports conditional branching for each scheduled event (it's just called "**Branch**" in `Batch.dart`).
 
