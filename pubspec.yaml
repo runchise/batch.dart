@@ -1,6 +1,6 @@
 name: batch
 description: A lightweight and powerful Job Scheduling Framework written in Dart. With this framework, you can easily develop a job scheduling and batch program in Dart.
-version: 0.7.0
+version: 0.7.1
 homepage: https://github.com/batch-dart/batch.dart
 
 environment:
