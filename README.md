@@ -107,6 +107,8 @@ And `Event` is composed of the following elements.
 
 #### 1.3.4.1. Sequential Process
 
+When defining a simple sequential process, all that is required is to define a class that extends `Task` and implements the `execute` method.
+
 **_Example_**
 
 ```dart
