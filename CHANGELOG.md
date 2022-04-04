@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.7.1
+
+- Enhanced documents on `README`.
+
 ## v0.7.0
 
 - Added feature to allow to execute `parallel` processing. ([#25](https://github.com/batch-dart/batch.dart/issues/25), [#74](https://github.com/batch-dart/batch.dart/issues/74),[#84](https://github.com/batch-dart/batch.dart/issues/84), [#87](https://github.com/batch-dart/batch.dart/issues/87))
