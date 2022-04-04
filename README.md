@@ -36,13 +36,16 @@ A lightweight and powerful Job Scheduling Framework.
     - [1.3.1. Install Library](#131-install-library)
     - [1.3.2. Import](#132-import)
     - [1.3.3. Configure Job Schedules](#133-configure-job-schedules)
-  - [1.4. Logging](#14-logging)
-    - [1.4.1. Customize Log Configuration](#141-customize-log-configuration)
-    - [1.4.2. LogOutput](#142-logoutput)
-  - [1.5. Contribution](#15-contribution)
-  - [1.6. Support](#16-support)
-  - [1.7. License](#17-license)
-  - [1.8. More Information](#18-more-information)
+      - [1.3.3.1. Sequential Process](#1331-sequential-process)
+      - [1.3.3.2. Parallel Process](#1332-parallel-process)
+    - [1.3.4. Logging](#134-logging)
+      - [1.3.4.1. On Sequential Process](#1341-on-sequential-process)
+      - [1.3.4.2. On Parallel Process](#1342-on-parallel-process)
+    - [1.3.5. Branch](#135-branch)
+  - [1.4. Contribution](#14-contribution)
+  - [1.5. Support](#15-support)
+  - [1.6. License](#16-license)
+  - [1.7. More Information](#17-more-information)
 
 <!-- /TOC -->
 
@@ -89,38 +92,23 @@ import 'package:batch/batch.dart';
 
 ### 1.3.3. Configure Job Schedules
 
-The easiest way to use the `Batch.dart` is to create a class that implements `Task` and register it to `Step` and `Job` in the order you want to execute.
-
-The execution schedule is specified for each job when creating a `Job` instance in the form of [Cron](https://en.wikipedia.org/wiki/Cron).
-
-When creating `Job` and `Task` instances, the names should be unique. However, you can use the same name for steps contained in different `Job`.
+#### 1.3.3.1. Sequential Process
 
 **_Example_**
 
 ```dart
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication(
-      logConfig: LogConfiguration(
-        level: LogLevel.trace,
-        output: MultiLogOutput([
-          ConsoleLogOutput(),
-          FileLogOutput(file: File('./test.txt')),
-        ]),
-        color: LogColor(
-          info: ConsoleColor.cyan3,
-        ),
-      ),
-    )
-      // You can add any parameters that is shared in this batch application.
-      ..addSharedParameter(key: 'key1', value: 'value1')
-      ..addSharedParameter(key: 'key2', value: {'any': 'object'})
+void main() => BatchApplication(),
       ..addJob(
         // Scheduled to start every minute in Cron format
         Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
-          ..nextStep(
-            Step(name: 'Step')..nextTask(DoSomethingTask()),
+          // Step phase
+          ..nextStep(Step(name: 'Step')
+            // Task phase
+            ..nextTask(DoSomethingTask()
           ),
+        ),
       )
       ..run();
 
@@ -137,22 +125,77 @@ The above example is a very simple, and so you should refer to another document 
 
 **_You can see more details at [official documents](https://github.com/batch-dart/docs/blob/main/README.md) or [example](https://pub.dev/packages/batch/example)_**.
 
-## 1.4. Logging
+#### 1.3.3.2. Parallel Process
+
+`Batch.dart` supports powerful parallel processing and is easy to define.
+
+When defining parallel processing, all you have to do is just inherit from `ParallelTask` and describe the process you want to parallelize in the `invoke` method.
+
+**_Example_**
+
+```dart
+import 'dart:async';
+
+import 'package:batch/batch.dart';
+
+void main() => BatchApplication(),
+      ..addJob(
+        // Scheduled to start every minute in Cron format
+        Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
+          // Step phase
+          ..nextStep(Step(name: 'Step')
+            // Parallel task phase
+            ..nextParallel(
+              Parallel(
+                name: 'Parallel Tasks',
+                tasks: [
+                  DoHeavyTask(),
+                  DoHeavyTask(),
+                  DoHeavyTask(),
+                  DoHeavyTask(),
+                ],
+              ),
+            )
+          ),
+        ),
+      )
+      ..run();
+
+
+class DoHeavyTask extends ParallelTask<DoHeavyTask> {
+  @override
+  FutureOr<void> invoke() {
+    int i = 0;
+    while (i < 10000000000) {
+      i++;
+    }
+  }
+}
+```
+
+### 1.3.4. Logging
 
 The `Batch.dart` provides the following well-known logging features as a standard.
+And the default log level is **trace**.
 
-- **_trace_**
-- **_debug_**
-- **_info_**
-- **_warn_**
-- **_error_**
-- **_fatal_**
+- **trace**
+- **debug**
+- **info**
+- **warn**
+- **error**
+- **fatal**
 
-The logging methods provided by the `Batch.dart` can be used from any class that imports `batch.dart`. **_And there is no need to instantiate any Loggers by yourself_**!
+The logging feature provided by `Batch.dart` has extensive customization options. For more information, you can refer to the [Official Documents](https://github.com/batch-dart/docs/blob/main/resources/02_logging.md) describing logging on `Batch.dart`.
+
+#### 1.3.4.1. On Sequential Process
+
+It's very easy to use logging functions on sequential process.
+
+The logging methods provided by the `Batch.dart` can be used from any class that imports `batch.dart`. **_So no need to instantiate any Loggers by yourself_**!
 
 All you need to specify about logging in `Batch.dart` is the configuration of the log before run `BatchApplication`, and the Logger is provided safely under the lifecycle of the `Batch.dart`.
 
-See the sample below for the simplest usage.
+**_Example_**
 
 ```dart
 import 'package:batch/batch.dart';
@@ -173,9 +216,9 @@ class TestLogTask extends Task<TestLogTask> {
 }
 ```
 
-For example, if you run [example code](https://pub.dev/packages/batch/example), you will get the following log output.
+For example, if you run [example code](https://pub.dev/packages/batch/example), you can get the following log output.
 
-```terminal
+```bash
 yyyy-MM-dd 19:25:10.575109 [info ] (_BatchApplication.run:129:11  ) - 🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀
 yyyy-MM-dd 19:25:10.579318 [info ] (_BatchApplication.run:130:11  ) - Logger instance has completed loading
 yyyy-MM-dd 19:25:10.580177 [info ] (_BootDiagnostics.run:32:9     ) - Batch application diagnostics have been started
@@ -194,77 +237,107 @@ yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job schedu
 > If you want to use the logging feature outside the life cycle of the `batch` library,
 > be sure to do so after executing the `run` method of the `BatchApplication`.
 
-### 1.4.1. Customize Log Configuration
+#### 1.3.4.2. On Parallel Process
 
-It is very easy to change the configuration of the Logger provided by the `batch` library to suit your preferences.
-Just pass the `LogConfiguration` object to the constructor when instantiating the `JobLauncher`, and the easiest way is to change the log level as below.
+Parallel processing cannot directly use the convenient logging features described [above](#1341-on-sequential-process). This is because parallel processing in the Dart language **_does not share_** any instances.
 
-```dart
-BatchApplication(
-  logConfig: LogConfiguration(
-    level: LogLevel.debug,
-  ),
-);
-```
+Instead, use the following methods in classes that extend `ParallelTask` for parallel processing.
 
-Also, the logging feature can be freely customized by inheriting the following abstract classes and setting them in the `LogConfiguration`.
-
-|                | Description                                                                                                             |
-| -------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **LogFilter**  | This is the layer that determines whether log output should be performed. By default, only the log level is determined. |
-| **LogPrinter** | This layer defines the format for log output.                                                                           |
-| **LogOutput**  | This is the layer that actually performs the log output. By default, it outputs to the console.                         |
-
-Also, the `batch` library provides several classes that implement these abstract classes, so you can use them depending on your situation.
-
-### 1.4.2. LogOutput
-
-|                      | Description                                                                                                                      |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| **ConsoleLogOutput** | Provides features to output log to console. This filter is used by default.                                                      |
-| **FileLogOutput**    | Provides features to output the log to the specified file.                                                                       |
-| **MultiLogOutput**   | Allows multiple log outputs. This is useful, for example, when you want to have console output and file output at the same time. |
+- **sendMessageAsTrace**
+- **sendMessageAsDebug**
+- **sendMessageAsInfo**
+- **sendMessageAsWarn**
+- **sendMessageAsError**
+- **sendMessageAsFatal**
 
 **_Example_**
 
 ```dart
-BatchApplication(
-  logConfig: LogConfiguration(
-    output: ConsoleLogOutput(),
-  ),
-);
+class TestParallelTask extends ParallelTask<TestParallelTask> {
+  @override
+  FutureOr<void> invoke() {
+    super.sendMessageAsTrace('Trace');
+    super.sendMessageAsDebug('Debug');
+    super.sendMessageAsInfo('Info');
+    super.sendMessageAsWarn('Warn');
+    super.sendMessageAsError('Error');
+    super.sendMessageAsFatal('Fatal');
+  }
+}
 ```
 
-**_With MultiLogOutput_**
+It should be noted that log output does not occur at the moment the above `sendMessageAsX` method is used.
+
+This is only a function that simulates log output in parallel processing, and all messages are output at once when all parallel processing included in `Parallel` is completed.
+
+And you can get the following log output from parallel processes.
+
+```bash
+yyyy-MM-dd 10:05:06.662561 [trace] (solatedLogMessage.output:36:13) - Received from the isolated thread [message=Trace]
+yyyy-MM-dd 10:05:06.662666 [debug] (solatedLogMessage.output:39:13) - Received from the isolated thread [message=Debug]
+yyyy-MM-dd 10:05:06.662760 [info ] (solatedLogMessage.output:42:13) - Received from the isolated thread [message=Info]
+yyyy-MM-dd 10:05:06.662856 [warn ] (solatedLogMessage.output:45:13) - Received from the isolated thread [message=Warn]
+yyyy-MM-dd 10:05:06.662947 [error] (solatedLogMessage.output:48:13) - Received from the isolated thread [message=Error]
+yyyy-MM-dd 10:05:06.663039 [fatal] (solatedLogMessage.output:51:13) - Received from the isolated thread [message=Fatal]
+```
+
+### 1.3.5. Branch
+
+`Batch.dart` supports conditional branching for each scheduled event (it's just called "**Branch**" in `Batch.dart`).
+
+`Branch` is designed to be derived from each event, such as `Job`, `Step`, and `Task`. There is no limit to the number of branches that can be set up, and a recursive nesting structure is also possible.
+
+Creating a branch for each event is very easy.
+
+**_To create branch_**
 
 ```dart
-BatchApplication(
-  logConfig: LogConfiguration(
-    output: MultiLogOutput([
-      ConsoleLogOutput(),
-      FileLogOutput(file: File('./test.txt')),
-    ]),
-  ),
-);
+Step(name: 'Step')
+  // Assume that this task will change the branch status.
+  ..nextTask(ChangeBranchStatusTask())
+
+  // Pass an event object to "to" argument that you want to execute when you enter this branch.
+  ..branchOnSucceeded(to: Step(name: 'Step on succeeded')..nextTask(somethingTask))
+  ..branchOnFailed(to: Step(name: 'Step on failed')..nextTask(somethingTask))
+
+  // Branches that are "branchOnCompleted" are always executed regardless of branch status.
+  ..branchOnCompleted(to: Step(name: 'Step on completed'))..nextTask(somethingTask);
 ```
 
-## 1.5. Contribution
+And the conditional branching of `Batch.dart` is controlled by changing the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
+The default branch status is "**completed**".
+
+**_To manage branch_**
+
+```dart
+class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
+  @override
+  void execute(ExecutionContext context) {
+    // You can easily manage branch status through methods as below.
+    context.jobExecution!.branchToSucceeded();
+    context.stepExecution!.branchToFailed();
+    context.taskExecution!.branchToSucceeded();
+  }
+}
+```
+
+## 1.4. Contribution
 
 If you would like to contribute to `Batch.dart`, please create an [issue](https://github.com/batch-dart/batch.dart/issues) or create a Pull Request.
 
 Owner will respond to issues and review pull requests as quickly as possible.
 
-## 1.6. Support
+## 1.5. Support
 
 The simplest way to show us your support is by giving the project a star at [here](https://github.com/batch-dart/batch.dart).
 
-And I'm always looking for sponsors to support this project. I am not asking for royalties for use in providing this framework, but I do need support to continue ongoing open source development.
+And I'm always looking for sponsors to support this project. I'm not asking for royalties for use in providing this framework, but I do need support to continue ongoing open source development.
 
 Sponsors can be individuals or corporations, and the amount is optional.
 
 If you would like to sponsor me, please check my [sponsorship page](https://github.com/sponsors/myConsciousness) on GitHub or contact me at kato.shinya.dev@gmail.com.
 
-## 1.7. License
+## 1.6. License
 
 All resources of `Batch.dart` is provided under the `BSD-3` license.
 
@@ -273,7 +346,7 @@ All resources of `Batch.dart` is provided under the `BSD-3` license.
 > Note:
 > License notices in the source are strictly validated based on `.github/header-checker-lint.yml`. Please check [header-checker-lint.yml](https://github.com/batch-dart/batch.dart/tree/main/.github/header-checker-lint.yml) for the permitted standards.
 
-## 1.8. More Information
+## 1.7. More Information
 
 `Batch.dart` was designed and implemented by **_Kato Shinya_**.
 
