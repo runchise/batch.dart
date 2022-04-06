@@ -8,7 +8,7 @@ import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
-import 'package:batch/src/log/logger_provider.dart' as log;
+import 'package:batch/src/log/logger_provider.dart';
 import 'package:batch/src/runner.dart';
 
 abstract class Launcher<T extends Event<T>> extends ContextSupport<T>
@@ -88,6 +88,8 @@ abstract class Launcher<T extends Event<T>> extends ContextSupport<T>
               error,
               stackTrace,
             );
+
+            await event.retryPolicy!.recover(context);
 
             rethrow;
           }

@@ -71,8 +71,12 @@ Job get _testJob1 => Job(
               onCompleted: (context) => info(
                   '\n--------------- RetryTask has completed! ---------------'),
               retryConfig: RetryConfiguration(
+                maxAttempt: 3,
                 retryableExceptions: [Exception()],
                 backOff: Duration(seconds: 30),
+                onRecover: (context) {
+                  log.warn('Do something for recovering.');
+                },
               ),
             ),
           )
