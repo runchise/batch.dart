@@ -4,6 +4,7 @@
 
 // Project imports:
 import 'package:batch/src/job/config/retry_configuration.dart';
+import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/log/logger_provider.dart';
 
 abstract class RetryPolicy {
@@ -19,6 +20,8 @@ abstract class RetryPolicy {
 
   /// Returns true if [retryCount] is exceeded, otherwise false.
   bool isExceeded(final int retryCount);
+
+  Future<void> recover(final ExecutionContext context);
 }
 
 /// The implementation class of [RetryPolicy].
@@ -45,4 +48,13 @@ class _RetryPolicy implements RetryPolicy {
 
   @override
   bool isExceeded(final int retryCount) => retryCount >= retryConfig.maxAttempt;
+
+  @override
+  Future<void> recover(final ExecutionContext context) async {
+    if (retryConfig.onRecover != null) {
+      log.warn(
+          'Recovery process is executed because the specified retry count limit has been reached.');
+      await retryConfig.onRecover!.call(context);
+    }
+  }
 }

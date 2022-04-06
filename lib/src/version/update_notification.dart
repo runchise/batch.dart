@@ -19,7 +19,7 @@ abstract class UpdateNotification {
   ╔════════════════════════════════════════════════════════════════════════════╗
   ║ UPDATE NOTIFICATION                                                        ║
   ╠════════════════════════════════════════════════════════════════════════════╣
-  ║ A new version of batch is available!                                       ║
+  ║ A new version of Batch.dart is available!                                  ║
   ║                                                                            ║
   ║ * See the latest release at https://pub.dev/packages/batch                 ║
   ║ * Or to update to the latest version, run "dart pub upgrade"               ║

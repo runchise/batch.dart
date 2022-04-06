@@ -3,6 +3,7 @@
 ## v0.8.0
 
 - Changed startup banner. ([#101](https://github.com/batch-dart/batch.dart/issues/101))
+- Add `onRecover` feature to `RetryConfiguration`. It's executed when all retry has failed. ([#100](https://github.com/batch-dart/batch.dart/issues/100))
 
 ## v0.7.1
 
