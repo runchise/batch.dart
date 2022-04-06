@@ -30,18 +30,27 @@ abstract class ParallelTaskSupport {
       _sendMessage(LogLevel.info, message);
 
   /// Sends [message] to main thread as [LogLevel.warn].
-  void sendMessageAsWarn(String message) =>
-      _sendMessage(LogLevel.warn, message);
+  void sendMessageAsWarn(String message,
+          [dynamic error, StackTrace? stackTrace]) =>
+      _sendMessage(LogLevel.warn, message, error, stackTrace);
 
   /// Sends [message] to main thread as [LogLevel.error].
-  void sendMessageAsError(String message) =>
-      _sendMessage(LogLevel.error, message);
+  void sendMessageAsError(String message,
+          [dynamic error, StackTrace? stackTrace]) =>
+      _sendMessage(LogLevel.error, message, error, stackTrace);
 
   /// Sends [message] to main thread as [LogLevel.fatal].
-  void sendMessageAsFatal(String message) =>
-      _sendMessage(LogLevel.fatal, message);
+  void sendMessageAsFatal(String message,
+          [dynamic error, StackTrace? stackTrace]) =>
+      _sendMessage(LogLevel.fatal, message, error, stackTrace);
 
   /// Sends [message] to main thread as [level].
-  void _sendMessage(LogLevel level, String message) =>
-      _isolatedMessages.add(IsolatedLogMessage(level: level, value: message));
+  void _sendMessage(LogLevel level, String message,
+          [dynamic error, StackTrace? stackTrace]) =>
+      _isolatedMessages.add(IsolatedLogMessage(
+        level: level,
+        value: message,
+        error: error,
+        stackTrace: stackTrace,
+      ));
 }

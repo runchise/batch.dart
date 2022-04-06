@@ -257,8 +257,14 @@ class TestParallelTask extends ParallelTask<TestParallelTask> {
     super.sendMessageAsTrace('Trace');
     super.sendMessageAsDebug('Debug');
     super.sendMessageAsInfo('Info');
-    super.sendMessageAsWarn('Warn');
-    super.sendMessageAsError('Error');
-    super.sendMessageAsFatal('Fatal');
+
+    try {
+      throw Exception('Error output is also possible.');
+    } catch (error, stackTrace) {
+      // The error and stackTrace are optional.
+      super.sendMessageAsWarn('Warn');
+      super.sendMessageAsError('Error', error, stackTrace);
+      super.sendMessageAsFatal('Fatal', error, stackTrace);
+    }
   }
 }
