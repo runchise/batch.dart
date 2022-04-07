@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.8.1
+
+- Improved `README.md`.
+
 ## v0.8.0
 
 - Changed startup banner. ([#101](https://github.com/batch-dart/batch.dart/issues/101))

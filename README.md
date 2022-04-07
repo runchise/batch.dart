@@ -114,7 +114,7 @@ When defining a simple sequential process, all that is required is to define a c
 ```dart
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication(),
+void main() => BatchApplication()
       ..addJob(
         // Scheduled to start every minute in Cron format
         Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
@@ -153,7 +153,7 @@ import 'dart:async';
 
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication(),
+void main() => BatchApplication()
       ..addJob(
         // Scheduled to start every minute in Cron format
         Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
