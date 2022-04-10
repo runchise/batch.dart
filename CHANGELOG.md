@@ -3,6 +3,7 @@
 ## v0.9.0
 
 - Improved schedule checking process. ([#118](https://github.com/batch-dart/batch.dart/issues/118))
+- Fixed handling of duplicate keys in `Parameters`. ([#117](https://github.com/batch-dart/batch.dart/issues/117))
 
 ## v0.8.1
 
