@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.9.0
+
+- Improved schedule checking process. ([#118](https://github.com/batch-dart/batch.dart/issues/118))
+
 ## v0.8.1
 
 - Improved `README.md`.
