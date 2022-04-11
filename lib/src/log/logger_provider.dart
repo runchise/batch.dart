@@ -4,25 +4,24 @@
 
 // Project imports:
 import 'package:batch/src/log/logger.dart';
-import 'package:batch/src/log/logger_instance.dart';
 
 /// The logger
-final Logger log = LoggerInstance.instance;
+final Logger log = Logger.instance;
 
 /// Logging function for trace level.
-final trace = LoggerInstance.instance.trace;
+final trace = Logger.instance.trace;
 
 /// Logging function for debug level.
-final debug = LoggerInstance.instance.debug;
+final debug = Logger.instance.debug;
 
 /// Logging function for info level.
-final info = LoggerInstance.instance.info;
+final info = Logger.instance.info;
 
 /// Logging function for warning level.
-final warn = LoggerInstance.instance.warn;
+final warn = Logger.instance.warn;
 
 /// Logging function for error level.
-final error = LoggerInstance.instance.error;
+final error = Logger.instance.error;
 
 /// Logging function for fatal level.
-final fatal = LoggerInstance.instance.fatal;
+final fatal = Logger.instance.fatal;
