@@ -12,7 +12,6 @@ import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/log_level.dart';
-import 'package:batch/src/log/logger_instance.dart';
 import 'package:batch/src/log/output/console_log_output.dart';
 import 'package:batch/src/log/output/log_output.dart';
 import 'package:batch/src/log/output_log_event.dart';
