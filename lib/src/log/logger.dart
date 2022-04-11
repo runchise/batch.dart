@@ -12,6 +12,7 @@ import 'package:batch/src/log/filter/log_filter.dart';
 import 'package:batch/src/log/input_log_event.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/log_level.dart';
+import 'package:batch/src/log/logger_instance.dart';
 import 'package:batch/src/log/output/console_log_output.dart';
 import 'package:batch/src/log/output/log_output.dart';
 import 'package:batch/src/log/output_log_event.dart';
@@ -20,9 +21,8 @@ import 'package:batch/src/log/printer/log_printer.dart';
 
 class Logger {
   /// Returns the new instance of [Logger].
-  Logger.loadFrom({
-    required LogConfiguration config,
-  })  : _filter = config.filter ?? DefaultLogFilter(),
+  Logger.loadFrom({required LogConfiguration config})
+      : _filter = config.filter ?? DefaultLogFilter(),
         _printer = config.printer ?? DefaultLogPrinter(),
         _output = config.output ?? ConsoleLogOutput(),
         _printLog = config.printLog {
@@ -35,6 +35,7 @@ class Logger {
 
     // Holds the Logger instance.
     _singletonInstance = this;
+    LoggerInstance.instance = this;
   }
 
   /// Returns the singleton instance of [Logger].

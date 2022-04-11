@@ -17,10 +17,8 @@ void main() {
   test('Test ParallelTask', () {
     final task = _ParallelTask();
     final context = ExecutionContext();
-    context.stepParameters['isolatedLogMessages'] = <IsolatedLogMessage>[];
 
     expect(() async => await task.execute(context), returnsNormally);
-    expect(() async => await task.invoke(), returnsNormally);
   });
 
   test('Test ParallelTask with error', () {
@@ -32,21 +30,17 @@ void main() {
         () async => await task.execute(context),
         throwsA(allOf(isA<UnimplementedError>(),
             predicate((dynamic e) => e.message == 'success'))));
-    expect(
-        () async => await task.invoke(),
-        throwsA(allOf(isA<UnimplementedError>(),
-            predicate((dynamic e) => e.message == 'success'))));
   });
 }
 
 class _ParallelTask extends ParallelTask<_ParallelTask> {
   @override
-  FutureOr<void> invoke() {}
+  FutureOr<void> execute(ExecutionContext context) {}
 }
 
 class _ParallelTaskWithError extends ParallelTask<_ParallelTaskWithError> {
   @override
-  FutureOr<void> invoke() {
+  FutureOr<void> execute(ExecutionContext context) {
     throw UnimplementedError('success');
   }
 }
