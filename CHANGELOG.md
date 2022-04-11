@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.10.0
+
+- Allows parallel processing to use the main thread `ExecutionContext`. ([#121](https://github.com/batch-dart/batch.dart/issues/121))
+
 ## v0.9.0
 
 - Improved schedule checking process. ([#118](https://github.com/batch-dart/batch.dart/issues/118))

@@ -250,7 +250,7 @@ class RetryTask extends Task<RetryTask> {
 
 class TestParallelTask extends ParallelTask<TestParallelTask> {
   @override
-  FutureOr<void> invoke() {
+  FutureOr<void> execute(ExecutionContext context) {
     int i = 0;
     while (i < 10000000000) {
       i++;

@@ -30,7 +30,7 @@ class DefaultBanner implements Banner {
 ║  ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰━━╯                                ║
 ║                                                                         ║
 ╠═════════════════════════════════════════════════════════════════════════╣
-║  Version  : ${Version.current}                                                       ║
+║  Version  : ${Version.current}                                                      ║
 ║  License  : BSD 3-Clause                                                ║
 ║  Author   : Kato Shinya (https://github.com/myConsciousness)            ║
 ╚═════════════════════════════════════════════════════════════════════════╝

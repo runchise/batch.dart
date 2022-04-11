@@ -144,7 +144,9 @@ The above example is a very simple, and so you should refer to other documents a
 
 `Batch.dart` supports powerful parallel processing and is easy to define.
 
-When defining parallel processing, all you have to do is just inherit from `ParallelTask` and describe the process you want to parallelize in the `invoke` method.
+When defining parallel processing, all you have to do is just inherit from `ParallelTask` and describe the process you want to parallelize in the `execute` method.
+
+`SharedParameters` and `JobParameters` set in the main thread can be referenced through `ExecutionContext`. However, note that under the current specification, changes to the `ExecutionContext` value during parallel processing are not reflected in the main thread's `ExecutionContext`.
 
 **_Example_**
 
@@ -179,7 +181,7 @@ void main() => BatchApplication()
 
 class DoHeavyTask extends ParallelTask<DoHeavyTask> {
   @override
-  FutureOr<void> invoke() {
+  FutureOr<void> execute(ExecutionContext context) {
     int i = 0;
     while (i < 10000000000) {
       i++;
