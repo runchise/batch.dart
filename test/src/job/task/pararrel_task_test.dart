@@ -10,7 +10,6 @@ import 'package:test/test.dart';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
-import 'package:batch/src/job/parallel/isolated_log_message.dart';
 import 'package:batch/src/job/task/parallel_task.dart';
 
 void main() {
@@ -24,7 +23,6 @@ void main() {
   test('Test ParallelTask with error', () {
     final task = _ParallelTaskWithError();
     final context = ExecutionContext();
-    context.stepParameters['isolatedLogMessages'] = <IsolatedLogMessage>[];
 
     expect(
         () async => await task.execute(context),

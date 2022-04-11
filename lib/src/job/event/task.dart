@@ -47,4 +47,19 @@ abstract class Task<T extends Task<T>> extends Event<Task> {
     BatchInstance.updateStatus(BatchStatus.shuttingDown);
     log.warn('The shutdown command was notified by Task: [name=$name]');
   }
+
+  @override
+  @Deprecated('not supported operation and always UnsupportedError throws')
+  void branchOnSucceeded({required Task to}) =>
+      throw UnsupportedError('Branch feature is not supported for task.');
+
+  @override
+  @Deprecated('not supported and always UnsupportedError throws')
+  void branchOnFailed({required Task to}) =>
+      throw UnsupportedError('Branch feature is not supported for task.');
+
+  @override
+  @Deprecated('not supported and always UnsupportedError throws')
+  void branchOnCompleted({required Task to}) =>
+      throw UnsupportedError('Branch feature is not supported for task.');
 }

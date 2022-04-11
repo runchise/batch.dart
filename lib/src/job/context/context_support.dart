@@ -10,6 +10,7 @@ import 'package:batch/src/job/event/event.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/job/execution.dart';
+import 'package:batch/src/job/execution_type.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/process_status.dart';
 import 'package:batch/src/log/logger_provider.dart';
@@ -42,7 +43,7 @@ abstract class ContextSupport<T extends Event<T>> {
     } else {
       context.taskExecution = _newExecution(name);
       log.info(
-          'Task: [name=$name] launched with the following step parameters: ${context.stepParameters}');
+          'Task: [name=$name] launched with the following job parameters: ${context.jobParameters}');
     }
   }
 
@@ -75,13 +76,19 @@ abstract class ContextSupport<T extends Event<T>> {
     } else {
       context.taskExecution = _finishedExecution(status: status);
       log.info(
-          'Task: [name=${context.taskExecution!.name}] finished with the following step parameters: ${context.stepParameters} and the status: [${status.name}]');
+          'Task: [name=${context.taskExecution!.name}] finished with the following job parameters: ${context.jobParameters} and the status: [${status.name}]');
     }
   }
 
   dynamic _newExecution(final String name) {
-    final execution = Execution(name: name, startedAt: DateTime.now());
+    final execution = Execution(
+      type: _executionType,
+      name: name,
+      startedAt: DateTime.now(),
+    );
+
     _executionStack.push(execution);
+
     return execution;
   }
 
@@ -89,12 +96,23 @@ abstract class ContextSupport<T extends Event<T>> {
     final execution = _executionStack.pop();
 
     return Execution(
+      type: _executionType,
       name: execution.name,
       status: status ?? ProcessStatus.completed,
       startedAt: execution.startedAt,
       updatedAt: DateTime.now(),
       finishedAt: DateTime.now(),
     );
+  }
+
+  ExecutionType get _executionType {
+    if (T == Job) {
+      return ExecutionType.job;
+    } else if (T == Step) {
+      return ExecutionType.step;
+    }
+
+    return ExecutionType.task;
   }
 
   /// Returns the branch status.
