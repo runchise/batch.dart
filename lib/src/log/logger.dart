@@ -35,7 +35,6 @@ class Logger {
 
     // Holds the Logger instance.
     _singletonInstance = this;
-    LoggerInstance.instance = this;
   }
 
   /// Returns the singleton instance of [Logger].
