@@ -35,7 +35,7 @@ class ParallelLauncher extends Launcher<Parallel> {
             taskTypeRegister: () => executors,
             logger: (String type, dynamic message,
                     [dynamic error, dynamic stackTrace]) =>
-                info(message),
+                log.info(message),
           );
 
           asyncExecutor.logger.enabled = true;
