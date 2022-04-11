@@ -63,8 +63,7 @@ Job get _testJob1 => Job(
           skipConfig: SkipConfiguration(
             skippableExceptions: [Exception()],
           ),
-        )
-          ..nextTask(
+        )..registerTask(
             RetryTask(
               // You can define callbacks for each processing phase.
               onStarted: (context) => log.info(
@@ -87,34 +86,23 @@ Job get _testJob1 => Job(
                 },
               ),
             ),
-          )
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask()),
+          ),
       )
       ..nextStep(
         Step(name: 'Step2')
-          ..nextTask(TestTask())
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask())
+          ..registerTask(TestTask())
           ..branchOnSucceeded(
-            to: Step(name: 'Step3')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
+            to: Step(name: 'Step3')..registerTask(SayHelloTask()),
           )
           ..branchOnFailed(
             to: Step(name: 'Step4')
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
+              ..registerTask(SayHelloTask())
               ..branchOnCompleted(
                 to: Step(
                   name: 'Step6',
                   // You can set any preconditions to run Step.
                   precondition: () => false,
-                )
-                  ..nextTask(TestTask())
-                  ..nextTask(SayHelloTask())
-                  ..nextTask(SayWorldTask()),
+                )..registerTask(SayWorldTask()),
               ),
           )
           ..branchOnCompleted(
@@ -125,10 +113,7 @@ Job get _testJob1 => Job(
                   .info('\n--------------- Step5 has started! ---------------'),
               onCompleted: (context) => log.info(
                   '\n--------------- Step5 has completed! ---------------'),
-            )
-              ..nextTask(TestTask())
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask()),
+            )..registerTask(SayHelloTask()),
           ),
       );
 
@@ -142,18 +127,10 @@ Job get _testJob2 => Job(
         Step(
           name: 'Step1',
           precondition: () => true,
-        )
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask()),
+        )..registerTask(SayWorldTask()),
       )
       ..branchOnSucceeded(
-        to: Job(name: 'Job3')
-          ..nextStep(
-            Step(name: 'Step1')
-              ..nextTask(SayHelloTask())
-              ..nextTask(SayWorldTask())
-              ..shutdown(),
-          ),
+        to: Job(name: 'Job3')..nextStep(Step(name: 'Step1')..shutdown()),
       );
 
 Job get _testJob4 => Job(
@@ -165,8 +142,7 @@ Job get _testJob4 => Job(
         Step(
           name: 'Parallel Step',
           precondition: () => true,
-        )
-          ..nextParallel(
+        )..registerParallel(
             Parallel(
               name: 'Parallel Tasks',
               tasks: [
@@ -176,9 +152,7 @@ Job get _testJob4 => Job(
                 TestParallelTask(),
               ],
             ),
-          )
-          ..nextTask(SayHelloTask())
-          ..nextTask(SayWorldTask()),
+          ),
       );
 
 class TestTask extends Task<TestTask> {
@@ -186,8 +160,6 @@ class TestTask extends Task<TestTask> {
   void execute(ExecutionContext context) {
     // This parameter is shared just in this job.
     context.jobParameters['key'] = 'job_parameter';
-    // This parameter is shared just in this step.
-    context.stepParameters['key'] = 'step_parameter';
 
     // You can use shared parameters in any places.
     log.info(context.sharedParameters['key1']);

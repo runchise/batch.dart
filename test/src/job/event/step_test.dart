@@ -30,24 +30,22 @@ void main() {
   test('Test nextTask', () {
     final step = Step(name: 'Step');
     expect(step.name, 'Step');
-    expect(step.tasks.isEmpty, true);
+    expect(step.hasTask, isFalse);
 
     final task = _Task();
-    step.nextTask(task);
-    expect(step.tasks.isEmpty, false);
-    expect(step.tasks.length, 1);
-    expect(step.tasks[0], task);
+    step.registerTask(task);
+    expect(step.hasTask, isTrue);
+    expect(step.task, task);
   });
 
   test('Test shutdown', () {
     final step = Step(name: 'Step');
     expect(step.name, 'Step');
-    expect(step.tasks.isEmpty, true);
+    expect(step.hasTask, isFalse);
 
     step.shutdown();
-    expect(step.tasks.isEmpty, false);
-    expect(step.tasks.length, 1);
-    expect(step.tasks[0].name, 'ShutdownTask');
+    expect(step.hasTask, isTrue);
+    expect(step.task.name, 'ShutdownTask');
   });
 }
 

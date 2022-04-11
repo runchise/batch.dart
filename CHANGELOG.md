@@ -4,6 +4,7 @@
 
 - Allows parallel processing to use the main thread `ExecutionContext`. ([#121](https://github.com/batch-dart/batch.dart/issues/121))
 - Removed `trace`, `debug`, `info`, `warn`, `error`, and `fatal` from convenient methods of logging feature. Make sure to access the logger from `log`. ([#125](https://github.com/batch-dart/batch.dart/issues/125)
+- Changed specification regarding tasks to be set in `Step`. Under the new specification, there will always be only one task that can be set in a single step. ([#123](https://github.com/batch-dart/batch.dart/issues/123))
 
 ## v0.9.0
 

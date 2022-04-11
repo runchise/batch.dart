@@ -121,7 +121,7 @@ void main() => BatchApplication()
           // Step phase
           ..nextStep(Step(name: 'Step')
             // Task phase
-            ..nextTask(DoSomethingTask()
+            ..registerTask(DoSomethingTask()
           ),
         ),
       )
@@ -162,7 +162,7 @@ void main() => BatchApplication()
           // Step phase
           ..nextStep(Step(name: 'Step')
             // Parallel task phase
-            ..nextParallel(
+            ..registerParallel(
               Parallel(
                 name: 'Parallel Tasks',
                 tasks: [
@@ -308,14 +308,14 @@ Creating a branch for each event is very easy.
 ```dart
 Step(name: 'Step')
   // Assume that this task will change the branch status.
-  ..nextTask(ChangeBranchStatusTask())
+  ..registerTask(ChangeBranchStatusTask())
 
   // Pass an event object to "to" argument that you want to execute when you enter this branch.
-  ..branchOnSucceeded(to: Step(name: 'Step on succeeded')..nextTask(somethingTask))
-  ..branchOnFailed(to: Step(name: 'Step on failed')..nextTask(somethingTask))
+  ..branchOnSucceeded(to: Step(name: 'Step on succeeded')..registerTask(somethingTask))
+  ..branchOnFailed(to: Step(name: 'Step on failed')..registerTask(somethingTask))
 
   // Branches that are "branchOnCompleted" are always executed regardless of branch status.
-  ..branchOnCompleted(to: Step(name: 'Step on completed'))..nextTask(somethingTask);
+  ..branchOnCompleted(to: Step(name: 'Step on completed'))..registerTask(somethingTask);
 ```
 
 And the conditional branching of `Batch.dart` is controlled by changing the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
@@ -330,7 +330,6 @@ class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
     // You can easily manage branch status through methods as below.
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
-    context.taskExecution!.branchToSucceeded();
   }
 }
 ```
