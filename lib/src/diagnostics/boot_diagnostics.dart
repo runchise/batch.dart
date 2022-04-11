@@ -29,7 +29,7 @@ class _BootDiagnostics implements BootDiagnostics {
 
   @override
   void run() {
-    info('Batch application diagnostics have been started');
+    log.info('Batch application diagnostics have been started');
 
     if (_jobs.isEmpty) {
       throw ArgumentError('The job to be launched is required.');
@@ -43,8 +43,8 @@ class _BootDiagnostics implements BootDiagnostics {
       _checkJobRecursively(job: job);
     }
 
-    info('Batch application diagnostics have been completed');
-    info('Batch applications can be started securely');
+    log.info('Batch application diagnostics have been completed');
+    log.info('Batch applications can be started securely');
   }
 
   void _checkJobRecursively({required Job job}) {

@@ -220,15 +220,12 @@ import 'package:batch/batch.dart';
 class TestLogTask extends Task<TestLogTask> {
   @override
   void execute() {
-    trace('Test trace');
-    debug('Test debug');
-    info('Test info');
-    warn('Test warning');
-    error('Test error');
-    fatal('Test fatal');
-
-    // You can add "log." as a prefix.
     log.trace('Test trace');
+    log.debug('Test debug');
+    log.info('Test info');
+    log.warn('Test warning');
+    log.error('Test error');
+    log.fatal('Test fatal');
   }
 }
 ```

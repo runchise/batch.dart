@@ -34,18 +34,18 @@ class JobScheduler implements Runner {
 
   @override
   void run() {
-    info('Started Job scheduling on startup');
-    info('Detected ${_jobs.length} Jobs on the root');
+    log.info('Started Job scheduling on startup');
+    log.info('Detected ${_jobs.length} Jobs on the root');
 
     for (final job in _jobs) {
-      info('Scheduling Job [name=${job.name}]');
+      log.info('Scheduling Job [name=${job.name}]');
 
       _schedule(job.schedule!.parse(), () async {
         try {
           await JobLauncher(job: job).run();
         } catch (error, stackTrace) {
           BatchInstance.updateStatus(BatchStatus.shuttingDown);
-          fatal('Shut down the application due to a fatal exception', error,
+          log.fatal('Shut down the application due to a fatal exception', error,
               stackTrace);
         }
       });
@@ -53,7 +53,7 @@ class JobScheduler implements Runner {
 
     BatchInstance.updateStatus(BatchStatus.running);
 
-    info(
+    log.info(
       'Job scheduling has been completed and the batch application is now running',
     );
   }
@@ -95,14 +95,15 @@ class JobScheduler implements Runner {
   }
 
   void _dispose() {
-    warn('Preparing for shutdown the batch application safely');
+    log.warn('Preparing for shutdown the batch application safely');
 
     for (final scheduledTask in _scheduledTasks) {
       scheduledTask.dispose();
     }
 
-    warn('Allocation memory is releasing');
-    warn('Shutdown the batch application');
+    log.warn('Allocation memory is releasing');
+    log.warn('Shutdown the batch application');
+
     Logger.instance.dispose();
     BatchInstance.updateStatus(BatchStatus.shutdown);
   }

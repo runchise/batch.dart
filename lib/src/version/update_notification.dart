@@ -37,6 +37,6 @@ class _UpdateNotification implements UpdateNotification {
       return;
     }
 
-    warn('\n\n${UpdateNotification.message}');
+    log.warn('\n\n${UpdateNotification.message}');
   }
 }

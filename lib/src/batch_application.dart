@@ -164,8 +164,8 @@ class _BatchApplication implements BatchApplication {
       await BannerPrinter(banner: DefaultBanner()).execute();
       await UpdateNotification().printIfNecessary(await Version().status);
 
-      info('🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀');
-      info('Logger instance has completed loading');
+      log.info('🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀');
+      log.info('Logger instance has completed loading');
 
       BootDiagnostics(jobs: _jobs).run();
 

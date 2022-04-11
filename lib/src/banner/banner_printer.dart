@@ -23,5 +23,5 @@ class _BannerPrinter implements BannerPrinter {
   final Banner banner;
 
   @override
-  Future<void> execute() async => info('\n${await banner.build()}');
+  Future<void> execute() async => log.info('\n${await banner.build()}');
 }

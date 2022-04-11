@@ -53,9 +53,9 @@ Job get _testJob1 => Job(
       schedule: CronParser(value: '*/1 * * * *'),
       // You can define callbacks for each processing phase.
       onStarted: (context) =>
-          info('\n--------------- Job1 has started! ---------------'),
+          log.info('\n--------------- Job1 has started! ---------------'),
       onCompleted: (context) =>
-          info('\n--------------- Job1 has completed! ---------------'),
+          log.info('\n--------------- Job1 has completed! ---------------'),
     )
       ..nextStep(
         Step(
@@ -67,16 +67,16 @@ Job get _testJob1 => Job(
           ..nextTask(
             RetryTask(
               // You can define callbacks for each processing phase.
-              onStarted: (context) => info(
+              onStarted: (context) => log.info(
                   '\n--------------- RetryTask has started! ---------------'),
-              onSucceeded: (context) => info(
+              onSucceeded: (context) => log.info(
                   '\n--------------- RetryTask has succeeded! ---------------'),
               onError: (context, error, stackTrace) => log.error(
                 '\n--------------- Error RetryTask ---------------',
                 error,
                 stackTrace,
               ),
-              onCompleted: (context) => info(
+              onCompleted: (context) => log.info(
                   '\n--------------- RetryTask has completed! ---------------'),
               retryConfig: RetryConfiguration(
                 maxAttempt: 3,
@@ -121,9 +121,9 @@ Job get _testJob1 => Job(
             to: Step(
               name: 'Step5',
               // You can define callbacks for each processing phase.
-              onStarted: (context) =>
-                  info('\n--------------- Step5 has started! ---------------'),
-              onCompleted: (context) => info(
+              onStarted: (context) => log
+                  .info('\n--------------- Step5 has started! ---------------'),
+              onCompleted: (context) => log.info(
                   '\n--------------- Step5 has completed! ---------------'),
             )
               ..nextTask(TestTask())
@@ -190,29 +190,29 @@ class TestTask extends Task<TestTask> {
     context.stepParameters['key'] = 'step_parameter';
 
     // You can use shared parameters in any places.
-    info(context.sharedParameters['key1']);
-    info(context.sharedParameters['key2']);
+    log.info(context.sharedParameters['key1']);
+    log.info(context.sharedParameters['key2']);
 
-    trace('Trace');
-    info('Info');
-    debug('Debug');
-    warn('Warn');
-    error('Error');
-    fatal('Fatal');
+    log.trace('Trace');
+    log.info('Info');
+    log.debug('Debug');
+    log.warn('Warn');
+    log.error('Error');
+    log.fatal('Fatal');
   }
 }
 
 class SayHelloTask extends Task<SayHelloTask> {
   @override
   void execute(ExecutionContext context) {
-    debug('Hello,');
+    log.debug('Hello,');
   }
 }
 
 class SayWorldTask extends Task<SayWorldTask> {
   @override
   void execute(ExecutionContext context) {
-    info('World!');
+    log.info('World!');
     context.jobExecution!.branchToSucceeded();
     context.stepExecution!.branchToFailed();
   }
