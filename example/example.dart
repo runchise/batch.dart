@@ -101,7 +101,7 @@ Job get _testJob1 => Job(
                 to: Step(
                   name: 'Step6',
                   // You can set any preconditions to run Step.
-                  precondition: () => false,
+                  precondition: (context) => false,
                 )..registerTask(SayWorldTask()),
               ),
           )
@@ -121,12 +121,12 @@ Job get _testJob2 => Job(
       name: 'Job2',
       schedule: CronParser(value: '*/5 * * * *'),
       // You can set any preconditions to run Job.
-      precondition: () async => true,
+      precondition: (context) async => true,
     )
       ..nextStep(
         Step(
           name: 'Step1',
-          precondition: () => true,
+          precondition: (context) => true,
         )..registerTask(SayWorldTask()),
       )
       ..createBranchOnSucceeded(
@@ -137,11 +137,11 @@ Job get _testJob4 => Job(
       name: 'Job4',
       schedule: CronParser(value: '*/1 * * * *'),
       // You can set any preconditions to run Job.
-      precondition: () async => true,
+      precondition: (context) async => true,
     )..nextStep(
         Step(
           name: 'Parallel Step',
-          precondition: () => true,
+          precondition: (context) => true,
         )..registerParallel(
             Parallel(
               name: 'Parallel Tasks',

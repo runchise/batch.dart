@@ -19,7 +19,7 @@ class Step extends Event<Step> {
   /// Returns the new instance of [Step].
   Step({
     required String name,
-    FutureOr<bool> Function()? precondition,
+    FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?

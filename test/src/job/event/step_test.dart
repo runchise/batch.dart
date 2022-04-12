@@ -23,7 +23,7 @@ void main() {
     expect(step.retryPolicy, null);
     expect(step.hasSkipPolicy, false);
     expect(step.hasRetryPolicy, false);
-    expect(await step.shouldLaunch(), true);
+    expect(await step.shouldLaunch(ExecutionContext()), true);
     expect(step.hasBranch, false);
   });
 
