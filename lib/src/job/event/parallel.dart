@@ -39,16 +39,16 @@ class Parallel extends Event<Parallel> {
 
   @override
   @Deprecated('not supported operation and always UnsupportedError throws')
-  void branchOnSucceeded({required Parallel to}) =>
+  void createBranchOnSucceeded({required Parallel to}) =>
       throw UnsupportedError('Branch feature is not supported for parallel.');
 
   @override
   @Deprecated('not supported and always UnsupportedError throws')
-  void branchOnFailed({required Parallel to}) =>
+  void createBranchOnFailed({required Parallel to}) =>
       throw UnsupportedError('Branch feature is not supported for parallel.');
 
   @override
   @Deprecated('not supported and always UnsupportedError throws')
-  void branchOnCompleted({required Parallel to}) =>
+  void createBranchOnCompleted({required Parallel to}) =>
       throw UnsupportedError('Branch feature is not supported for parallel.');
 }

@@ -50,16 +50,16 @@ abstract class Task<T extends Task<T>> extends Event<Task> {
 
   @override
   @Deprecated('not supported operation and always UnsupportedError throws')
-  void branchOnSucceeded({required Task to}) =>
+  void createBranchOnSucceeded({required Task to}) =>
       throw UnsupportedError('Branch feature is not supported for task.');
 
   @override
   @Deprecated('not supported and always UnsupportedError throws')
-  void branchOnFailed({required Task to}) =>
+  void createBranchOnFailed({required Task to}) =>
       throw UnsupportedError('Branch feature is not supported for task.');
 
   @override
   @Deprecated('not supported and always UnsupportedError throws')
-  void branchOnCompleted({required Task to}) =>
+  void createBranchOnCompleted({required Task to}) =>
       throw UnsupportedError('Branch feature is not supported for task.');
 }
