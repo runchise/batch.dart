@@ -3,6 +3,7 @@
 ## v0.11.0
 
 - Improved names of branch features. Now you can create branches with `createBranchOnXXXXX` and switch branches with `switchBranchToXXXXX`. ([#128](https://github.com/batch-dart/batch.dart/issues/128))
+- Fixed to be able to refer to ExecutionContext in processing Precondition. ([#132](https://github.com/batch-dart/batch.dart/issues/132))
 
 ## v0.10.0
 

@@ -37,7 +37,7 @@ void main() {
     expect(task.retryPolicy, null);
     expect(task.hasSkipPolicy, false);
     expect(task.hasRetryPolicy, false);
-    expect(await task.shouldLaunch(), true);
+    expect(await task.shouldLaunch(ExecutionContext()), true);
     expect(task.hasBranch, false);
   });
 }
