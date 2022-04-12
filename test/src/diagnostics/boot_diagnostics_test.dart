@@ -45,11 +45,11 @@ void main() {
           ..nextStep(
             Step(name: 'Step')
               ..registerTask(TestTask())
-              ..branchOnCompleted(
+              ..createBranchOnCompleted(
                 to: Step(name: 'Step2')..registerTask(TestTask()),
               ),
           )
-          ..branchOnCompleted(
+          ..createBranchOnCompleted(
             to: Job(name: 'Job2')
               ..nextStep(
                 Step(name: 'Step')..registerTask(TestTask()),
@@ -209,7 +209,7 @@ void main() {
           Job(name: 'Job', schedule: CronParser(value: '* * * * *'))
             ..nextStep(Step(name: 'Step')
               ..registerTask(TestTask())
-              ..branchOnCompleted(
+              ..createBranchOnCompleted(
                 to: (Step(name: 'Step')..registerTask(TestTask())),
               ))
         ]).run(),

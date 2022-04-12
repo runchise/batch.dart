@@ -38,9 +38,9 @@ void main() {
       expect(contextSupport.branchStatus, BranchStatus.completed);
 
       // Try to change branch status.
-      contextSupport.context.jobExecution!.branchToSucceeded();
+      contextSupport.context.jobExecution!.switchBranchToSucceeded();
       expect(contextSupport.branchStatus, BranchStatus.succeeded);
-      contextSupport.context.jobExecution!.branchToFailed();
+      contextSupport.context.jobExecution!.switchBranchToFailed();
       expect(contextSupport.branchStatus, BranchStatus.failed);
 
       contextSupport.finishExecutionAsCompleted(retry: false);
@@ -72,10 +72,10 @@ void main() {
       expect(contextSupport.branchStatus, BranchStatus.completed);
 
       // Try to change branch status.
-      contextSupport.context.jobExecution!.branchToSucceeded();
+      contextSupport.context.jobExecution!.switchBranchToSucceeded();
       expect(contextSupport.branchStatus, BranchStatus.succeeded);
       expect(contextSupport.context.jobExecution!.updatedAt != null, true);
-      contextSupport.context.jobExecution!.branchToFailed();
+      contextSupport.context.jobExecution!.switchBranchToFailed();
       expect(contextSupport.branchStatus, BranchStatus.failed);
       expect(contextSupport.context.jobExecution!.updatedAt != null, true);
 
@@ -124,9 +124,9 @@ void main() {
       expect(contextSupport.branchStatus, BranchStatus.completed);
 
       // Try to change branch status.
-      contextSupport.context.stepExecution!.branchToSucceeded();
+      contextSupport.context.stepExecution!.switchBranchToSucceeded();
       expect(contextSupport.branchStatus, BranchStatus.succeeded);
-      contextSupport.context.stepExecution!.branchToFailed();
+      contextSupport.context.stepExecution!.switchBranchToFailed();
       expect(contextSupport.branchStatus, BranchStatus.failed);
 
       contextSupport.finishExecutionAsCompleted(retry: false);
@@ -158,10 +158,10 @@ void main() {
       expect(contextSupport.branchStatus, BranchStatus.completed);
 
       // Try to change branch status.
-      contextSupport.context.stepExecution!.branchToSucceeded();
+      contextSupport.context.stepExecution!.switchBranchToSucceeded();
       expect(contextSupport.branchStatus, BranchStatus.succeeded);
       expect(contextSupport.context.stepExecution!.updatedAt != null, true);
-      contextSupport.context.stepExecution!.branchToFailed();
+      contextSupport.context.stepExecution!.switchBranchToFailed();
       expect(contextSupport.branchStatus, BranchStatus.failed);
       expect(contextSupport.context.stepExecution!.updatedAt != null, true);
 
