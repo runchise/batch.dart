@@ -91,13 +91,13 @@ Job get _testJob1 => Job(
       ..nextStep(
         Step(name: 'Step2')
           ..registerTask(TestTask())
-          ..branchOnSucceeded(
+          ..createBranchOnSucceeded(
             to: Step(name: 'Step3')..registerTask(SayHelloTask()),
           )
-          ..branchOnFailed(
+          ..createBranchOnFailed(
             to: Step(name: 'Step4')
               ..registerTask(SayHelloTask())
-              ..branchOnCompleted(
+              ..createBranchOnCompleted(
                 to: Step(
                   name: 'Step6',
                   // You can set any preconditions to run Step.
@@ -105,7 +105,7 @@ Job get _testJob1 => Job(
                 )..registerTask(SayWorldTask()),
               ),
           )
-          ..branchOnCompleted(
+          ..createBranchOnCompleted(
             to: Step(
               name: 'Step5',
               // You can define callbacks for each processing phase.
@@ -129,7 +129,7 @@ Job get _testJob2 => Job(
           precondition: () => true,
         )..registerTask(SayWorldTask()),
       )
-      ..branchOnSucceeded(
+      ..createBranchOnSucceeded(
         to: Job(name: 'Job3')..nextStep(Step(name: 'Step1')..shutdown()),
       );
 
@@ -185,8 +185,8 @@ class SayWorldTask extends Task<SayWorldTask> {
   @override
   void execute(ExecutionContext context) {
     log.info('World!');
-    context.jobExecution!.branchToSucceeded();
-    context.stepExecution!.branchToFailed();
+    context.jobExecution!.switchBranchToSucceeded();
+    context.stepExecution!.switchBranchToFailed();
   }
 }
 

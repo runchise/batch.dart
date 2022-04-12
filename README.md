@@ -299,7 +299,7 @@ yyyy-MM-dd 10:05:06.663039 [fatal] (solatedLogMessage.output:51:13) - Received f
 
 `Batch.dart` supports conditional branching for each scheduled event (it's just called "**Branch**" in `Batch.dart`).
 
-`Branch` is designed to be derived from each event, such as `Job`, `Step`, and `Task`. There is no limit to the number of branches that can be set up, and a recursive nesting structure is also possible.
+`Branch` is designed to be derived from each event, such as `Job` and `Step`. There is no limit to the number of branches that can be set up, and a recursive nesting structure is also possible.
 
 Creating a branch for each event is very easy.
 
@@ -311,11 +311,11 @@ Step(name: 'Step')
   ..registerTask(ChangeBranchStatusTask())
 
   // Pass an event object to "to" argument that you want to execute when you enter this branch.
-  ..branchOnSucceeded(to: Step(name: 'Step on succeeded')..registerTask(somethingTask))
-  ..branchOnFailed(to: Step(name: 'Step on failed')..registerTask(somethingTask))
+  ..createBranchOnSucceeded(to: Step(name: 'Step on succeeded')..registerTask(somethingTask))
+  ..createBranchOnFailed(to: Step(name: 'Step on failed')..registerTask(somethingTask))
 
-  // Branches that are "branchOnCompleted" are always executed regardless of branch status.
-  ..branchOnCompleted(to: Step(name: 'Step on completed'))..registerTask(somethingTask);
+  // Branches that are "createBranchOnCompleted" are always executed regardless of branch status.
+  ..createBranchOnCompleted(to: Step(name: 'Step on completed'))..registerTask(somethingTask);
 ```
 
 And the conditional branching of `Batch.dart` is controlled by changing the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
@@ -328,11 +328,14 @@ class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
   @override
   void execute(ExecutionContext context) {
     // You can easily manage branch status through methods as below.
-    context.jobExecution!.branchToSucceeded();
-    context.stepExecution!.branchToFailed();
+    context.jobExecution!.switchBranchToSucceeded();
+    context.stepExecution!.switchBranchToFailed();
   }
 }
 ```
+
+> Note:
+> Branch creation is not supported for `Task` and `Parallel`.
 
 ## 1.4. Contribution
 

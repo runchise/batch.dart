@@ -48,13 +48,13 @@ class Execution {
   DateTime? get updatedAt => _updatedAt;
 
   /// Updates branch status to succeeded.
-  void branchToSucceeded() => _updateBranchStatus(BranchStatus.succeeded);
+  void switchBranchToSucceeded() => _updateBranchStatus(BranchStatus.succeeded);
 
   /// Updates branch status to failed.
-  void branchToFailed() => _updateBranchStatus(BranchStatus.failed);
+  void switchBranchToFailed() => _updateBranchStatus(BranchStatus.failed);
 
   /// Updates branch status to completed.
-  void branchToCompleted() => _updateBranchStatus(BranchStatus.completed);
+  void switchBranchToCompleted() => _updateBranchStatus(BranchStatus.completed);
 
   /// Returns true if this execution is running, otherwise false.
   bool get isRunning => _status == ProcessStatus.running;

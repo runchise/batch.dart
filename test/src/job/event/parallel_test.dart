@@ -34,7 +34,7 @@ void main() {
 
     expect(
         // ignore: deprecated_member_use_from_same_package
-        () => parallel.branchOnSucceeded(
+        () => parallel.createBranchOnSucceeded(
             to: Parallel(name: 'deprecated test', tasks: [])),
         throwsA(allOf(
             isA<UnsupportedError>(),
@@ -44,7 +44,7 @@ void main() {
 
     expect(
         // ignore: deprecated_member_use_from_same_package
-        () => parallel.branchOnFailed(
+        () => parallel.createBranchOnFailed(
             to: Parallel(name: 'deprecated test', tasks: [])),
         throwsA(allOf(
             isA<UnsupportedError>(),
@@ -54,7 +54,7 @@ void main() {
 
     expect(
         // ignore: deprecated_member_use_from_same_package
-        () => parallel.branchOnCompleted(
+        () => parallel.createBranchOnCompleted(
             to: Parallel(name: 'deprecated test', tasks: [])),
         throwsA(allOf(
             isA<UnsupportedError>(),

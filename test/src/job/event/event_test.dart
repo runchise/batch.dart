@@ -71,9 +71,9 @@ void main() {
     expect(event.name, 'name');
     expect(event.hasBranch, false);
 
-    event.branchOnSucceeded(to: _Event(name: 'succeeded'));
-    event.branchOnCompleted(to: _Event(name: 'completed'));
-    event.branchOnFailed(to: _Event(name: 'failed'));
+    event.createBranchOnSucceeded(to: _Event(name: 'succeeded'));
+    event.createBranchOnCompleted(to: _Event(name: 'completed'));
+    event.createBranchOnFailed(to: _Event(name: 'failed'));
 
     expect(event.hasBranch, true);
     expect(event.branches.length, 3);

@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.11.0
+
+- Improved names of branch features. Now you can create branches with `createBranchOnXXXXX` and switch branches with `switchBranchToXXXXX`. ([#128](https://github.com/batch-dart/batch.dart/issues/128))
+
 ## v0.10.0
 
 - Allows parallel processing to use the main thread `ExecutionContext`. ([#121](https://github.com/batch-dart/batch.dart/issues/121))
