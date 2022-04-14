@@ -13,9 +13,7 @@ void main(List<String> args) => BatchApplication(
         //! This callback is useful when you want to create a singleton instance using command line arguments
         //! and manage it as SharedParameters in batch application. If this callback is not defined,
         //! all command line arguments are added as SharedParameters automatically.
-        if (args != null) {
-          addSharedParameters(key: 'userName', value: args['userName']);
-        }
+        addSharedParameters(key: 'userName', value: args['userName']);
       },
       logConfig: LogConfiguration(
         level: LogLevel.trace,

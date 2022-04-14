@@ -11,7 +11,7 @@ abstract class Version {
   factory Version() => _Version();
 
   /// The current version
-  static const current = '0.11.0';
+  static const current = '0.12.0';
 
   /// Returns the version status.
   Future<VersionStatus> get status;
