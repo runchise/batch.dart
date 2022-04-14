@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.12.0
+
+- The `args` argument of the `onLoadArgs` callback is now non-nullable. The null check is no longer necessary. ([#135](https://github.com/batch-dart/batch.dart/issues/135))
+
 ## v0.11.0
 
 - Improved names of branch features. Now you can create branches with `createBranchOnXXXXX` and switch branches with `switchBranchToXXXXX`. ([#128](https://github.com/batch-dart/batch.dart/issues/128))

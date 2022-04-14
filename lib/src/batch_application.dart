@@ -78,7 +78,7 @@ abstract class BatchApplication implements Runner {
     ArgResults? args,
     LogConfiguration? logConfig,
     FutureOr<void> Function(
-            ArgResults? args,
+            ArgResults args,
             void Function({
       required String key,
       required dynamic value,
@@ -108,7 +108,7 @@ class _BatchApplication implements BatchApplication {
     ArgResults? args,
     LogConfiguration? logConfig,
     FutureOr<void> Function(
-            ArgResults? args,
+            ArgResults args,
             Function({
       required String key,
       required dynamic value,
@@ -127,7 +127,7 @@ class _BatchApplication implements BatchApplication {
 
   /// The callback to be called when the commend line arguments are loaded.
   final FutureOr<void> Function(
-      ArgResults? args,
+      ArgResults args,
       void Function({
     required String key,
     required dynamic value,
@@ -169,11 +169,11 @@ class _BatchApplication implements BatchApplication {
 
       BootDiagnostics(jobs: _jobs).run();
 
-      if (_onLoadArgs != null) {
-        await _onLoadArgs!.call(_args, addSharedParameter);
-      } else {
-        //! Add all arguments as SharedParameters if onLoad is not defined.
-        if (_args != null) {
+      if (_args != null) {
+        if (_onLoadArgs != null) {
+          await _onLoadArgs!.call(_args!, addSharedParameter);
+        } else {
+          //! Add all arguments as SharedParameters if onLoad callback is not defined.
           log.info('Add all command line arguments as SharedParameters');
 
           for (final option in _args!.options) {
