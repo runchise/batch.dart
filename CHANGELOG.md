@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.12.1
+
+- Enhanced `README.md` and added examples.
+
 ## v0.12.0
 
 - The `args` argument of the `onLoadArgs` callback is now non-nullable. The null check is no longer necessary. ([#135](https://github.com/batch-dart/batch.dart/issues/135))
