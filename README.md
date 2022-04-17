@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-A lightweight and powerful Job Scheduling Framework.
+  <b>A lightweight and powerful Job Scheduling Framework.</b>
 </p>
 
 ---
@@ -27,9 +27,14 @@ A lightweight and powerful Job Scheduling Framework.
 
 ---
 
+Implementation examples are available at: https://github.com/batch-dart/examples/blob/main/README.md </br>
+Or more documentations are available at: https://github.com/batch-dart/documents/blob/main/README.md
+
+---
+
 <!-- TOC -->
 
-- [1. About](#1-about)
+- [1. Guide](#1-guide)
   - [1.1. Mission](#11-mission)
   - [1.2. Features](#12-features)
   - [1.3. Basic Usage](#13-basic-usage)
@@ -51,10 +56,7 @@ A lightweight and powerful Job Scheduling Framework.
 
 <!-- /TOC -->
 
-# 1. About
-
-The `Batch.dart` specification is large and more detailed documentation can be found from [Official Documents](https://batch-dart.github.io/documents).
-Also you can find detail examples of implementation at [here](https://pub.dev/packages/batch/example) or [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md).
+# 1. Guide
 
 ## 1.1. Mission
 
@@ -77,7 +79,7 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 
 ### 1.3.1. Install Library
 
-```terminal
+```bash
  dart pub add batch
 ```
 
@@ -393,8 +395,7 @@ All resources of `Batch.dart` is provided under the `BSD-3` license.
 - [Creator Profile](https://github.com/myConsciousness)
 - [License](https://github.com/batch-dart/batch.dart/blob/main/LICENSE)
 - [API Document](https://pub.dev/documentation/batch/latest/batch/batch-library.html)
-- [Official Documents [Markdown]](https://github.com/batch-dart/documents/blob/main/README.md)
-- [Official Documents [Web]](https://batch-dart.github.io/documents)
+- [Official Documents](https://github.com/batch-dart/documents/blob/main/README.md)
 - [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md)
 - [Wikipedia](https://ja.wikipedia.org/wiki/Batch.dart)
 - [Release Note](https://github.com/batch-dart/batch.dart/releases)
