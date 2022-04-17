@@ -27,8 +27,8 @@
 
 ---
 
-Implementation examples are available at: https://github.com/batch-dart/examples/blob/main/README.md </br>
-Or more documentations are available at: https://github.com/batch-dart/documents/blob/main/README.md
+Implementation examples are available at: [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md) </br>
+Or more documentations are available at: [Official Documents](https://github.com/batch-dart/documents/blob/main/README.md)
 
 ---
 
