@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.12.2
+
+- Enhanced `README.md`.
+
 ## v0.12.1
 
 - Enhanced `README.md` and added examples.
