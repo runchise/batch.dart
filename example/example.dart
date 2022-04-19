@@ -58,8 +58,13 @@ Job get _testJob1 => Job(
       ..nextStep(
         Step(
           name: 'Step1',
-          skipConfig: SkipConfiguration(
-            skippableExceptions: [Exception()],
+          retryConfig: RetryConfiguration(
+            maxAttempt: 3,
+            retryableExceptions: [Exception()],
+            backOff: Duration(seconds: 30),
+            onRecover: (context) {
+              log.warn('Do something for recovering.');
+            },
           ),
         )..registerTask(
             RetryTask(
@@ -75,14 +80,6 @@ Job get _testJob1 => Job(
               ),
               onCompleted: (context) => log.info(
                   '\n--------------- RetryTask has completed! ---------------'),
-              retryConfig: RetryConfiguration(
-                maxAttempt: 3,
-                retryableExceptions: [Exception()],
-                backOff: Duration(seconds: 30),
-                onRecover: (context) {
-                  log.warn('Do something for recovering.');
-                },
-              ),
             ),
           ),
       )
@@ -125,6 +122,9 @@ Job get _testJob2 => Job(
         Step(
           name: 'Step1',
           precondition: (context) => true,
+          skipConfig: SkipConfiguration(
+            skippableExceptions: [Exception()],
+          ),
         )..registerTask(SayWorldTask()),
       )
       ..createBranchOnSucceeded(
@@ -195,13 +195,11 @@ class RetryTask extends Task<RetryTask> {
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
         onError,
     Function(ExecutionContext context)? onCompleted,
-    RetryConfiguration? retryConfig,
   }) : super(
           onStarted: onStarted,
           onSucceeded: onSucceeded,
           onError: onError,
           onCompleted: onCompleted,
-          retryConfig: retryConfig,
         );
 
   /// The count for retry test

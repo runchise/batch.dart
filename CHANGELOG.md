@@ -1,5 +1,9 @@
 # Release Note
 
+## v0.13.0
+
+- `SkipConfiguration` and `RetryConfiguration` settings were limited to `Step` only. ([#145](https://github.com/batch-dart/batch.dart/issues/145))
+
 ## v0.12.2
 
 - Enhanced `README.md`.
