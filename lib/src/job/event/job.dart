@@ -7,6 +7,7 @@ import 'dart:async';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/event.dart';
 import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
@@ -40,10 +41,10 @@ class Job extends Event<Job> {
   final ScheduleParser? schedule;
 
   /// The steps
-  final List<Step> _steps = [];
+  final List<BaseStep> _steps = [];
 
   /// Returns the copied steps.
-  List<Step> get steps => List.from(_steps);
+  List<BaseStep> get steps => List.from(_steps);
 
   /// Adds [Step].
   ///
@@ -51,7 +52,7 @@ class Job extends Event<Job> {
   ///
   /// Also the name of the Step must be unique, and an exception will be raised
   /// if a Step with a duplicate name has already been registered in this Job.
-  void nextStep(final Step step) => _steps.add(step);
+  void nextStep(final BaseStep step) => _steps.add(step);
 
   /// Returns true if this job is not scheduled, otherwise false.
   bool get isNotScheduled => schedule == null;

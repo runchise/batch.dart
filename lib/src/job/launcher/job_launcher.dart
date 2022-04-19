@@ -5,7 +5,10 @@
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/job.dart';
+import 'package:batch/src/job/event/parallel_step.dart';
+import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
+import 'package:batch/src/job/launcher/parallel_step_launcher.dart';
 import 'package:batch/src/job/launcher/step_launcher.dart';
 
 /// This class provides the feature to securely execute registered jobs.
@@ -23,11 +26,23 @@ class JobLauncher extends Launcher<Job> {
   Future<void> run() async => await super.executeRecursively(
         event: _job,
         execute: (job) async {
-          await StepLauncher(
-            context: context,
-            steps: job.steps,
-            parentJobName: job.name,
-          ).run();
+          for (final step in job.steps) {
+            if (step is Step) {
+              await StepLauncher(
+                context: context,
+                step: step,
+                parentJobName: job.name,
+              ).run();
+            } else if (step is ParallelStep) {
+              await ParallelStepLauncher(
+                context: context,
+                step: step,
+                parentJobName: job.name,
+              ).run();
+            } else {
+              throw UnsupportedError('The step type is not supported.');
+            }
+          }
 
           // Removes step job parameters set within the step executed last time.
           super.context.jobParameters.removeAll();

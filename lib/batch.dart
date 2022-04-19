@@ -12,8 +12,8 @@ export 'package:batch/src/batch_application.dart';
 // Job features
 export 'package:batch/src/job/event/job.dart';
 export 'package:batch/src/job/event/step.dart';
-export 'package:batch/src/job/event/task.dart';
-export 'package:batch/src/job/event/parallel.dart';
+export 'package:batch/src/job/event/parallel_step.dart';
+export 'package:batch/src/job/task/task.dart';
 export 'package:batch/src/job/task/parallel_task.dart';
 export 'package:batch/src/job/context/execution_context.dart';
 export 'package:batch/src/job/execution.dart';

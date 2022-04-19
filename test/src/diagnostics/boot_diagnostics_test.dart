@@ -13,8 +13,8 @@ import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/error/unique_constraint_error.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/event/step.dart';
-import 'package:batch/src/job/event/task.dart';
 import 'package:batch/src/job/schedule/parser/cron_parser.dart';
+import 'package:batch/src/job/task/task.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 
@@ -29,7 +29,7 @@ void main() {
           name: 'Job',
           schedule: CronParser(value: '* * * * *'),
         )..nextStep(
-            Step(name: 'Step')..registerTask(TestTask()),
+            Step(name: 'Step', task: TestTask()),
           ),
       ]);
 
@@ -43,17 +43,14 @@ void main() {
           schedule: CronParser(value: '* * * * *'),
         )
           ..nextStep(
-            Step(name: 'Step')
-              ..registerTask(TestTask())
+            Step(name: 'Step', task: TestTask())
               ..createBranchOnCompleted(
-                to: Step(name: 'Step2')..registerTask(TestTask()),
+                to: Step(name: 'Step2', task: TestTask()),
               ),
           )
           ..createBranchOnCompleted(
             to: Job(name: 'Job2')
-              ..nextStep(
-                Step(name: 'Step')..registerTask(TestTask()),
-              ),
+              ..nextStep(Step(name: 'Step', task: TestTask())),
           ),
       ]);
 
@@ -68,10 +65,11 @@ void main() {
         )..nextStep(
             Step(
               name: 'Step',
+              task: TestTask(),
               skipConfig: SkipConfiguration(
                 skippableExceptions: [],
               ),
-            )..registerTask(TestTask()),
+            ),
           ),
       ]);
 
@@ -86,10 +84,11 @@ void main() {
         )..nextStep(
             Step(
               name: 'Step',
+              task: TestTask(),
               retryConfig: RetryConfiguration(
                 retryableExceptions: [],
               ),
-            )..registerTask(TestTask()),
+            ),
           ),
       ]);
 
@@ -140,26 +139,6 @@ void main() {
       );
     });
 
-    test('Test when there is no Task', () {
-      expect(
-        () => BootDiagnostics(jobs: [
-          Job(
-            name: 'Job',
-            schedule: CronParser(value: '* * * * *'),
-          )..nextStep(
-              Step(name: 'Step'),
-            )
-        ]).run(),
-        throwsA(allOf(
-          isArgumentError,
-          predicate(
-            (dynamic e) =>
-                e.message == 'The task or parallel to be launched is required.',
-          ),
-        )),
-      );
-    });
-
     test('Test when Step has Skip and Retry configs', () {
       expect(
         () => BootDiagnostics(jobs: [
@@ -169,9 +148,10 @@ void main() {
           )..nextStep(
               Step(
                 name: 'Step',
+                task: TestTask(),
                 skipConfig: SkipConfiguration(skippableExceptions: []),
                 retryConfig: RetryConfiguration(retryableExceptions: []),
-              )..registerTask(TestTask()),
+              ),
             )
         ]).run(),
         throwsA(allOf(
@@ -189,8 +169,8 @@ void main() {
       expect(
         () => BootDiagnostics(jobs: [
           Job(name: 'Job', schedule: CronParser(value: '* * * * *'))
-            ..nextStep(Step(name: 'Step')..registerTask(TestTask()))
-            ..nextStep(Step(name: 'Step')..registerTask(TestTask()))
+            ..nextStep(Step(name: 'Step', task: TestTask()))
+            ..nextStep(Step(name: 'Step', task: TestTask()))
         ]).run(),
         throwsA(allOf(
           isA<UniqueConstraintError>(),
@@ -207,10 +187,9 @@ void main() {
       expect(
         () => BootDiagnostics(jobs: [
           Job(name: 'Job', schedule: CronParser(value: '* * * * *'))
-            ..nextStep(Step(name: 'Step')
-              ..registerTask(TestTask())
+            ..nextStep(Step(name: 'Step', task: TestTask())
               ..createBranchOnCompleted(
-                to: (Step(name: 'Step')..registerTask(TestTask())),
+                to: (Step(name: 'Step', task: TestTask())),
               ))
         ]).run(),
         throwsA(allOf(

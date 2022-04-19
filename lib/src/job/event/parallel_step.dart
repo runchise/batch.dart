@@ -6,19 +6,14 @@
 import 'dart:async';
 
 // Project imports:
-import 'package:batch/src/job/config/retry_configuration.dart';
-import 'package:batch/src/job/config/skip_configuration.dart';
-import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/batch.dart';
 import 'package:batch/src/job/event/base_step.dart';
-import 'package:batch/src/job/task/shutdown_task.dart';
-import 'package:batch/src/job/task/task.dart';
 
-/// This class represents the processing of each step that constitutes a job in batch processing.
-class Step extends BaseStep<Step> {
-  /// Returns the new instance of [Step].
-  Step({
+class ParallelStep extends BaseStep<ParallelStep> {
+  /// Returns the new instance of [ParallelStep].
+  ParallelStep({
     required String name,
-    required Task task,
+    required List<ParallelTask> tasks,
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -27,7 +22,7 @@ class Step extends BaseStep<Step> {
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
     RetryConfiguration? retryConfig,
-  })  : _task = task,
+  })  : _tasks = tasks,
         super(
           name: name,
           precondition: precondition,
@@ -39,14 +34,9 @@ class Step extends BaseStep<Step> {
           retryConfig: retryConfig,
         );
 
-  /// Returns the new instance of [Step].
-  Step.ofShutdown({String name = 'Shutdown Step'})
-      : _task = ShutdownTask(),
-        super(name: name);
+  /// The parallel tasks
+  final List<ParallelTask> _tasks;
 
-  /// The task
-  final Task _task;
-
-  /// Returns the copied task
-  Task get task => _task;
+  /// Returns the copied tasks.
+  List<ParallelTask> get tasks => _tasks;
 }

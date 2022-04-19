@@ -6,6 +6,7 @@
 import 'package:batch/src/diagnostics/name_relation.dart';
 import 'package:batch/src/diagnostics/name_relations.dart';
 import 'package:batch/src/job/error/unique_constraint_error.dart';
+import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/log/logger_provider.dart';
@@ -63,13 +64,7 @@ class _BootDiagnostics implements BootDiagnostics {
     }
   }
 
-  void _checkStepRecursively({required Job job, required Step step}) {
-    if (!step.hasTask) {
-      throw ArgumentError(
-        'The task or parallel to be launched is required.',
-      );
-    }
-
+  void _checkStepRecursively({required Job job, required dynamic step}) {
     if (step.hasSkipPolicy && step.hasRetryPolicy) {
       throw ArgumentError(
           'You cannot set Skip and Retry at the same time in Step [name=${step.name}].');

@@ -2,9 +2,6 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
-// Dart imports:
-import 'dart:async';
-
 // Package imports:
 import 'package:async_task/async_task.dart';
 
@@ -13,22 +10,24 @@ import 'package:batch/batch.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
 import 'package:batch/src/job/parallel/parallel_executor.dart';
 
-class ParallelLauncher extends Launcher<Parallel> {
-  /// Returns the new instance of [ParallelLauncher].
-  ParallelLauncher({
+class ParallelStepLauncher extends Launcher<ParallelStep> {
+  /// Returns the new instance of [ParallelStepLauncher].
+  ParallelStepLauncher({
     required ExecutionContext context,
-    required Parallel parallel,
-  })  : _parallel = parallel,
+    required ParallelStep step,
+    required String parentJobName,
+  })  : assert(parentJobName.isNotEmpty),
+        _step = step,
         super(context: context);
 
-  /// The parallel
-  final Parallel _parallel;
+  /// The parallel step
+  final ParallelStep _step;
 
   @override
   Future<void> run() async => await super.executeRecursively(
-        event: _parallel,
-        execute: (parallel) async {
-          final executors = _buildExecutor(parallel.tasks);
+        event: _step,
+        execute: (step) async {
+          final executors = _buildExecutor(step.tasks);
 
           final asyncExecutor = AsyncExecutor(
             parallelism: executors.length,

@@ -55,60 +55,44 @@ Job get _testJob1 => Job(
       onCompleted: (context) =>
           log.info('\n--------------- Job1 has completed! ---------------'),
     )
+      ..nextStep(Step(
+        name: 'Step1',
+        task: RetryTask(),
+        retryConfig: RetryConfiguration(
+          maxAttempt: 3,
+          retryableExceptions: [Exception()],
+          backOff: Duration(seconds: 30),
+          onRecover: (context) {
+            log.warn('Do something for recovering.');
+          },
+        ),
+      ))
       ..nextStep(
-        Step(
-          name: 'Step1',
-          retryConfig: RetryConfiguration(
-            maxAttempt: 3,
-            retryableExceptions: [Exception()],
-            backOff: Duration(seconds: 30),
-            onRecover: (context) {
-              log.warn('Do something for recovering.');
-            },
-          ),
-        )..registerTask(
-            RetryTask(
-              // You can define callbacks for each processing phase.
-              onStarted: (context) => log.info(
-                  '\n--------------- RetryTask has started! ---------------'),
-              onSucceeded: (context) => log.info(
-                  '\n--------------- RetryTask has succeeded! ---------------'),
-              onError: (context, error, stackTrace) => log.error(
-                '\n--------------- Error RetryTask ---------------',
-                error,
-                stackTrace,
-              ),
-              onCompleted: (context) => log.info(
-                  '\n--------------- RetryTask has completed! ---------------'),
-            ),
-          ),
-      )
-      ..nextStep(
-        Step(name: 'Step2')
-          ..registerTask(TestTask())
+        Step(name: 'Step2', task: TestTask())
           ..createBranchOnSucceeded(
-            to: Step(name: 'Step3')..registerTask(SayHelloTask()),
+            to: Step(name: 'Step3', task: SayHelloTask()),
           )
           ..createBranchOnFailed(
-            to: Step(name: 'Step4')
-              ..registerTask(SayHelloTask())
+            to: Step(name: 'Step4', task: SayHelloTask())
               ..createBranchOnCompleted(
                 to: Step(
                   name: 'Step6',
                   // You can set any preconditions to run Step.
                   precondition: (context) => false,
-                )..registerTask(SayWorldTask()),
+                  task: SayWorldTask(),
+                ),
               ),
           )
           ..createBranchOnCompleted(
             to: Step(
               name: 'Step5',
+              task: SayHelloTask(),
               // You can define callbacks for each processing phase.
               onStarted: (context) => log
                   .info('\n--------------- Step5 has started! ---------------'),
               onCompleted: (context) => log.info(
                   '\n--------------- Step5 has completed! ---------------'),
-            )..registerTask(SayHelloTask()),
+            ),
           ),
       );
 
@@ -122,13 +106,14 @@ Job get _testJob2 => Job(
         Step(
           name: 'Step1',
           precondition: (context) => true,
+          task: SayWorldTask(),
           skipConfig: SkipConfiguration(
             skippableExceptions: [Exception()],
           ),
-        )..registerTask(SayWorldTask()),
+        ),
       )
       ..createBranchOnSucceeded(
-        to: Job(name: 'Job3')..nextStep(Step(name: 'Step1')..shutdown()),
+        to: Job(name: 'Job3')..nextStep(Step.ofShutdown()),
       );
 
 Job get _testJob4 => Job(
@@ -137,20 +122,16 @@ Job get _testJob4 => Job(
       // You can set any preconditions to run Job.
       precondition: (context) async => true,
     )..nextStep(
-        Step(
+        ParallelStep(
           name: 'Parallel Step',
           precondition: (context) => true,
-        )..registerParallel(
-            Parallel(
-              name: 'Parallel Tasks',
-              tasks: [
-                TestParallelTask(),
-                TestParallelTask(),
-                TestParallelTask(),
-                TestParallelTask(),
-              ],
-            ),
-          ),
+          tasks: [
+            TestParallelTask(),
+            TestParallelTask(),
+            TestParallelTask(),
+            TestParallelTask(),
+          ],
+        ),
       );
 
 class TestTask extends Task<TestTask> {
@@ -189,19 +170,6 @@ class SayWorldTask extends Task<SayWorldTask> {
 }
 
 class RetryTask extends Task<RetryTask> {
-  RetryTask({
-    Function(ExecutionContext context)? onStarted,
-    Function(ExecutionContext context)? onSucceeded,
-    Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
-        onError,
-    Function(ExecutionContext context)? onCompleted,
-  }) : super(
-          onStarted: onStarted,
-          onSucceeded: onSucceeded,
-          onError: onError,
-          onCompleted: onCompleted,
-        );
-
   /// The count for retry test
   static int count = 0;
 
