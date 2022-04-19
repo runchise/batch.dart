@@ -227,11 +227,6 @@ void main() {
 }
 
 class TestTask extends Task<TestTask> {
-  TestTask({
-    SkipConfiguration? skipConfig,
-    RetryConfiguration? retryConfig,
-  }) : super(skipConfig: skipConfig, retryConfig: retryConfig);
-
   @override
   void execute(ExecutionContext context) {}
 }
