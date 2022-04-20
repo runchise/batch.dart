@@ -50,7 +50,7 @@ class _TestJob1 implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job1',
-        schedule: CronParser(value: '*/1 * * * *'),
+        schedule: CronParser('*/1 * * * *'),
         // You can define callbacks for each processing phase.
         onStarted: (context) =>
             log.info('\n--------------- Job1 has started! ---------------'),
@@ -106,7 +106,7 @@ class _TestJob2 implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job2',
-        schedule: CronParser(value: '*/5 * * * *'),
+        schedule: CronParser('*/5 * * * *'),
         // You can set any preconditions to run Job.
         precondition: (context) async => true,
         branchesOnCompleted: [
@@ -128,7 +128,7 @@ class _TestJob3 implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
       name: 'Job4',
-      schedule: CronParser(value: '*/1 * * * *'),
+      schedule: CronParser('*/1 * * * *'),
       // You can set any preconditions to run Job.
       precondition: (context) async => true,
       onError: (context, error, stackTrace) => log.error('', error, stackTrace))
