@@ -15,6 +15,7 @@ void main(List<String> args) => BatchApplication(
         //! all command line arguments are added as SharedParameters automatically.
         addSharedParameters(key: 'userName', value: args['userName']);
       },
+      //! You can customize log configuration.
       logConfig: LogConfiguration(
         level: LogLevel.trace,
         output: MultiLogOutput([
@@ -27,12 +28,15 @@ void main(List<String> args) => BatchApplication(
         printLog: true,
       ),
     )
-      // You can add any parameters that is shared in this batch application.
+      //! You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..nextSchedule(_TestJob1())
-      ..nextSchedule(_TestJob2())
-      ..nextSchedule(_TestJob3())
+      //! You can schedule jobs with nextSchedule method.
+      ..nextSchedule(_SayHelloWorldJob())
+      ..nextSchedule(_TestRetryAndCallbackJob())
+      ..nextSchedule(_TestBranchJob())
+      ..nextSchedule(_ParallelJob())
+      ..nextSchedule(_ShutdownJob())
       ..run();
 
 ArgParser get _argParser {
@@ -46,104 +50,103 @@ ArgParser get _argParser {
   return parser;
 }
 
-class _TestJob1 implements ScheduledJobBuilder {
+class _SayHelloWorldJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
-        name: 'Job1',
-        schedule: CronParser('*/1 * * * *'),
-        // You can define callbacks for each processing phase.
-        onStarted: (context) =>
-            log.info('\n--------------- Job1 has started! ---------------'),
-        onCompleted: (context) =>
-            log.info('\n--------------- Job1 has completed! ---------------'),
+        name: 'Say Hello World Job',
+        schedule: CronParser('*/1 * * * *'), //! Execute every 1 minutes.
       )
-        ..nextStep(Step(
-          name: 'Step1',
-          task: RetryTask(),
-          retryConfig: RetryConfiguration(
-            maxAttempt: 3,
-            retryableExceptions: [Exception()],
-            backOff: Duration(seconds: 30),
-            onRecover: (context) {
-              log.warn('Do something for recovering.');
-            },
-          ),
-        ))
+        ..nextStep(
+          Step(name: 'Say Hello Step', task: SayHelloTask()),
+        )
+        ..nextStep(
+          Step(name: 'Say World Step', task: SayWorldTask()),
+        );
+}
+
+class _TestRetryAndCallbackJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Test Retry Job',
+        schedule: CronParser('*/1 * * * *'), //! Execute every 1 minutes.
+        //! You can set any preconditions to run this job.
+        precondition: (context) => true,
+      )
         ..nextStep(
           Step(
-            name: 'Step2',
-            task: TestTask(),
-            branchesOnSucceeded: [Step(name: 'Step3', task: SayHelloTask())],
-            branchesOnFailed: [
-              Step(
-                name: 'Step4',
-                task: SayHelloTask(),
-                branchesOnCompleted: [
-                  Step(
-                    name: 'Step6',
-                    // You can set any preconditions to run Step.
-                    precondition: (context) => false,
-                    task: SayWorldTask(),
-                  ),
-                ],
-              )
-            ],
-            branchesOnCompleted: [
-              Step(
-                name: 'Step5',
-                task: SayHelloTask(),
-                onStarted: (context) =>
-                    log.info('\n--------- Step5 has started! ---------'),
-                onCompleted: (context) =>
-                    log.info('\n--------- Step5 has completed! ---------'),
-              )
-            ],
-          ),
-        );
-}
-
-class _TestJob2 implements ScheduledJobBuilder {
-  @override
-  ScheduledJob build() => ScheduledJob(
-        name: 'Job2',
-        schedule: CronParser('*/5 * * * *'),
-        // You can set any preconditions to run Job.
-        precondition: (context) async => true,
-        branchesOnCompleted: [
-          Job(name: 'Job3')..nextStep(Step.ofShutdown()),
-        ],
-      )..nextStep(
-          Step(
-            name: 'Step1',
+            name: 'Test Retry and Callbacks Step',
             precondition: (context) => true,
-            task: SayWorldTask(),
-            skipConfig: SkipConfiguration(
-              skippableExceptions: [Exception()],
+            task: RetryTask(),
+            //! You can use convenient callbacks to each cycle.
+            onStarted: (context) => log.info('\n------ Started ------'),
+            onSucceeded: (context) => log.info('\n------ Succeeded ------'),
+            onError: (context, error, stackTrace) =>
+                log.error('Something wrong!', error, stackTrace),
+            onCompleted: (context) => log.info('\n------ Completed ------'),
+            retryConfig: RetryConfiguration(
+              maxAttempt: 3,
+              backOff: Duration(seconds: 1),
+              retryableExceptions: [FormatException()],
+              onRecover: (context) {
+                //! Do something when all retry attempts are failed.
+              },
             ),
           ),
+        )
+        ..nextStep(
+          Step(
+            name: 'Test Skip Exception Step',
+            task: SkipExceptionTask(),
+            skipConfig: SkipConfiguration(skippableExceptions: [Exception()]),
+          ),
         );
 }
 
-class _TestJob3 implements ScheduledJobBuilder {
+class _TestBranchJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
-      name: 'Job4',
-      schedule: CronParser('*/1 * * * *'),
-      // You can set any preconditions to run Job.
-      precondition: (context) async => true,
-      onError: (context, error, stackTrace) => log.error('', error, stackTrace))
-    ..nextStep(
-      ParallelStep(
-        name: 'Parallel Step',
-        precondition: (context) => true,
-        tasks: [
-          TestParallelTask(),
-          TestParallelTask(),
-          TestParallelTask(),
-          TestParallelTask(),
-        ],
-      ),
-    );
+        name: 'Test Branch Job',
+        schedule: CronParser('*/2 * * * *'), //! Execute every 2 minutes.
+      )..nextStep(Step(
+          name: 'Switch Branch Step',
+          task: TestSwitchBranchTask(),
+          branchesOnSucceeded: [
+            Step(name: 'Say Hello Task (Branch)', task: SayHelloTask())
+          ],
+          branchesOnFailed: [
+            Step(name: 'Should Not Be Executed Step', task: DummyTask())
+          ],
+          branchesOnCompleted: [
+            Step(name: 'Say World Task (Branch)', task: SayWorldTask())
+          ],
+        ));
+}
+
+class _ParallelJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Parallel Job',
+        schedule: CronParser('*/3 * * * *'), //! Execute every 5 minutes.
+      )..nextStep(
+          ParallelStep(
+            name: 'Parallel Step',
+            precondition: (context) => true,
+            tasks: [
+              DoHeavyTask(),
+              DoHeavyTask(),
+              DoHeavyTask(),
+              DoHeavyTask(),
+            ],
+          ),
+        );
+}
+
+class _ShutdownJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Shutdown Job',
+        schedule: CronParser('*/5 * * * *'), // Execute every 5 minutes.
+      )..nextStep(Step.ofShutdown());
 }
 
 class TestTask extends Task<TestTask> {
@@ -176,8 +179,6 @@ class SayWorldTask extends Task<SayWorldTask> {
   @override
   void execute(ExecutionContext context) {
     log.info('World!');
-    context.jobExecution!.switchBranchToSucceeded();
-    context.stepExecution!.switchBranchToFailed();
   }
 }
 
@@ -189,14 +190,36 @@ class RetryTask extends Task<RetryTask> {
   void execute(ExecutionContext context) {
     if (count < 3) {
       count++;
-      throw Exception();
+      throw FormatException();
     } else {
       count = 0;
     }
   }
 }
 
-class TestParallelTask extends ParallelTask<TestParallelTask> {
+class SkipExceptionTask extends Task<SkipExceptionTask> {
+  @override
+  void execute(ExecutionContext context) {
+    throw Exception();
+  }
+}
+
+class TestSwitchBranchTask extends Task<TestSwitchBranchTask> {
+  @override
+  void execute(ExecutionContext context) {
+    // Switch branch on this step.
+    context.stepExecution!.switchBranchToSucceeded();
+  }
+}
+
+class DummyTask extends Task<DummyTask> {
+  @override
+  void execute(ExecutionContext context) {
+    log.fatal('This should not be executed!.');
+  }
+}
+
+class DoHeavyTask extends ParallelTask<DoHeavyTask> {
   @override
   FutureOr<void> execute(ExecutionContext context) {
     int i = 0;
