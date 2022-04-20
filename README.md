@@ -68,8 +68,8 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 
 - Easy and intuitive job scheduling.
 - No complicated configuration files.
-- Supports scheduling in [Cron](https://en.wikipedia.org/wiki/Cron) format as standard and customizable.
-- Supports powerful logging feature as standard and customizable.
+- Supports scheduling in [Cron](https://en.wikipedia.org/wiki/Cron) format.
+- Supports powerful logging feature and it's customizable.
 - Supports easily define parallel processes.
 - Supports conditional branching of jobs.
 - Supports extensive callback functions at each event.

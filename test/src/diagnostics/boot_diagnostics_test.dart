@@ -24,7 +24,7 @@ class _TestJob1Builder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
       )..nextStep(
           Step(name: 'Step', task: TestTask()),
         );
@@ -34,7 +34,7 @@ class _TestJob2Builder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
         branchesOnCompleted: [
           Job(name: 'Job2')..nextStep(Step(name: 'Step', task: TestTask()))
         ],
@@ -51,7 +51,7 @@ class _TestJob3Builder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
       )..nextStep(
           Step(
             name: 'Step',
@@ -67,7 +67,7 @@ class _TestJob4Builder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
       )..nextStep(
           Step(
             name: 'Step',
@@ -83,7 +83,7 @@ class _TestJobWithoutStepBuilder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
       );
 }
 
@@ -91,7 +91,7 @@ class _TestJobWithSkipAndRetryConfigsBuilder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser(value: '* * * * *'),
+        schedule: CronParser('* * * * *'),
       )..nextStep(
           Step(
             name: 'Step',
@@ -105,7 +105,7 @@ class _TestJobWithSkipAndRetryConfigsBuilder extends ScheduledJobBuilder {
 class _TestJobWithDuplicatedStepNamesBuilder extends ScheduledJobBuilder {
   @override
   ScheduledJob build() =>
-      ScheduledJob(name: 'Job', schedule: CronParser(value: '* * * * *'))
+      ScheduledJob(name: 'Job', schedule: CronParser('* * * * *'))
         ..nextStep(Step(name: 'Step', task: TestTask()))
         ..nextStep(Step(name: 'Step', task: TestTask()));
 }
@@ -114,7 +114,7 @@ class _TestJobWithDuplicatedStepNamesOnBranchBuilder
     extends ScheduledJobBuilder {
   @override
   ScheduledJob build() =>
-      ScheduledJob(name: 'Job', schedule: CronParser(value: '* * * * *'))
+      ScheduledJob(name: 'Job', schedule: CronParser('* * * * *'))
         ..nextStep(
           Step(
             name: 'Step',
