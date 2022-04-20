@@ -9,8 +9,8 @@ import 'package:test/test.dart';
 import 'package:batch/src/job/branch/branch_status.dart';
 import 'package:batch/src/job/context/context_support.dart';
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/job.dart';
-import 'package:batch/src/job/event/step.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 
@@ -575,7 +575,7 @@ class _JobContextSupport extends ContextSupport<Job> {
   _JobContextSupport() : super(context: ExecutionContext());
 }
 
-class _StepContextSupport extends ContextSupport<Step> {
+class _StepContextSupport extends ContextSupport<BaseStep> {
   _StepContextSupport({required ExecutionContext context})
       : super(context: context);
 }

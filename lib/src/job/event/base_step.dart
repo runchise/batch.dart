@@ -10,12 +10,17 @@ import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
+import 'package:batch/src/job/task/task.dart';
+
+// Project imports:
+
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
-abstract class BaseStep<T extends Event<T>> extends Event<T> {
+abstract class BaseStep extends Event<BaseStep> {
   /// Returns the new instance of [Step].
   BaseStep({
     required String name,
+    required List<Task> tasks,
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -24,7 +29,11 @@ abstract class BaseStep<T extends Event<T>> extends Event<T> {
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
     RetryConfiguration? retryConfig,
-  }) : super(
+    List<BaseStep> branchesOnSucceeded = const [],
+    List<BaseStep> branchesOnFailed = const [],
+    List<BaseStep> branchesOnCompleted = const [],
+  })  : _tasks = tasks,
+        super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
@@ -33,5 +42,14 @@ abstract class BaseStep<T extends Event<T>> extends Event<T> {
           onCompleted: onCompleted,
           skipConfig: skipConfig,
           retryConfig: retryConfig,
+          branchesOnSucceeded: branchesOnSucceeded,
+          branchesOnFailed: branchesOnFailed,
+          branchesOnCompleted: branchesOnCompleted,
         );
+
+  /// Returns the tasks.
+  final List<dynamic> _tasks;
+
+  /// Returns the copied tasks.
+  List<dynamic> get tasks => List.from(_tasks);
 }

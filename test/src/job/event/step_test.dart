@@ -31,12 +31,12 @@ void main() {
   test('Test nextTask', () {
     final task = _Task();
     final step = Step(name: 'Step', task: task);
-    expect(step.task, task);
+    expect(step.tasks.first, task);
   });
 
   test('Test shutdown', () {
     final step = Step.ofShutdown();
-    expect(step.task is ShutdownTask, isTrue);
+    expect(step.tasks.first is ShutdownTask, isTrue);
   });
 }
 

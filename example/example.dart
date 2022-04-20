@@ -70,32 +70,35 @@ class _TestJob1 implements ScheduledJobBuilder {
           ),
         ))
         ..nextStep(
-          Step(name: 'Step2', task: TestTask())
-            ..createBranchOnSucceeded(
-              to: Step(name: 'Step3', task: SayHelloTask()),
-            )
-            ..createBranchOnFailed(
-              to: Step(name: 'Step4', task: SayHelloTask())
-                ..createBranchOnCompleted(
-                  to: Step(
+          Step(
+            name: 'Step2',
+            task: TestTask(),
+            branchesOnSucceeded: [Step(name: 'Step3', task: SayHelloTask())],
+            branchesOnFailed: [
+              Step(
+                name: 'Step4',
+                task: SayHelloTask(),
+                branchesOnCompleted: [
+                  Step(
                     name: 'Step6',
                     // You can set any preconditions to run Step.
                     precondition: (context) => false,
                     task: SayWorldTask(),
                   ),
-                ),
-            )
-            ..createBranchOnCompleted(
-              to: Step(
+                ],
+              )
+            ],
+            branchesOnCompleted: [
+              Step(
                 name: 'Step5',
                 task: SayHelloTask(),
-                // You can define callbacks for each processing phase.
-                onStarted: (context) => log.info(
-                    '\n--------------- Step5 has started! ---------------'),
-                onCompleted: (context) => log.info(
-                    '\n--------------- Step5 has completed! ---------------'),
-              ),
-            ),
+                onStarted: (context) =>
+                    log.info('\n--------- Step5 has started! ---------'),
+                onCompleted: (context) =>
+                    log.info('\n--------- Step5 has completed! ---------'),
+              )
+            ],
+          ),
         );
 }
 
@@ -106,8 +109,10 @@ class _TestJob2 implements ScheduledJobBuilder {
         schedule: CronParser(value: '*/5 * * * *'),
         // You can set any preconditions to run Job.
         precondition: (context) async => true,
-      )
-        ..nextStep(
+        branchesOnCompleted: [
+          Job(name: 'Job3')..nextStep(Step.ofShutdown()),
+        ],
+      )..nextStep(
           Step(
             name: 'Step1',
             precondition: (context) => true,
@@ -116,31 +121,29 @@ class _TestJob2 implements ScheduledJobBuilder {
               skippableExceptions: [Exception()],
             ),
           ),
-        )
-        ..createBranchOnSucceeded(
-          to: Job(name: 'Job3')..nextStep(Step.ofShutdown()),
         );
 }
 
 class _TestJob3 implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
-        name: 'Job4',
-        schedule: CronParser(value: '*/1 * * * *'),
-        // You can set any preconditions to run Job.
-        precondition: (context) async => true,
-      )..nextStep(
-          ParallelStep(
-            name: 'Parallel Step',
-            precondition: (context) => true,
-            tasks: [
-              TestParallelTask(),
-              TestParallelTask(),
-              TestParallelTask(),
-              TestParallelTask(),
-            ],
-          ),
-        );
+      name: 'Job4',
+      schedule: CronParser(value: '*/1 * * * *'),
+      // You can set any preconditions to run Job.
+      precondition: (context) async => true,
+      onError: (context, error, stackTrace) => log.error('', error, stackTrace))
+    ..nextStep(
+      ParallelStep(
+        name: 'Parallel Step',
+        precondition: (context) => true,
+        tasks: [
+          TestParallelTask(),
+          TestParallelTask(),
+          TestParallelTask(),
+          TestParallelTask(),
+        ],
+      ),
+    );
 }
 
 class TestTask extends Task<TestTask> {

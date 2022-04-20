@@ -35,16 +35,16 @@ class _TestJob2Builder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser(value: '* * * * *'),
-      )
-        ..nextStep(
-          Step(name: 'Step', task: TestTask())
-            ..createBranchOnCompleted(
-              to: Step(name: 'Step2', task: TestTask()),
-            ),
-        )
-        ..createBranchOnCompleted(
-          to: Job(name: 'Job2')..nextStep(Step(name: 'Step', task: TestTask())),
-        );
+        branchesOnCompleted: [
+          Job(name: 'Job2')..nextStep(Step(name: 'Step', task: TestTask()))
+        ],
+      )..nextStep(Step(
+          name: 'Step',
+          task: TestTask(),
+          branchesOnCompleted: [
+            Step(name: 'Step2', task: TestTask()),
+          ],
+        ));
 }
 
 class _TestJob3Builder extends ScheduledJobBuilder {
@@ -115,10 +115,15 @@ class _TestJobWithDuplicatedStepNamesOnBranchBuilder
   @override
   ScheduledJob build() =>
       ScheduledJob(name: 'Job', schedule: CronParser(value: '* * * * *'))
-        ..nextStep(Step(name: 'Step', task: TestTask())
-          ..createBranchOnCompleted(
-            to: (Step(name: 'Step', task: TestTask())),
-          ));
+        ..nextStep(
+          Step(
+            name: 'Step',
+            task: TestTask(),
+            branchesOnCompleted: [
+              Step(name: 'Step', task: TestTask()),
+            ],
+          ),
+        );
 }
 
 void main() {
