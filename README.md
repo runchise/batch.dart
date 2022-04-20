@@ -338,9 +338,6 @@ class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
 }
 ```
 
-> Note:
-> Branch creation is not supported for `Task` and `Parallel`.
-
 ## 1.4. More Examples
 
 - [Create a minimal and basic batch application](https://github.com/batch-dart/examples/blob/main/examples/bin/01_basics/01_example.dart)
