@@ -6,6 +6,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:batch/batch.dart';
+import 'package:batch/src/job/builder/scheduled_job_builder.dart';
+import 'package:batch/src/job/event/scheduled_job.dart';
 
 void main(List<String> args) => BatchApplication(
       args: _argParser.parse(args),
@@ -30,9 +32,9 @@ void main(List<String> args) => BatchApplication(
       // You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..addJob(_testJob1)
-      ..addJob(_testJob2)
-      ..addJob(_testJob4)
+      ..nextSchedule(_TestJob1())
+      ..nextSchedule(_TestJob2())
+      ..nextSchedule(_TestJob3())
       ..run();
 
 ArgParser get _argParser {
@@ -46,93 +48,102 @@ ArgParser get _argParser {
   return parser;
 }
 
-Job get _testJob1 => Job(
-      name: 'Job1',
-      schedule: CronParser(value: '*/1 * * * *'),
-      // You can define callbacks for each processing phase.
-      onStarted: (context) =>
-          log.info('\n--------------- Job1 has started! ---------------'),
-      onCompleted: (context) =>
-          log.info('\n--------------- Job1 has completed! ---------------'),
-    )
-      ..nextStep(Step(
-        name: 'Step1',
-        task: RetryTask(),
-        retryConfig: RetryConfiguration(
-          maxAttempt: 3,
-          retryableExceptions: [Exception()],
-          backOff: Duration(seconds: 30),
-          onRecover: (context) {
-            log.warn('Do something for recovering.');
-          },
-        ),
-      ))
-      ..nextStep(
-        Step(name: 'Step2', task: TestTask())
-          ..createBranchOnSucceeded(
-            to: Step(name: 'Step3', task: SayHelloTask()),
-          )
-          ..createBranchOnFailed(
-            to: Step(name: 'Step4', task: SayHelloTask())
-              ..createBranchOnCompleted(
-                to: Step(
-                  name: 'Step6',
-                  // You can set any preconditions to run Step.
-                  precondition: (context) => false,
-                  task: SayWorldTask(),
+class _TestJob1 implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job1',
+        schedule: CronParser(value: '*/1 * * * *'),
+        // You can define callbacks for each processing phase.
+        onStarted: (context) =>
+            log.info('\n--------------- Job1 has started! ---------------'),
+        onCompleted: (context) =>
+            log.info('\n--------------- Job1 has completed! ---------------'),
+      )
+        ..nextStep(Step(
+          name: 'Step1',
+          task: RetryTask(),
+          retryConfig: RetryConfiguration(
+            maxAttempt: 3,
+            retryableExceptions: [Exception()],
+            backOff: Duration(seconds: 30),
+            onRecover: (context) {
+              log.warn('Do something for recovering.');
+            },
+          ),
+        ))
+        ..nextStep(
+          Step(name: 'Step2', task: TestTask())
+            ..createBranchOnSucceeded(
+              to: Step(name: 'Step3', task: SayHelloTask()),
+            )
+            ..createBranchOnFailed(
+              to: Step(name: 'Step4', task: SayHelloTask())
+                ..createBranchOnCompleted(
+                  to: Step(
+                    name: 'Step6',
+                    // You can set any preconditions to run Step.
+                    precondition: (context) => false,
+                    task: SayWorldTask(),
+                  ),
                 ),
+            )
+            ..createBranchOnCompleted(
+              to: Step(
+                name: 'Step5',
+                task: SayHelloTask(),
+                // You can define callbacks for each processing phase.
+                onStarted: (context) => log.info(
+                    '\n--------------- Step5 has started! ---------------'),
+                onCompleted: (context) => log.info(
+                    '\n--------------- Step5 has completed! ---------------'),
               ),
-          )
-          ..createBranchOnCompleted(
-            to: Step(
-              name: 'Step5',
-              task: SayHelloTask(),
-              // You can define callbacks for each processing phase.
-              onStarted: (context) => log
-                  .info('\n--------------- Step5 has started! ---------------'),
-              onCompleted: (context) => log.info(
-                  '\n--------------- Step5 has completed! ---------------'),
+            ),
+        );
+}
+
+class _TestJob2 implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job2',
+        schedule: CronParser(value: '*/5 * * * *'),
+        // You can set any preconditions to run Job.
+        precondition: (context) async => true,
+      )
+        ..nextStep(
+          Step(
+            name: 'Step1',
+            precondition: (context) => true,
+            task: SayWorldTask(),
+            skipConfig: SkipConfiguration(
+              skippableExceptions: [Exception()],
             ),
           ),
-      );
+        )
+        ..createBranchOnSucceeded(
+          to: Job(name: 'Job3')..nextStep(Step.ofShutdown()),
+        );
+}
 
-Job get _testJob2 => Job(
-      name: 'Job2',
-      schedule: CronParser(value: '*/5 * * * *'),
-      // You can set any preconditions to run Job.
-      precondition: (context) async => true,
-    )
-      ..nextStep(
-        Step(
-          name: 'Step1',
-          precondition: (context) => true,
-          task: SayWorldTask(),
-          skipConfig: SkipConfiguration(
-            skippableExceptions: [Exception()],
+class _TestJob3 implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job4',
+        schedule: CronParser(value: '*/1 * * * *'),
+        // You can set any preconditions to run Job.
+        precondition: (context) async => true,
+      )..nextStep(
+          ParallelStep(
+            name: 'Parallel Step',
+            precondition: (context) => true,
+            tasks: [
+              TestParallelTask(),
+              TestParallelTask(),
+              TestParallelTask(),
+              TestParallelTask(),
+            ],
           ),
-        ),
-      )
-      ..createBranchOnSucceeded(
-        to: Job(name: 'Job3')..nextStep(Step.ofShutdown()),
-      );
-
-Job get _testJob4 => Job(
-      name: 'Job4',
-      schedule: CronParser(value: '*/1 * * * *'),
-      // You can set any preconditions to run Job.
-      precondition: (context) async => true,
-    )..nextStep(
-        ParallelStep(
-          name: 'Parallel Step',
-          precondition: (context) => true,
-          tasks: [
-            TestParallelTask(),
-            TestParallelTask(),
-            TestParallelTask(),
-            TestParallelTask(),
-          ],
-        ),
-      );
+        );
+}
 
 class TestTask extends Task<TestTask> {
   @override

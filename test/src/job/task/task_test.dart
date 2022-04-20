@@ -37,7 +37,7 @@ class _Task extends Task<_Task> {
     expect(BatchInstance.isRunning, true);
 
     //! Required to load to run super.shutdown().
-    Logger.loadFrom(config: LogConfiguration(printLog: false));
+    Logger.loadFromConfig(LogConfiguration(printLog: false));
 
     expect(() => super.shutdown(), returnsNormally);
     expect(BatchInstance.isRunning, false);

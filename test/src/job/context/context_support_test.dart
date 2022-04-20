@@ -16,7 +16,7 @@ import 'package:batch/src/log/logger.dart';
 
 void main() {
   //! Required to load logger to run ContextSupport.
-  Logger.loadFrom(config: LogConfiguration(printLog: false));
+  Logger.loadFromConfig(LogConfiguration(printLog: false));
 
   group('Test ContextSupport for Job', () {
     test('Test when not a retry and complete', () {

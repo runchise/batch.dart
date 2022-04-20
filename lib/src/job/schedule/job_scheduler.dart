@@ -11,7 +11,7 @@ import 'package:clock/clock.dart';
 // Project imports:
 import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/batch_status.dart';
-import 'package:batch/src/job/event/job.dart';
+import 'package:batch/src/job/event/scheduled_job.dart';
 import 'package:batch/src/job/launcher/job_launcher.dart';
 import 'package:batch/src/job/schedule/model/schedule.dart';
 import 'package:batch/src/job/schedule/scheduled_task.dart';
@@ -21,10 +21,11 @@ import 'package:batch/src/runner.dart';
 
 class JobScheduler implements Runner {
   /// Returns the new instance of [JobScheduler].
-  JobScheduler({required List<Job> jobs}) : _jobs = jobs;
+  JobScheduler(List<ScheduledJob> scheduledJobs)
+      : _scheduledJobs = scheduledJobs;
 
   /// The jobs
-  final List<Job> _jobs;
+  final List<ScheduledJob> _scheduledJobs;
 
   /// The schedules
   final List<ScheduledTask> _scheduledTasks = [];
@@ -35,12 +36,12 @@ class JobScheduler implements Runner {
   @override
   void run() {
     log.info('Started Job scheduling on startup');
-    log.info('Detected ${_jobs.length} Jobs on the root');
+    log.info('Detected ${_scheduledJobs.length} Jobs on the root');
 
-    for (final job in _jobs) {
+    for (final job in _scheduledJobs) {
       log.info('Scheduling Job [name=${job.name}]');
 
-      _schedule(job.schedule!.parse(), () async {
+      _schedule(job.schedule.parse(), () async {
         try {
           await JobLauncher(job: job).run();
         } catch (error, stackTrace) {

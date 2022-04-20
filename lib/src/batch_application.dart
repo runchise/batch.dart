@@ -14,6 +14,7 @@ import 'package:batch/src/banner/default_banner.dart';
 import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/diagnostics/boot_diagnostics.dart';
+import 'package:batch/src/job/builder/scheduled_job_builder.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
@@ -92,8 +93,8 @@ abstract class BatchApplication implements Runner {
         onLoadArgs: onLoadArgs,
       );
 
-  /// Adds [Job].
-  void addJob(final Job job);
+  /// Adds [ScheduledJobBuilder].
+  void nextSchedule(final ScheduledJobBuilder scheduledJobBuilder);
 
   /// Adds parameter as global scope.
   void addSharedParameter({
@@ -134,11 +135,12 @@ class _BatchApplication implements BatchApplication {
   })
           addSharedParameter)? _onLoadArgs;
 
-  /// The jobs
-  final _jobs = <Job>[];
+  /// The job builders
+  final _scheduledJobBuilders = <ScheduledJobBuilder>[];
 
   @override
-  void addJob(final Job job) => _jobs.add(job);
+  void nextSchedule(final ScheduledJobBuilder job) =>
+      _scheduledJobBuilders.add(job);
 
   @override
   void addSharedParameter({
@@ -159,33 +161,35 @@ class _BatchApplication implements BatchApplication {
     try {
       //! The logging functionality provided by the batch library
       //! will be available when this loading process is complete.
-      Logger.loadFrom(config: _logConfig ?? LogConfiguration());
+      Logger.loadFromConfig(_logConfig ?? LogConfiguration());
 
-      await BannerPrinter(banner: DefaultBanner()).execute();
+      await BannerPrinter(DefaultBanner()).execute();
       await UpdateNotification().printIfNecessary(await Version().status);
 
       log.info('🚀🚀🚀🚀🚀🚀🚀 The batch process has started! 🚀🚀🚀🚀🚀🚀🚀');
       log.info('Logger instance has completed loading');
 
-      BootDiagnostics(jobs: _jobs).run();
+      await _loadSharedParameters();
 
-      if (_args != null) {
-        if (_onLoadArgs != null) {
-          await _onLoadArgs!.call(_args!, addSharedParameter);
-        } else {
-          //! Add all arguments as SharedParameters if onLoad callback is not defined.
-          log.info('Add all command line arguments as SharedParameters');
-
-          for (final option in _args!.options) {
-            addSharedParameter(key: option, value: _args![option]);
-          }
-        }
-      }
-
-      JobScheduler(jobs: _jobs).run();
+      JobScheduler(BootDiagnostics(_scheduledJobBuilders).execute()).run();
     } catch (e) {
       Logger.instance.dispose();
       throw Exception(e);
+    }
+  }
+
+  Future<void> _loadSharedParameters() async {
+    if (_args != null) {
+      if (_onLoadArgs != null) {
+        await _onLoadArgs!.call(_args!, addSharedParameter);
+      } else {
+        //! Add all arguments as SharedParameters if onLoad callback is not defined.
+        log.info('Add all command line arguments as SharedParameters');
+
+        for (final option in _args!.options) {
+          addSharedParameter(key: option, value: _args![option]);
+        }
+      }
     }
   }
 }
