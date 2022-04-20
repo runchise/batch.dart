@@ -6,8 +6,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:batch/batch.dart';
-import 'package:batch/src/job/builder/scheduled_job_builder.dart';
-import 'package:batch/src/job/event/scheduled_job.dart';
 
 void main(List<String> args) => BatchApplication(
       args: _argParser.parse(args),
