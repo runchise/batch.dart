@@ -71,7 +71,7 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 - Supports scheduling in [Cron](https://en.wikipedia.org/wiki/Cron) format.
 - Supports powerful logging feature and it's customizable.
 - Supports easily define parallel processes.
-- Supports conditional branching of jobs.
+- Supports conditional branching of jobs and steps.
 - Supports extensive callback functions at each event.
 - Supports skipping and retrying according to user defined conditions.
 
@@ -99,12 +99,12 @@ import 'package:batch/batch.dart';
 `Batch.dart` represents the unit of scheduled processing as an `Event`.
 And `Event` is composed of the following elements.
 
-1. **Job** - The largest unit.
-2. **Step** - The intermediate unit.
-3. **Task** - The smallest unit.
-4. **Parallel** - It's kind of Task but represents parallel processes.
-
-**_You can see more information about `Event` at [here](https://github.com/batch-dart/documents/blob/main/resources/01_fundamentals.md#11-event)._**
+|                  | Description                                                                                                           |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------- |
+| **Job**          | This `Job` event is a unit of batch processing in the broad sense. And `Job` has multiple `Step` events.              |
+| **ScheduledJob** | It represents a scheduled job. And `ScheduledJob` has multiple `Step` events.                                         |
+| **Step**         | This event expresses the sequential processing. Each `Step` has a `Task` that defines one specific process.           |
+| **ParallelStep** | This event expresses the parallel processing. Each `ParallelStep` has `ParallelTask`s that define specific processes. |
 
 ### 1.3.4. Configure Job Schedules
 
@@ -112,36 +112,39 @@ And `Event` is composed of the following elements.
 
 When defining a simple sequential process, all that is required is to define a class that extends `Task` and implements the `execute` method.
 
+It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `nextSchedule` method of `BatchApplication`.
+
 **_Example_**
 
 ```dart
 import 'package:batch/batch.dart';
 
 void main() => BatchApplication()
-      ..addJob(
-        // Scheduled to start every minute in Cron format
-        Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
-          // Step phase
-          ..nextStep(Step(name: 'Step')
-            // Task phase
-            ..registerTask(DoSomethingTask()
-          ),
-        ),
-      )
+      ..scheduleNext(SayHelloWorldJobBuilder())
       ..run();
 
+class SayHelloWorldJobBuilder implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+        name: 'Test Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 second
+      )..nextStep(
+          Step(
+            name: 'Test Step',
+            task: SayHelloWorldTask(),
+          ),
+        );
+}
 
-class DoSomethingTask extends Task<DoSomethingTask> {
+class SayHelloWorldTask extends Task<SayHelloWorldTask> {
   @override
   void execute(ExecutionContext context) {
-    // Write your code here.
+    log.info('Hello, World!');
   }
 }
 ```
 
-The above example is a very simple, and so you should refer to other documents also for more detailed specifications and implementation instructions.
-
-**_You can see more details at [Official Documents](https://batch-dart.github.io/documents) or [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md)._**
+**_You can see more examples at [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md)._**
 
 #### 1.3.4.2. Parallel Process
 
@@ -159,28 +162,26 @@ import 'dart:async';
 import 'package:batch/batch.dart';
 
 void main() => BatchApplication()
-      ..addJob(
-        // Scheduled to start every minute in Cron format
-        Job(name: 'Job', schedule: CronParser(value: '*/1 * * * *'))
-          // Step phase
-          ..nextStep(Step(name: 'Step')
-            // Parallel task phase
-            ..registerParallel(
-              Parallel(
-                name: 'Parallel Tasks',
-                tasks: [
-                  DoHeavyTask(),
-                  DoHeavyTask(),
-                  DoHeavyTask(),
-                  DoHeavyTask(),
-                ],
-              ),
-            )
-          ),
-        ),
-      )
-      ..run();
+  ..nextSchedule(DoHeavyProcessJob())
+  ..run();
 
+class DoHeavyProcessJob implements ScheduledJobBuilder {
+  @override
+  ScheduledJob build() => ScheduledJob(
+      name: 'Job',
+      schedule: CronParser('*/2 * * * *')) // Execute every 2 second
+    ..nextStep(
+      ParallelStep(
+        name: 'Parallel Step',
+        tasks: [
+          DoHeavyTask(),
+          DoHeavyTask(),
+          DoHeavyTask(),
+          DoHeavyTask(),
+        ],
+      ),
+    );
+}
 
 class DoHeavyTask extends ParallelTask<DoHeavyTask> {
   @override
@@ -191,6 +192,7 @@ class DoHeavyTask extends ParallelTask<DoHeavyTask> {
     }
   }
 }
+
 ```
 
 ### 1.3.5. Logging
@@ -309,16 +311,15 @@ Creating a branch for each event is very easy.
 **_To create branch_**
 
 ```dart
-Step(name: 'Step')
-  // Assume that this task will change the branch status.
-  ..registerTask(ChangeBranchStatusTask())
+    Step(
+      name: 'Step',
+      task: ChangeBranchStatusTask(),
 
-  // Pass an event object to "to" argument that you want to execute when you enter this branch.
-  ..createBranchOnSucceeded(to: Step(name: 'Step on succeeded')..registerTask(somethingTask))
-  ..createBranchOnFailed(to: Step(name: 'Step on failed')..registerTask(somethingTask))
-
-  // Branches that are "createBranchOnCompleted" are always executed regardless of branch status.
-  ..createBranchOnCompleted(to: Step(name: 'Step on completed'))..registerTask(somethingTask);
+      // Each branch can be multiple and nested
+      branchesOnSucceeded: [Step(name: 'Step on succeeded', task: doSomethingTask)],
+      branchesOnFailed: [Step(name: 'Step on failed', task: doSomethingTask)],
+      branchesOnCompleted: [Step(name: 'Step on completed', task: doSomethingTask)],
+    );
 ```
 
 And the conditional branching of `Batch.dart` is controlled by changing the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
@@ -336,9 +337,6 @@ class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
   }
 }
 ```
-
-> Note:
-> Branch creation is not supported for `Task` and `Parallel`.
 
 ## 1.4. More Examples
 
