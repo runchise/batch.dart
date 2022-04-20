@@ -1,8 +1,13 @@
 # Release Note
 
-## v0.13.0
+## v1.0.0
 
-- `SkipConfiguration` and `RetryConfiguration` settings were limited to `Step` only. ([#145](https://github.com/batch-dart/batch.dart/issues/145))
+- Made changes to the specifications to make it easier and safer to use the framework.
+  - The method of adding Tasks to Steps has been changed.
+  - Specify `Task` or `ParallelTask` in the constructor of `Step` or `ParallelStep`, not `registerStep` and `registerParallel`.
+  - The method to create branches are changed. Use`branchesOnSucceeded`, `branchesOnFailed`, `branchesOnCompleted` in the constructors of Events such as `Job` and `Step` instead of in the `createBranch...` methods.
+  - The method for setting up a job in `BatchApplication` has changed. Use the `nextSchedule` method instead of `addJob`. Also, pass a class that extends `ScheduledJobBuilder` to this `nextSchedule` method; the object that should be returned from `ScheduledJobBuilder` is `ScheduledJob`, which must be scheduled.
+  - `SkipConfiguration` and `RetryConfiguration` settings were limited to `Step` only. ([#145](https://github.com/batch-dart/batch.dart/issues/145))
 
 ## v0.12.2
 
