@@ -9,14 +9,12 @@ import 'package:test/test.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/event/step.dart';
-import 'package:batch/src/job/schedule/parser/cron_parser.dart';
+import 'package:batch/src/job/task/task.dart';
 
 void main() {
   test('Test Job', () async {
     final job = Job(name: 'Job');
     expect(job.name, 'Job');
-    expect(job.schedule, null);
-    expect(job.isNotScheduled, true);
     expect(job.precondition, null);
     expect(job.onStarted, null);
     expect(job.onSucceeded, null);
@@ -27,10 +25,8 @@ void main() {
   });
 
   test('Test Job with schedule', () async {
-    final job = Job(name: 'Job', schedule: CronParser(value: ''));
+    final job = Job(name: 'Job');
     expect(job.name, 'Job');
-    expect(job.schedule != null, true);
-    expect(job.isNotScheduled, false);
     expect(job.precondition, null);
     expect(job.onStarted, null);
     expect(job.onSucceeded, null);
@@ -45,9 +41,14 @@ void main() {
     expect(job.name, 'Job');
     expect(job.steps.isEmpty, true);
 
-    job.nextStep(Step(name: 'Step'));
+    job.nextStep(Step(name: 'Step', task: _Task()));
     expect(job.steps.isEmpty, false);
     expect(job.steps.length, 1);
     expect(job.steps[0].name, 'Step');
   });
+}
+
+class _Task extends Task<_Task> {
+  @override
+  Future<void> execute(ExecutionContext context) async {}
 }

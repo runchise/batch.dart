@@ -24,7 +24,7 @@ void main() {
 
   test('Test when version status is not the latest', () {
     //! Required to load logger to run printIfNecessary when status is not the latest.
-    Logger.loadFrom(config: LogConfiguration());
+    Logger.loadFromConfig(LogConfiguration());
 
     final notification = UpdateNotification();
     final notLatestStatus = VersionStatus.fromJson(

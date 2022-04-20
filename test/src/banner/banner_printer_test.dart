@@ -13,8 +13,8 @@ import 'package:batch/src/log/logger.dart';
 
 void main() {
   test('Test BannerPrinter', () {
-    Logger.loadFrom(config: LogConfiguration());
-    expect(() async => await BannerPrinter(banner: _TestBanner()).execute(),
+    Logger.loadFromConfig(LogConfiguration());
+    expect(() async => await BannerPrinter(_TestBanner()).execute(),
         returnsNormally);
   });
 }

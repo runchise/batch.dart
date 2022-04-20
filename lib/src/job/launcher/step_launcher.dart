@@ -5,41 +5,23 @@
 // Project imports:
 import 'package:batch/batch.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
-import 'package:batch/src/job/launcher/parallel_launcher.dart';
-import 'package:batch/src/job/launcher/task_launcher.dart';
 
 class StepLauncher extends Launcher<Step> {
   /// Returns the new instance of [StepLauncher].
   StepLauncher({
     required ExecutionContext context,
-    required List<Step> steps,
+    required Step step,
     required String parentJobName,
   })  : assert(parentJobName.isNotEmpty),
-        _steps = steps,
+        _step = step,
         super(context: context);
 
-  /// The steps
-  final List<Step> _steps;
+  /// The step
+  final Step _step;
 
   @override
-  Future<void> run() async {
-    for (final step in _steps) {
-      await super.executeRecursively(
-        event: step,
-        execute: (step) async {
-          if (step.task is Parallel) {
-            await ParallelLauncher(
-              context: context,
-              parallel: step.task,
-            ).run();
-          } else {
-            await TaskLauncher(
-              context: context,
-              task: step.task,
-            ).run();
-          }
-        },
+  Future<void> run() async => await super.executeRecursively(
+        event: _step,
+        execute: (step) async => await step.task.execute(context),
       );
-    }
-  }
 }

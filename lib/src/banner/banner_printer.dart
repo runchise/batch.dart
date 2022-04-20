@@ -8,8 +8,7 @@ import 'package:batch/src/log/logger_provider.dart';
 
 abstract class BannerPrinter {
   /// Returns the new instance of [BannerPrinter].
-  factory BannerPrinter({required Banner banner}) =>
-      _BannerPrinter(banner: banner);
+  factory BannerPrinter(Banner banner) => _BannerPrinter(banner: banner);
 
   /// Prints the banner.
   Future<void> execute();
