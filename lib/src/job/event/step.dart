@@ -14,7 +14,7 @@ import 'package:batch/src/job/task/shutdown_task.dart';
 import 'package:batch/src/job/task/task.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
-class Step extends BaseStep<Step> {
+class Step extends BaseStep {
   /// Returns the new instance of [Step].
   Step({
     required String name,
@@ -27,9 +27,12 @@ class Step extends BaseStep<Step> {
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
     RetryConfiguration? retryConfig,
-  })  : _task = task,
-        super(
+    List<BaseStep> branchesOnSucceeded = const [],
+    List<BaseStep> branchesOnFailed = const [],
+    List<BaseStep> branchesOnCompleted = const [],
+  }) : super(
           name: name,
+          tasks: [task],
           precondition: precondition,
           onStarted: onStarted,
           onError: onError,
@@ -37,16 +40,12 @@ class Step extends BaseStep<Step> {
           onCompleted: onCompleted,
           skipConfig: skipConfig,
           retryConfig: retryConfig,
+          branchesOnSucceeded: branchesOnSucceeded,
+          branchesOnFailed: branchesOnFailed,
+          branchesOnCompleted: branchesOnCompleted,
         );
 
   /// Returns the new instance of [Step].
   Step.ofShutdown({String name = 'Shutdown Step'})
-      : _task = ShutdownTask(),
-        super(name: name);
-
-  /// The task
-  final Task _task;
-
-  /// Returns the copied task
-  Task get task => _task;
+      : super(name: name, tasks: [ShutdownTask()]);
 }

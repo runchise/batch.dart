@@ -9,7 +9,7 @@ import 'dart:async';
 import 'package:batch/batch.dart';
 import 'package:batch/src/job/event/base_step.dart';
 
-class ParallelStep extends BaseStep<ParallelStep> {
+class ParallelStep extends BaseStep {
   /// Returns the new instance of [ParallelStep].
   ParallelStep({
     required String name,
@@ -22,9 +22,12 @@ class ParallelStep extends BaseStep<ParallelStep> {
     Function(ExecutionContext context)? onCompleted,
     SkipConfiguration? skipConfig,
     RetryConfiguration? retryConfig,
-  })  : _tasks = tasks,
-        super(
+    List<BaseStep> branchesOnSucceeded = const [],
+    List<BaseStep> branchesOnFailed = const [],
+    List<BaseStep> branchesOnCompleted = const [],
+  }) : super(
           name: name,
+          tasks: tasks,
           precondition: precondition,
           onStarted: onStarted,
           onError: onError,
@@ -32,11 +35,8 @@ class ParallelStep extends BaseStep<ParallelStep> {
           onCompleted: onCompleted,
           skipConfig: skipConfig,
           retryConfig: retryConfig,
+          branchesOnSucceeded: branchesOnSucceeded,
+          branchesOnFailed: branchesOnFailed,
+          branchesOnCompleted: branchesOnCompleted,
         );
-
-  /// The parallel tasks
-  final List<ParallelTask> _tasks;
-
-  /// Returns the copied tasks.
-  List<ParallelTask> get tasks => _tasks;
 }

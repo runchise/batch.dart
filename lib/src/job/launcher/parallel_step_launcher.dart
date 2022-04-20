@@ -6,18 +6,19 @@
 import 'package:async_task/async_task.dart';
 
 // Project imports:
-import 'package:batch/batch.dart';
+import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/event/base_step.dart';
+import 'package:batch/src/job/event/parallel_step.dart';
 import 'package:batch/src/job/launcher/launcher.dart';
 import 'package:batch/src/job/parallel/parallel_executor.dart';
+import 'package:batch/src/log/logger_provider.dart';
 
-class ParallelStepLauncher extends Launcher<ParallelStep> {
+class ParallelStepLauncher extends Launcher<BaseStep> {
   /// Returns the new instance of [ParallelStepLauncher].
   ParallelStepLauncher({
     required ExecutionContext context,
     required ParallelStep step,
-    required String parentJobName,
-  })  : assert(parentJobName.isNotEmpty),
-        _step = step,
+  })  : _step = step,
         super(context: context);
 
   /// The parallel step
@@ -54,7 +55,7 @@ class ParallelStepLauncher extends Launcher<ParallelStep> {
         },
       );
 
-  List<ParallelExecutor> _buildExecutor(final List<ParallelTask> tasks) {
+  List<ParallelExecutor> _buildExecutor(final List<dynamic> tasks) {
     final executors = <ParallelExecutor>[];
     for (final task in tasks) {
       executors.add(

@@ -31,13 +31,11 @@ class JobLauncher extends Launcher<Job> {
               await StepLauncher(
                 context: context,
                 step: step,
-                parentJobName: job.name,
               ).run();
             } else if (step is ParallelStep) {
               await ParallelStepLauncher(
                 context: context,
                 step: step,
-                parentJobName: job.name,
               ).run();
             } else {
               throw UnsupportedError('The step type is not supported.');

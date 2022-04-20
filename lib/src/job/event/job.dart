@@ -20,6 +20,9 @@ class Job extends Event<Job> {
     Function(ExecutionContext context, dynamic error, StackTrace stackTrace)?
         onError,
     Function(ExecutionContext context)? onCompleted,
+    List<Job> branchesOnSucceeded = const [],
+    List<Job> branchesOnFailed = const [],
+    List<Job> branchesOnCompleted = const [],
   }) : super(
           name: name,
           precondition: precondition,
@@ -27,6 +30,9 @@ class Job extends Event<Job> {
           onError: onError,
           onSucceeded: onSucceeded,
           onCompleted: onCompleted,
+          branchesOnSucceeded: branchesOnSucceeded,
+          branchesOnFailed: branchesOnFailed,
+          branchesOnCompleted: branchesOnCompleted,
         );
 
   /// The steps
