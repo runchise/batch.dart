@@ -82,7 +82,7 @@ void main() {
     expect(event.branches[1].on, BranchStatus.failed);
     expect(event.branches[1].to.name, 'failed');
     expect(event.branches[2].on, BranchStatus.completed);
-    expect(event.branches[3].to.name, 'completed');
+    expect(event.branches[2].to.name, 'completed');
   });
 }
 
