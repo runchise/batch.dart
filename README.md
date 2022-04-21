@@ -112,16 +112,17 @@ And `Event` is composed of the following elements.
 
 When defining a simple sequential process, all that is required is to define a class that extends `Task` and implements the `execute` method.
 
-It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `addSchedule` method of `BatchApplication`.
+It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `jobs` argument of `BatchApplication`.
 
 **_Example_**
 
 ```dart
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication()
-      ..addSchedule(SayHelloWorldJob())
-      ..run();
+void main() => BatchApplication(
+      jobs: [SayHelloWorldJob()],
+    )..run();
+
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
   @override
@@ -162,9 +163,9 @@ import 'dart:async';
 
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication()
-  ..addSchedule(DoHeavyProcessJob())
-  ..run();
+void main() => BatchApplication(
+      jobs: [DoHeavyProcessJob()],
+    )..run();
 
 class DoHeavyProcessJob implements ScheduledJobBuilder {
   @override
