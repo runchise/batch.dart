@@ -10,14 +10,13 @@ import 'package:batch/src/job/config/retry_configuration.dart';
 import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
-import 'package:batch/src/job/task/task.dart';
 
 /// This class represents the processing of each step that constitutes a job in batch processing.
 abstract class BaseStep extends Event<BaseStep> {
   /// Returns the new instance of [Step].
   BaseStep({
     required String name,
-    required List<Task> tasks,
+    required this.tasks,
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -29,8 +28,7 @@ abstract class BaseStep extends Event<BaseStep> {
     List<BaseStep> branchesOnSucceeded = const [],
     List<BaseStep> branchesOnFailed = const [],
     List<BaseStep> branchesOnCompleted = const [],
-  })  : _tasks = tasks,
-        super(
+  }) : super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
@@ -45,8 +43,5 @@ abstract class BaseStep extends Event<BaseStep> {
         );
 
   /// Returns the tasks.
-  final List<dynamic> _tasks;
-
-  /// Returns the copied tasks.
-  List<dynamic> get tasks => List.from(_tasks);
+  final List<dynamic> tasks;
 }
