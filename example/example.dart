@@ -54,7 +54,7 @@ class _SayHelloWorldJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Say Hello World Job',
-        schedule: CronParser('*/1 * * * *'), //! Execute every 1 minutes.
+        schedule: CronParser('*/1 * * * *'), //! Execute every minute.
         steps: [
           Step(name: 'Say Hello Step', task: SayHelloTask()),
           Step(name: 'Say World Step', task: SayWorldTask())
