@@ -120,7 +120,7 @@ It is also easy to define a scheduled job: define a process to generate a `Sched
 import 'package:batch/batch.dart';
 
 void main() => BatchApplication()
-      ..nextSchedule(SayHelloWorldJob())
+      ..addSchedule(SayHelloWorldJob())
       ..run();
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
@@ -163,7 +163,7 @@ import 'dart:async';
 import 'package:batch/batch.dart';
 
 void main() => BatchApplication()
-  ..nextSchedule(DoHeavyProcessJob())
+  ..addSchedule(DoHeavyProcessJob())
   ..run();
 
 class DoHeavyProcessJob implements ScheduledJobBuilder {
