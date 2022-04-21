@@ -77,7 +77,6 @@ abstract class BatchApplication implements Runner {
   /// Returns the new instance of [BatchApplication].
   factory BatchApplication({
     ArgResults? args,
-    LogConfiguration? logConfig,
     FutureOr<void> Function(
             ArgResults args,
             void Function({
@@ -86,21 +85,18 @@ abstract class BatchApplication implements Runner {
     })
                 addSharedParameter)?
         onLoadArgs,
+    required List<ScheduledJobBuilder> jobs,
+    LogConfiguration? logConfig,
   }) =>
       _BatchApplication(
         args: args,
-        logConfig: logConfig,
         onLoadArgs: onLoadArgs,
+        jobs: jobs,
+        logConfig: logConfig,
       );
 
-  /// Adds [ScheduledJobBuilder].
-  void addSchedule(final ScheduledJobBuilder scheduledJobBuilder);
-
   /// Adds parameter as global scope.
-  void addSharedParameter({
-    required String key,
-    required dynamic value,
-  });
+  void addSharedParameter({required String key, required dynamic value});
 }
 
 class _BatchApplication implements BatchApplication {
@@ -116,9 +112,11 @@ class _BatchApplication implements BatchApplication {
     })
                 addSharedParameter)?
         onLoadArgs,
+    required List<ScheduledJobBuilder> jobs,
   })  : _args = args,
-        _logConfig = logConfig,
-        _onLoadArgs = onLoadArgs;
+        _onLoadArgs = onLoadArgs,
+        _scheduledJobBuilders = jobs,
+        _logConfig = logConfig;
 
   /// The parsed args
   final ArgResults? _args;
@@ -136,11 +134,7 @@ class _BatchApplication implements BatchApplication {
           addSharedParameter)? _onLoadArgs;
 
   /// The job builders
-  final _scheduledJobBuilders = <ScheduledJobBuilder>[];
-
-  @override
-  void addSchedule(final ScheduledJobBuilder job) =>
-      _scheduledJobBuilders.add(job);
+  final List<ScheduledJobBuilder> _scheduledJobBuilders;
 
   @override
   void addSharedParameter({

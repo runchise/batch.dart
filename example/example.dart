@@ -15,8 +15,16 @@ void main(List<String> args) => BatchApplication(
         //! all command line arguments are added as SharedParameters automatically.
         addSharedParameters(key: 'userName', value: args['userName']);
       },
-      //! You can customize log configuration.
+      jobs: [
+        ///! You can add scheduled jobs here.
+        _SayHelloWorldJob(),
+        _TestRetryAndCallbackJob(),
+        _TestBranchJob(),
+        _ParallelJob(),
+        _ShutdownJob()
+      ],
       logConfig: LogConfiguration(
+        //! You can customize log configuration.
         level: LogLevel.trace,
         output: MultiLogOutput([
           ConsoleLogOutput(),
@@ -31,12 +39,6 @@ void main(List<String> args) => BatchApplication(
       //! You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      //! You can schedule jobs with addSchedule method.
-      ..addSchedule(_SayHelloWorldJob())
-      ..addSchedule(_TestRetryAndCallbackJob())
-      ..addSchedule(_TestBranchJob())
-      ..addSchedule(_ParallelJob())
-      ..addSchedule(_ShutdownJob())
       ..run();
 
 ArgParser get _argParser {
@@ -56,6 +58,8 @@ class _SayHelloWorldJob implements ScheduledJobBuilder {
         name: 'Say Hello World Job',
         schedule: CronParser('*/1 * * * *'), //! Execute every minute.
         steps: [
+          //! You can add steps.
+          //! Please add in the order of execution.
           Step(name: 'Say Hello Step', task: SayHelloTask()),
           Step(name: 'Say World Step', task: SayWorldTask())
         ],
