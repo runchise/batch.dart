@@ -2,9 +2,10 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Dart imports:
+import 'dart:convert';
+
 // Package imports:
-import 'package:http/http.dart';
-import 'package:json_response/json_response.dart';
 import 'package:test/test.dart';
 
 // Project imports:
@@ -18,21 +19,13 @@ void main() {
 
   test('Test when version is the latest with fromJson()', () {
     final status = VersionStatus.fromJson(
-      json: Json.from(
-        response: Response('{"latestStableVersion":"${Version.current}"}', 200),
-      ),
-    );
-
+        jsonDecode('{"latestStableVersion":"${Version.current}"}'));
     expect(status.isLatest, isTrue);
   });
 
   test('Test when version is the not latest with fromJson()', () {
-    final status = VersionStatus.fromJson(
-      json: Json.from(
-        response: Response('{"latestStableVersion":"9.9.9.9"}', 200),
-      ),
-    );
-
+    final status =
+        VersionStatus.fromJson(jsonDecode('{"latestStableVersion":"9.9.9.9"}'));
     expect(status.isLatest, isFalse);
   });
 

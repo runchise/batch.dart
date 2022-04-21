@@ -3,7 +3,6 @@
 // modification, are permitted provided the conditions.
 
 // Package imports:
-import 'package:json_response/json_response.dart';
 import 'package:meta/meta.dart';
 
 // Project imports:
@@ -11,11 +10,8 @@ import 'package:batch/src/version/version.dart';
 
 abstract class VersionStatus {
   /// Returns the new instance of [VersionStatus].
-  factory VersionStatus.fromJson({required Json json}) => _VersionStatus(
-        version: json.getString(
-          key: latestVersionKey,
-          defaultValue: Version.current,
-        ),
+  factory VersionStatus.fromJson(Map<String, dynamic> json) => _VersionStatus(
+        version: json[latestVersionKey] ?? Version.current,
       );
 
   /// Returns the new instance of [VersionStatus] as the latest.
