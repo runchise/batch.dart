@@ -8,12 +8,20 @@ import 'dart:io';
 import 'package:batch/batch.dart';
 
 void main(List<String> args) => BatchApplication(
-      args: _argParser.parse(args),
-      onLoadArgs: (args, addSharedParameters) {
-        //! This callback is useful when you want to create a singleton instance using command line arguments
-        //! and manage it as SharedParameters in batch application. If this callback is not defined,
-        //! all command line arguments are added as SharedParameters automatically.
-        addSharedParameters(key: 'userName', value: args['userName']);
+      args: args,
+      argsConfigBuilder: (parser) {
+        // The well-known "args" library can be used as standard.
+        // See more information about "args" at https://pub.dev/packages/args.
+        parser
+          ..addOption('userName', abbr: 'u')
+          ..addOption('appName', abbr: 'a')
+          ..addFlag('release', abbr: 'r', defaultsTo: false);
+      },
+      onLoadArgs: (args) {
+        // This callback is useful when you want to create a singleton instance using command line arguments
+        // and manage it as SharedParameters in batch application. If this callback is not defined,
+        // all command line arguments are added as SharedParameters automatically.
+        return {'userName': args['userName']};
       },
       jobs: [
         ///! You can add scheduled jobs here.
@@ -40,17 +48,6 @@ void main(List<String> args) => BatchApplication(
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
       ..run();
-
-ArgParser get _argParser {
-  // The well-known "args" library can be used as standard.
-  // See more information about "args" at https://pub.dev/packages/args.
-  final parser = ArgParser();
-  parser.addOption('userName', abbr: 'u');
-  parser.addOption('appName', abbr: 'a');
-  parser.addFlag('release', abbr: 'r', defaultsTo: false);
-
-  return parser;
-}
 
 class _SayHelloWorldJob implements ScheduledJobBuilder {
   @override

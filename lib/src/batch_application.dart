@@ -76,20 +76,15 @@ import 'package:batch/src/version/version.dart';
 abstract class BatchApplication implements Runner {
   /// Returns the new instance of [BatchApplication].
   factory BatchApplication({
-    ArgResults? args,
-    FutureOr<void> Function(
-            ArgResults args,
-            void Function({
-      required String key,
-      required dynamic value,
-    })
-                addSharedParameter)?
-        onLoadArgs,
+    List<String> args = const [],
+    FutureOr<void> Function(ArgParser parser)? argsConfigBuilder,
+    FutureOr<Map<String, dynamic>> Function(ArgResults args)? onLoadArgs,
     required List<ScheduledJobBuilder> jobs,
     LogConfiguration? logConfig,
   }) =>
       _BatchApplication(
         args: args,
+        argsConfigBuilder: argsConfigBuilder,
         onLoadArgs: onLoadArgs,
         jobs: jobs,
         logConfig: logConfig,
@@ -102,36 +97,28 @@ abstract class BatchApplication implements Runner {
 class _BatchApplication implements BatchApplication {
   /// Returns the new instance of [_BatchApplication].
   _BatchApplication({
-    ArgResults? args,
-    LogConfiguration? logConfig,
-    FutureOr<void> Function(
-            ArgResults args,
-            Function({
-      required String key,
-      required dynamic value,
-    })
-                addSharedParameter)?
-        onLoadArgs,
+    List<String> args = const [],
+    FutureOr<void> Function(ArgParser parser)? argsConfigBuilder,
+    FutureOr<Map<String, dynamic>> Function(ArgResults args)? onLoadArgs,
     required List<ScheduledJobBuilder> jobs,
+    LogConfiguration? logConfig,
   })  : _args = args,
+        _argsConfigBuilder = argsConfigBuilder,
         _onLoadArgs = onLoadArgs,
         _scheduledJobBuilders = jobs,
         _logConfig = logConfig;
 
-  /// The parsed args
-  final ArgResults? _args;
+  /// The args
+  final List<String> _args;
+
+  /// The builder for argument configuration.
+  final FutureOr<void> Function(ArgParser parser)? _argsConfigBuilder;
+
+  /// The callback to be called when the commend line arguments are loaded.
+  final FutureOr<Map<String, dynamic>> Function(ArgResults args)? _onLoadArgs;
 
   /// The configuration for logging
   final LogConfiguration? _logConfig;
-
-  /// The callback to be called when the commend line arguments are loaded.
-  final FutureOr<void> Function(
-      ArgResults args,
-      void Function({
-    required String key,
-    required dynamic value,
-  })
-          addSharedParameter)? _onLoadArgs;
 
   /// The job builders
   final List<ScheduledJobBuilder> _scheduledJobBuilders;
@@ -146,8 +133,14 @@ class _BatchApplication implements BatchApplication {
   @override
   void run() async {
     if (!BatchInstance.isPending) {
-      throw StateError(
-          'This batch application has already been executed from the "run()" method. Multiple launches of batch applications are not allowed.');
+      throw StateError('The batch application is already running.');
+    }
+
+    if (_args.isNotEmpty && _argsConfigBuilder == null) {
+      throw StateError('''\n
+        The command line arguments are specified, but the builder for argument configuration is not specified.
+        Please specify the builder for argument configuration by using "argsConfigBuilder".
+      ''');
     }
 
     BatchInstance.updateStatus(BatchStatus.starting);
@@ -166,24 +159,35 @@ class _BatchApplication implements BatchApplication {
       await _loadSharedParameters();
 
       JobScheduler(BootDiagnostics(_scheduledJobBuilders).execute()).run();
-    } catch (e) {
+    } catch (e, s) {
       Logger.instance.dispose();
+      print(s);
       throw Exception(e);
     }
   }
 
   Future<void> _loadSharedParameters() async {
-    if (_args != null) {
+    if (_args.isNotEmpty) {
+      final parsedArgs = await _buildArgParser();
+
       if (_onLoadArgs != null) {
-        await _onLoadArgs!.call(_args!, addSharedParameter);
+        final parameters = await _onLoadArgs!.call(parsedArgs);
+        for (final key in parameters.keys) {
+          addSharedParameter(key: key, value: parameters[key]);
+        }
       } else {
-        //! Add all arguments as SharedParameters if onLoad callback is not defined.
         log.info('Add all command line arguments as SharedParameters');
 
-        for (final option in _args!.options) {
-          addSharedParameter(key: option, value: _args![option]);
+        for (final option in parsedArgs.options) {
+          addSharedParameter(key: option, value: parsedArgs[option]);
         }
       }
     }
+  }
+
+  Future<ArgResults> _buildArgParser() async {
+    final argParser = ArgParser();
+    await _argsConfigBuilder?.call(argParser);
+    return argParser.parse(_args);
   }
 }
