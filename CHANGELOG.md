@@ -1,5 +1,9 @@
 # Release Note
 
+## v1.0.1
+
+- Fixed `README.md`.
+
 ## v1.0.0
 
 - Made changes to the specifications to make it easier and safer to use the framework.

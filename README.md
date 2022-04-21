@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <b>A lightweight and powerful Job Scheduling Framework.</b>
+  <b>A Lightweight and Powerful Job Scheduling Framework.</b>
 </p>
 
 ---
@@ -37,11 +37,11 @@ Or more documentations are available at: [Official Documents](https://github.com
 - [1. Guide](#1-guide)
   - [1.1. Mission](#11-mission)
   - [1.2. Features](#12-features)
-  - [1.3. Basic Usage](#13-basic-usage)
+  - [1.3. Getting Started](#13-getting-started)
     - [1.3.1. Install Library](#131-install-library)
     - [1.3.2. Import](#132-import)
     - [1.3.3. Basic Concept](#133-basic-concept)
-    - [1.3.4. Configure Job Schedules](#134-configure-job-schedules)
+    - [1.3.4. Schedule Jobs](#134-schedule-jobs)
       - [1.3.4.1. Sequential Process](#1341-sequential-process)
       - [1.3.4.2. Parallel Process](#1342-parallel-process)
     - [1.3.5. Logging](#135-logging)
@@ -75,7 +75,7 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 - Supports extensive callback functions at each event.
 - Supports skipping and retrying according to user defined conditions.
 
-## 1.3. Basic Usage
+## 1.3. Getting Started
 
 ### 1.3.1. Install Library
 
@@ -84,7 +84,7 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 ```
 
 > Note:
-> In pub.dev, the automatic determination at the time of release of this library labels it as usable in Flutter, but it is not suitable by any stretch of the imagination.
+> In Pub.dev, the automatic determination at the time of release of this library labels it as usable in Flutter, but it is not suitable by any stretch of the imagination.
 
 ### 1.3.2. Import
 
@@ -106,7 +106,7 @@ And `Event` is composed of the following elements.
 | **Step**         | This event expresses the sequential processing. Each `Step` has a `Task` that defines one specific process.           |
 | **ParallelStep** | This event expresses the parallel processing. Each `ParallelStep` has `ParallelTask`s that define specific processes. |
 
-### 1.3.4. Configure Job Schedules
+### 1.3.4. Schedule Jobs
 
 #### 1.3.4.1. Sequential Process
 
@@ -120,14 +120,14 @@ It is also easy to define a scheduled job: define a process to generate a `Sched
 import 'package:batch/batch.dart';
 
 void main() => BatchApplication()
-      ..scheduleNext(SayHelloWorldJob())
+      ..nextSchedule(SayHelloWorldJob())
       ..run();
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Test Job',
-        schedule: CronParser('*/2 * * * *'), // Execute every 2 second
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes
       )..nextStep(
           Step(
             name: 'Test Step',
