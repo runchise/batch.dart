@@ -94,7 +94,7 @@ abstract class BatchApplication implements Runner {
       );
 
   /// Adds [ScheduledJobBuilder].
-  void nextSchedule(final ScheduledJobBuilder scheduledJobBuilder);
+  void addSchedule(final ScheduledJobBuilder scheduledJobBuilder);
 
   /// Adds parameter as global scope.
   void addSharedParameter({
@@ -139,7 +139,7 @@ class _BatchApplication implements BatchApplication {
   final _scheduledJobBuilders = <ScheduledJobBuilder>[];
 
   @override
-  void nextSchedule(final ScheduledJobBuilder job) =>
+  void addSchedule(final ScheduledJobBuilder job) =>
       _scheduledJobBuilders.add(job);
 
   @override

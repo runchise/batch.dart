@@ -31,12 +31,12 @@ void main(List<String> args) => BatchApplication(
       //! You can add any parameters that is shared in this batch application.
       ..addSharedParameter(key: 'key1', value: 'value1')
       ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      //! You can schedule jobs with nextSchedule method.
-      ..nextSchedule(_SayHelloWorldJob())
-      ..nextSchedule(_TestRetryAndCallbackJob())
-      ..nextSchedule(_TestBranchJob())
-      ..nextSchedule(_ParallelJob())
-      ..nextSchedule(_ShutdownJob())
+      //! You can schedule jobs with addSchedule method.
+      ..addSchedule(_SayHelloWorldJob())
+      ..addSchedule(_TestRetryAndCallbackJob())
+      ..addSchedule(_TestBranchJob())
+      ..addSchedule(_ParallelJob())
+      ..addSchedule(_ShutdownJob())
       ..run();
 
 ArgParser get _argParser {

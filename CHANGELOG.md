@@ -3,6 +3,7 @@
 ## v1.1.0
 
 - Eliminated `nextStep` when adding steps and added `steps` to the `Job` and `ScheduledJob` constructors. This necessitates a change in the procedure for adding steps. ([#164](https://github.com/batch-dart/batch.dart/issues/164))
+- Changed the `nextSchedule` method to the `addSchedule` method when adding a scheduled job to the `BatchApplication`. ([#167](https://github.com/batch-dart/batch.dart/issues/167))
 
 ## v1.0.1
 
