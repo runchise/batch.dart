@@ -31,6 +31,11 @@ void main(List<String> args) => BatchApplication(
         _ParallelJob(),
         _ShutdownJob()
       ],
+      sharedParameters: {
+        //! You can add any values and it's shared in this batch application.
+        'token': 'xxxxxxxx',
+        'tokens': ['xxxxxxxx', 'yyyyyyyy'],
+      },
       logConfig: LogConfiguration(
         //! You can customize log configuration.
         level: LogLevel.trace,
@@ -43,11 +48,7 @@ void main(List<String> args) => BatchApplication(
         ),
         printLog: true,
       ),
-    )
-      //! You can add any parameters that is shared in this batch application.
-      ..addSharedParameter(key: 'key1', value: 'value1')
-      ..addSharedParameter(key: 'key2', value: {'any': 'object'})
-      ..run();
+    )..run();
 
 class _SayHelloWorldJob implements ScheduledJobBuilder {
   @override
