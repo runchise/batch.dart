@@ -170,7 +170,7 @@ class DoHeavyProcessJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
-        schedule: CronParser('*/2 * * * *'), // Execute every 2 second
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes
         steps: [
           ParallelStep(
             name: 'Parallel Step',
