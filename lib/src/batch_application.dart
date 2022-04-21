@@ -80,6 +80,7 @@ abstract class BatchApplication implements Runner {
     FutureOr<void> Function(ArgParser parser)? argsConfigBuilder,
     FutureOr<Map<String, dynamic>> Function(ArgResults args)? onLoadArgs,
     required List<ScheduledJobBuilder> jobs,
+    Map<String, dynamic> sharedParameters = const {},
     LogConfiguration? logConfig,
   }) =>
       _BatchApplication(
@@ -87,11 +88,9 @@ abstract class BatchApplication implements Runner {
         argsConfigBuilder: argsConfigBuilder,
         onLoadArgs: onLoadArgs,
         jobs: jobs,
+        sharedParameters: sharedParameters,
         logConfig: logConfig,
       );
-
-  /// Adds parameter as global scope.
-  void addSharedParameter({required String key, required dynamic value});
 }
 
 class _BatchApplication implements BatchApplication {
@@ -101,11 +100,13 @@ class _BatchApplication implements BatchApplication {
     FutureOr<void> Function(ArgParser parser)? argsConfigBuilder,
     FutureOr<Map<String, dynamic>> Function(ArgResults args)? onLoadArgs,
     required List<ScheduledJobBuilder> jobs,
+    Map<String, dynamic> sharedParameters = const {},
     LogConfiguration? logConfig,
   })  : _args = args,
         _argsConfigBuilder = argsConfigBuilder,
         _onLoadArgs = onLoadArgs,
         _scheduledJobBuilders = jobs,
+        _sharedParameters = sharedParameters,
         _logConfig = logConfig;
 
   /// The args
@@ -117,18 +118,14 @@ class _BatchApplication implements BatchApplication {
   /// The callback to be called when the commend line arguments are loaded.
   final FutureOr<Map<String, dynamic>> Function(ArgResults args)? _onLoadArgs;
 
-  /// The configuration for logging
-  final LogConfiguration? _logConfig;
-
   /// The job builders
   final List<ScheduledJobBuilder> _scheduledJobBuilders;
 
-  @override
-  void addSharedParameter({
-    required String key,
-    required dynamic value,
-  }) =>
-      SharedParameters.instance[key] = value;
+  /// The shared parameters
+  final Map<String, dynamic> _sharedParameters;
+
+  /// The configuration for logging
+  final LogConfiguration? _logConfig;
 
   @override
   void run() async {
@@ -167,19 +164,23 @@ class _BatchApplication implements BatchApplication {
   }
 
   Future<void> _loadSharedParameters() async {
+    _sharedParameters.forEach((key, value) {
+      SharedParameters.instance[key] = value;
+    });
+
     if (_args.isNotEmpty) {
       final parsedArgs = await _buildArgParser();
 
       if (_onLoadArgs != null) {
         final parameters = await _onLoadArgs!.call(parsedArgs);
         for (final key in parameters.keys) {
-          addSharedParameter(key: key, value: parameters[key]);
+          SharedParameters.instance[key] = parameters[key];
         }
       } else {
         log.info('Add all command line arguments as SharedParameters');
 
         for (final option in parsedArgs.options) {
-          addSharedParameter(key: option, value: parsedArgs[option]);
+          SharedParameters.instance[option] = parsedArgs[option];
         }
       }
     }

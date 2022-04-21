@@ -4,6 +4,7 @@
 
 - Eliminated the `addSchedule` method and added a `jobs` field to the `BatchApplication` constructor to specify the `ScheduledJobBuilder`. ([#171](https://github.com/batch-dart/batch.dart/issues/171))
 - Added `argsConfigBuilder` callback to `BatchApplication` to more easily build `ArgParser`. ([#174](https://github.com/batch-dart/batch.dart/issues/174))
+- Eliminated the `addSharedParameter` method from `BatchApplication` and added the `sharedParameters` argument to the constructor of `BatchApplication`. ([#173](https://github.com/batch-dart/batch.dart/issues/173))
 
 ## v1.1.0
 
