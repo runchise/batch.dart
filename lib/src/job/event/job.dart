@@ -11,10 +11,11 @@ import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/event.dart';
 
 class Job extends Event<Job> {
-  /// Returns the new instance of [Workflow].
+  /// Returns the new instance of [Job].
   Job({
     required String name,
-    required List<BaseStep> steps,
+    required this.steps,
+    this.jobParameters = const {},
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -24,8 +25,7 @@ class Job extends Event<Job> {
     List<Job> branchesOnSucceeded = const [],
     List<Job> branchesOnFailed = const [],
     List<Job> branchesOnCompleted = const [],
-  })  : _steps = steps,
-        super(
+  }) : super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
@@ -38,8 +38,8 @@ class Job extends Event<Job> {
         );
 
   /// The steps
-  final List<BaseStep> _steps;
+  final List<BaseStep> steps;
 
-  /// Returns the copied steps.
-  List<BaseStep> get steps => List.from(_steps);
+  /// The initial job parameters.
+  final Map<String, dynamic> jobParameters;
 }

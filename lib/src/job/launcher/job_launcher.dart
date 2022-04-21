@@ -26,6 +26,8 @@ class JobLauncher extends Launcher<Job> {
   Future<void> run() async => await super.executeRecursively(
         event: _job,
         execute: (job) async {
+          context.jobParameters.addAll(job.jobParameters);
+
           for (final step in job.steps) {
             if (step is Step) {
               await StepLauncher(
@@ -42,7 +44,7 @@ class JobLauncher extends Launcher<Job> {
             }
           }
 
-          // Removes step job parameters set within the step executed last time.
+          //! Removes step job parameters set within the step executed last time.
           super.context.jobParameters.removeAll();
         },
       );

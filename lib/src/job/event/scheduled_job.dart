@@ -17,6 +17,7 @@ class ScheduledJob extends Job {
     required String name,
     required this.schedule,
     required List<BaseStep> steps,
+    Map<String, dynamic> jobParameters = const {},
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -29,6 +30,7 @@ class ScheduledJob extends Job {
   }) : super(
           name: name,
           steps: steps,
+          jobParameters: jobParameters,
           precondition: precondition,
           onStarted: onStarted,
           onError: onError,
