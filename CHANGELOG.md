@@ -3,6 +3,7 @@
 ## v1.0.1
 
 - Fixed `README.md`.
+- Refactored dependencies. ([#160](https://github.com/batch-dart/batch.dart/issues/160))
 
 ## v1.0.0
 

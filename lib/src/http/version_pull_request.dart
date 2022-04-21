@@ -2,9 +2,11 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Dart imports:
+import 'dart:convert';
+
 // Package imports:
 import 'package:http/http.dart' as http;
-import 'package:json_response/json_response.dart';
 import 'package:meta/meta.dart';
 
 // Project imports:
@@ -32,7 +34,7 @@ class VersionPullRequest implements Request<VersionStatus> {
         return VersionStatus.asLatest();
       }
 
-      return VersionStatus.fromJson(json: Json.from(response: response));
+      return VersionStatus.fromJson(jsonDecode(response.body));
     } catch (e) {
       //! In case of communication failure,
       //! it's considered the version is the latest.

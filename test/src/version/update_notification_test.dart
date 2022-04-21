@@ -2,9 +2,10 @@
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided the conditions.
 
+// Dart imports:
+import 'dart:convert';
+
 // Package imports:
-import 'package:http/http.dart';
-import 'package:json_response/json_response.dart';
 import 'package:test/test.dart';
 
 // Project imports:
@@ -27,14 +28,8 @@ void main() {
     Logger.loadFromConfig(LogConfiguration());
 
     final notification = UpdateNotification();
-    final notLatestStatus = VersionStatus.fromJson(
-      json: Json.from(
-        response: Response(
-          '{"latestStableVersion":"9.9.9.9"}',
-          200,
-        ),
-      ),
-    );
+    final notLatestStatus =
+        VersionStatus.fromJson(jsonDecode('{"latestStableVersion":"9.9.9.9"}'));
 
     expect(() async => await notification.printIfNecessary(notLatestStatus),
         returnsNormally);
