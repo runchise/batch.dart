@@ -112,7 +112,7 @@ And `Event` is composed of the following elements.
 
 When defining a simple sequential process, all that is required is to define a class that extends `Task` and implements the `execute` method.
 
-It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `nextSchedule` method of `BatchApplication`.
+It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `addSchedule` method of `BatchApplication`.
 
 **_Example_**
 
@@ -255,7 +255,7 @@ yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job schedu
 
 > Note:
 > The setup of the logger is done when executing the method `run` in `BatchApplication`.
-> If you want to use the logging feature outside the life cycle of the `batch` library,
+> If you want to use the logging feature outside the life cycle of this library,
 > be sure to do so after executing the `run` method of the `BatchApplication`.
 
 #### 1.3.5.2. On Parallel Process
