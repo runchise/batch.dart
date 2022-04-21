@@ -128,12 +128,13 @@ class SayHelloWorldJob implements ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Test Job',
         schedule: CronParser('*/2 * * * *'), // Execute every 2 minutes
-      )..nextStep(
+        steps: [
           Step(
             name: 'Test Step',
             task: SayHelloWorldTask(),
-          ),
-        );
+          )
+        ],
+      );
 }
 
 class SayHelloWorldTask extends Task<SayHelloWorldTask> {
@@ -168,20 +169,22 @@ void main() => BatchApplication()
 class DoHeavyProcessJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
-      name: 'Job',
-      schedule: CronParser('*/2 * * * *')) // Execute every 2 second
-    ..nextStep(
-      ParallelStep(
-        name: 'Parallel Step',
-        tasks: [
-          DoHeavyTask(),
-          DoHeavyTask(),
-          DoHeavyTask(),
-          DoHeavyTask(),
+        name: 'Job',
+        schedule: CronParser('*/2 * * * *'), // Execute every 2 second
+        steps: [
+          ParallelStep(
+            name: 'Parallel Step',
+            tasks: [
+              DoHeavyTask(),
+              DoHeavyTask(),
+              DoHeavyTask(),
+              DoHeavyTask(),
+            ],
+          )
         ],
-      ),
-    );
+      );
 }
+
 
 class DoHeavyTask extends ParallelTask<DoHeavyTask> {
   @override
@@ -192,7 +195,6 @@ class DoHeavyTask extends ParallelTask<DoHeavyTask> {
     }
   }
 }
-
 ```
 
 ### 1.3.5. Logging
@@ -313,7 +315,7 @@ Creating a branch for each event is very easy.
 ```dart
     Step(
       name: 'Step',
-      task: ChangeBranchStatusTask(),
+      task: SwitchBranchStatusTask(),
 
       // Each branch can be multiple and nested
       branchesOnSucceeded: [Step(name: 'Step on succeeded', task: doSomethingTask)],
@@ -322,13 +324,13 @@ Creating a branch for each event is very easy.
     );
 ```
 
-And the conditional branching of `Batch.dart` is controlled by changing the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
+And the conditional branching of `Batch.dart` is controlled by switching the `BranchStatus` of each `Execution`s that can be referenced from the `ExecutionContext`.
 The default branch status is "**completed**".
 
 **_To manage branch_**
 
 ```dart
-class ChangeBranchStatusTask extends Task<ChangeBranchStatusTask> {
+class SwitchBranchStatusTask extends Task<SwitchBranchStatusTask> {
   @override
   void execute(ExecutionContext context) {
     // You can easily manage branch status through methods as below.

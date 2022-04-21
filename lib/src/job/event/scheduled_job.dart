@@ -7,6 +7,7 @@ import 'dart:async';
 
 // Project imports:
 import 'package:batch/src/job/context/execution_context.dart';
+import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 
@@ -15,6 +16,7 @@ class ScheduledJob extends Job {
   ScheduledJob({
     required String name,
     required this.schedule,
+    required List<BaseStep> steps,
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -26,6 +28,7 @@ class ScheduledJob extends Job {
     List<Job> branchesOnCompleted = const [],
   }) : super(
           name: name,
+          steps: steps,
           precondition: precondition,
           onStarted: onStarted,
           onError: onError,

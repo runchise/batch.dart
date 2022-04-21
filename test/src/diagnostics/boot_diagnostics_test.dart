@@ -25,9 +25,8 @@ class _TestJob1Builder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
-      )..nextStep(
-          Step(name: 'Step', task: TestTask()),
-        );
+        steps: [Step(name: 'Step', task: TestTask())],
+      );
 }
 
 class _TestJob2Builder extends ScheduledJobBuilder {
@@ -35,16 +34,21 @@ class _TestJob2Builder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
-        branchesOnCompleted: [
-          Job(name: 'Job2')..nextStep(Step(name: 'Step', task: TestTask()))
+        steps: [
+          Step(
+            name: 'Step',
+            task: TestTask(),
+            branchesOnCompleted: [
+              Step(name: 'Step2', task: TestTask()),
+            ],
+          )
         ],
-      )..nextStep(Step(
-          name: 'Step',
-          task: TestTask(),
-          branchesOnCompleted: [
-            Step(name: 'Step2', task: TestTask()),
-          ],
-        ));
+        branchesOnCompleted: [
+          Job(name: 'Job2', steps: [
+            Step(name: 'Step', task: TestTask()),
+          ])
+        ],
+      );
 }
 
 class _TestJob3Builder extends ScheduledJobBuilder {
@@ -52,15 +56,16 @@ class _TestJob3Builder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
-      )..nextStep(
+        steps: [
           Step(
             name: 'Step',
             task: TestTask(),
             skipConfig: SkipConfiguration(
               skippableExceptions: [],
             ),
-          ),
-        );
+          )
+        ],
+      );
 }
 
 class _TestJob4Builder extends ScheduledJobBuilder {
@@ -68,7 +73,7 @@ class _TestJob4Builder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
-      )..nextStep(
+        steps: [
           Step(
             name: 'Step',
             task: TestTask(),
@@ -76,7 +81,8 @@ class _TestJob4Builder extends ScheduledJobBuilder {
               retryableExceptions: [],
             ),
           ),
-        );
+        ],
+      );
 }
 
 class _TestJobWithoutStepBuilder extends ScheduledJobBuilder {
@@ -84,6 +90,7 @@ class _TestJobWithoutStepBuilder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
+        steps: [],
       );
 }
 
@@ -92,38 +99,45 @@ class _TestJobWithSkipAndRetryConfigsBuilder extends ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Job',
         schedule: CronParser('* * * * *'),
-      )..nextStep(
+        steps: [
           Step(
             name: 'Step',
             task: TestTask(),
             skipConfig: SkipConfiguration(skippableExceptions: []),
             retryConfig: RetryConfiguration(retryableExceptions: []),
-          ),
-        );
+          )
+        ],
+      );
 }
 
 class _TestJobWithDuplicatedStepNamesBuilder extends ScheduledJobBuilder {
   @override
-  ScheduledJob build() =>
-      ScheduledJob(name: 'Job', schedule: CronParser('* * * * *'))
-        ..nextStep(Step(name: 'Step', task: TestTask()))
-        ..nextStep(Step(name: 'Step', task: TestTask()));
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job',
+        schedule: CronParser('* * * * *'),
+        steps: [
+          Step(name: 'Step', task: TestTask()),
+          Step(name: 'Step', task: TestTask()),
+        ],
+      );
 }
 
 class _TestJobWithDuplicatedStepNamesOnBranchBuilder
     extends ScheduledJobBuilder {
   @override
-  ScheduledJob build() =>
-      ScheduledJob(name: 'Job', schedule: CronParser('* * * * *'))
-        ..nextStep(
+  ScheduledJob build() => ScheduledJob(
+        name: 'Job',
+        schedule: CronParser('* * * * *'),
+        steps: [
           Step(
             name: 'Step',
             task: TestTask(),
             branchesOnCompleted: [
               Step(name: 'Step', task: TestTask()),
             ],
-          ),
-        );
+          )
+        ],
+      );
 }
 
 void main() {
