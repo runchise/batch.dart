@@ -55,13 +55,11 @@ class _SayHelloWorldJob implements ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Say Hello World Job',
         schedule: CronParser('*/1 * * * *'), //! Execute every 1 minutes.
-      )
-        ..nextStep(
+        steps: [
           Step(name: 'Say Hello Step', task: SayHelloTask()),
-        )
-        ..nextStep(
-          Step(name: 'Say World Step', task: SayWorldTask()),
-        );
+          Step(name: 'Say World Step', task: SayWorldTask())
+        ],
+      );
 }
 
 class _TestRetryAndCallbackJob implements ScheduledJobBuilder {
@@ -70,9 +68,7 @@ class _TestRetryAndCallbackJob implements ScheduledJobBuilder {
         name: 'Test Retry Job',
         schedule: CronParser('*/1 * * * *'), //! Execute every 1 minutes.
         //! You can set any preconditions to run this job.
-        precondition: (context) => true,
-      )
-        ..nextStep(
+        steps: [
           Step(
             name: 'Test Retry and Callbacks Step',
             precondition: (context) => true,
@@ -92,14 +88,14 @@ class _TestRetryAndCallbackJob implements ScheduledJobBuilder {
               },
             ),
           ),
-        )
-        ..nextStep(
           Step(
             name: 'Test Skip Exception Step',
             task: SkipExceptionTask(),
             skipConfig: SkipConfiguration(skippableExceptions: [Exception()]),
-          ),
-        );
+          )
+        ],
+        precondition: (context) => true,
+      );
 }
 
 class _TestBranchJob implements ScheduledJobBuilder {
@@ -107,19 +103,22 @@ class _TestBranchJob implements ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Test Branch Job',
         schedule: CronParser('*/2 * * * *'), //! Execute every 2 minutes.
-      )..nextStep(Step(
-          name: 'Switch Branch Step',
-          task: TestSwitchBranchTask(),
-          branchesOnSucceeded: [
-            Step(name: 'Say Hello Task (Branch)', task: SayHelloTask())
-          ],
-          branchesOnFailed: [
-            Step(name: 'Should Not Be Executed Step', task: DummyTask())
-          ],
-          branchesOnCompleted: [
-            Step(name: 'Say World Task (Branch)', task: SayWorldTask())
-          ],
-        ));
+        steps: [
+          Step(
+            name: 'Switch Branch Step',
+            task: TestSwitchBranchTask(),
+            branchesOnSucceeded: [
+              Step(name: 'Say Hello Task (Branch)', task: SayHelloTask())
+            ],
+            branchesOnFailed: [
+              Step(name: 'Should Not Be Executed Step', task: DummyTask())
+            ],
+            branchesOnCompleted: [
+              Step(name: 'Say World Task (Branch)', task: SayWorldTask())
+            ],
+          )
+        ],
+      );
 }
 
 class _ParallelJob implements ScheduledJobBuilder {
@@ -127,7 +126,7 @@ class _ParallelJob implements ScheduledJobBuilder {
   ScheduledJob build() => ScheduledJob(
         name: 'Parallel Job',
         schedule: CronParser('*/3 * * * *'), //! Execute every 5 minutes.
-      )..nextStep(
+        steps: [
           ParallelStep(
             name: 'Parallel Step',
             precondition: (context) => true,
@@ -138,15 +137,19 @@ class _ParallelJob implements ScheduledJobBuilder {
               DoHeavyTask(),
             ],
           ),
-        );
+        ],
+      );
 }
 
 class _ShutdownJob implements ScheduledJobBuilder {
   @override
   ScheduledJob build() => ScheduledJob(
         name: 'Shutdown Job',
-        schedule: CronParser('*/5 * * * *'), // Execute every 5 minutes.
-      )..nextStep(Step.ofShutdown());
+        schedule: CronParser('*/5 * * * *'), //! Execute every 5 minutes.
+        steps: [
+          Step.ofShutdown(),
+        ],
+      );
 }
 
 class TestTask extends Task<TestTask> {

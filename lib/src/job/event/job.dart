@@ -14,6 +14,7 @@ class Job extends Event<Job> {
   /// Returns the new instance of [Workflow].
   Job({
     required String name,
+    required List<BaseStep> steps,
     FutureOr<bool> Function(ExecutionContext context)? precondition,
     Function(ExecutionContext context)? onStarted,
     Function(ExecutionContext context)? onSucceeded,
@@ -23,7 +24,8 @@ class Job extends Event<Job> {
     List<Job> branchesOnSucceeded = const [],
     List<Job> branchesOnFailed = const [],
     List<Job> branchesOnCompleted = const [],
-  }) : super(
+  })  : _steps = steps,
+        super(
           name: name,
           precondition: precondition,
           onStarted: onStarted,
@@ -36,16 +38,8 @@ class Job extends Event<Job> {
         );
 
   /// The steps
-  final List<BaseStep> _steps = [];
+  final List<BaseStep> _steps;
 
   /// Returns the copied steps.
   List<BaseStep> get steps => List.from(_steps);
-
-  /// Adds [Step].
-  ///
-  /// Steps added by this [nextStep] method are executed in the order in which they are stored.
-  ///
-  /// Also the name of the Step must be unique, and an exception will be raised
-  /// if a Step with a duplicate name has already been registered in this Job.
-  void nextStep(final BaseStep step) => _steps.add(step);
 }
