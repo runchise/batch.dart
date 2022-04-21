@@ -20,7 +20,7 @@ jobs:
             Hey what's up? 🍿 New version of Batch.dart was released! 🐦🐦🐦
             Release note: https://github.com/batch-dart/batch.dart/blob/main/CHANGELOG.md
 
-            #dart #dartlang #framework #github #pubdev #programming
+            #dart #dartlang #framework #github #pubdev #programming #100DaysOfCode
 
             This tweet was sent from GitHub Actions workflow at https://github.com/batch-dart/batch.dart
         env:
