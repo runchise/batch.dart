@@ -121,7 +121,7 @@ class _BatchApplication implements BatchApplication {
   /// The job builders
   final List<ScheduledJobBuilder> _scheduledJobBuilders;
 
-  /// The shared parameters
+  /// The initial shared parameters
   final Map<String, dynamic> _sharedParameters;
 
   /// The configuration for logging
@@ -164,9 +164,7 @@ class _BatchApplication implements BatchApplication {
   }
 
   Future<void> _loadSharedParameters() async {
-    _sharedParameters.forEach((key, value) {
-      SharedParameters.instance[key] = value;
-    });
+    SharedParameters.instance.addAll(_sharedParameters);
 
     if (_args.isNotEmpty) {
       final parsedArgs = await _buildArgParser();

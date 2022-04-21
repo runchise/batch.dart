@@ -32,7 +32,7 @@ void main(List<String> args) => BatchApplication(
         _ShutdownJob()
       ],
       sharedParameters: {
-        //! You can add any values and it's shared in this batch application.
+        //! You can add any initial values and it's shared in this batch application.
         'token': 'xxxxxxxx',
         'tokens': ['xxxxxxxx', 'yyyyyyyy'],
       },
@@ -61,6 +61,11 @@ class _SayHelloWorldJob implements ScheduledJobBuilder {
           Step(name: 'Say Hello Step', task: SayHelloTask()),
           Step(name: 'Say World Step', task: SayWorldTask())
         ],
+        jobParameters: {
+          //! You can add any initial values and it's shared in this job.
+          'token': 'xxxxxxxx',
+          'tokens': ['xxxxxxxx', 'yyyyyyyy'],
+        },
       );
 }
 
