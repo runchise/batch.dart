@@ -11,9 +11,9 @@ import 'package:batch/src/job/config/skip_configuration.dart';
 import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/event/event.dart';
 
-/// This class represents the processing of each step that constitutes a job in batch processing.
+/// The base class with common specifications for `Step` unit.
 abstract class BaseStep extends Event<BaseStep> {
-  /// Returns the new instance of [Step].
+  /// Returns the new instance of [BaseStep].
   BaseStep({
     required String name,
     required this.tasks,
