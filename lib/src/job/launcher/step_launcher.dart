@@ -19,7 +19,6 @@ class StepLauncher extends Launcher<BaseStep> {
   /// The step
   final Step _step;
 
-  @override
   Future<void> run() async => await super.executeRecursively(
         event: _step,
         execute: (step) async => await step.tasks.first.execute(context),
