@@ -24,7 +24,6 @@ class ParallelStepLauncher extends Launcher<BaseStep> {
   /// The parallel step
   final ParallelStep _step;
 
-  @override
   Future<void> run() async => await super.executeRecursively(
         event: _step,
         execute: (step) async {

@@ -15,65 +15,65 @@ import 'package:batch/src/batch_instance.dart';
 import 'package:batch/src/batch_status.dart';
 import 'package:batch/src/diagnostics/boot_diagnostics.dart';
 import 'package:batch/src/job/builder/scheduled_job_builder.dart';
-import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/parameter/shared_parameters.dart';
 import 'package:batch/src/job/schedule/job_scheduler.dart';
 import 'package:batch/src/log/log_configuration.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/runner.dart';
 import 'package:batch/src/version/update_notification.dart';
 import 'package:batch/src/version/version.dart';
 
-/// This is a batch application that manages the execution of arbitrarily defined jobs
-/// with own lifecycle.
+/// The main entry point of the batch application.
 ///
-/// In order to run this batch application, you first need to create at least
-/// one [Job] object. After creating the Job object, use the [addJob] method to register
-/// the Job to the batch application.
+/// Schedules [jobs] passed as arguments and starts long-lived server-side processes.
+/// This [jobs] specification is required, and an exception will always be raised
+/// if the job to be scheduled does not exist.
 ///
-/// [Job] represents the maximum unit of a certain processing system
-/// that consists of multiple steps. In addition, a Step consists of multiple Tasks. Step
-/// is an intermediate concept between Job and Task, and Task is the specific
-/// minimum unit of processing in a particular processing system.
+/// You can also set parameters in [shredParameters] that can be shared by all layers
+/// of this application. This specification is useful for setting up data or singleton instances
+/// that you want to share with all jobs.
 ///
-/// You can use [addSharedParameter] to add a value that will be shared by the
-/// entire this batch application. This value can be added by tying it to string key and
-/// can be used in the Task class throughout the execution context.
+/// If you wish to use command line arguments in the life cycle of a batch application,
+/// pass command line arguments as arguments [args]. Also, the argument [argsConfigBuilder]
+/// is always required when argument [args] is specified. The `argsConfigBuilder` is a
+/// function for setting rules to parse [args] of type `List<String>` into a more manageable format,
+/// allowing you to use the well-known [args](https://pub.dev/packages/args) library specification as is.
 ///
-/// Also you can get more information about implementation on
-/// [example page](https://github.com/batch-dart/batch.dart/blob/main/example/example.dart).
+/// In addition, a possible use case for command line arguments is to use command line arguments
+/// to create a singleton instance at the start of an application. In this [onLoadArgs] function,
+/// [ArgsResult](https://pub.dev/documentation/args/latest/args/ArgResults-class.html)
+/// parsed [args] according to the rules specified in [argsConfigBuilder] is passed
+/// in the callback.
 ///
-/// These job configuration can be assembled in any way you like. For example,
-/// you can configure it as follows.
+/// Now all that remains is to return a Map with arbitrary keys and values using
+/// the data set in this [ArgsResult](https://pub.dev/documentation/args/latest/args/ArgResults-class.html).
+/// Only the data in this returned map will be registered as `SharedParameters`,
+/// and any command line arguments not specified in this map will be ignored.
 ///
-/// ```
-/// BatchApplication
-/// │
-/// │              ┌ Task1
-/// │      ┌ Step1 ├ Task2
-/// │      │       └ Task3
-/// │      │
-/// │      │       ┌ Task1
-/// ├ Job1 ├ Step2 ├ Task2
-/// │      │       └ Task3
-/// │      │
-/// │      │       ┌ Task1
-/// │      └ Step3 ├ Task2
-/// │              └ Task3
-/// │
-/// │              ┌ Task1
-/// │      ┌ Step1 ├ Task2
-/// │      │       └ ┄
-/// │      │
-/// │      │       ┌ Task1
-/// └ Job2 ├ Step2 ├ ┄
-///        │       └ ┄
-///        │
-///        │
-///        └ ┄
-/// ```
-abstract class BatchApplication implements Runner {
+/// **You can see more details at [Pub.dev](https://pub.dev/packages/batch/example)
+/// or [official examples](https://github.com/batch-dart/examples/blob/main/README.md).**
+void runWorkflow({
+  List<String> args = const [],
+  FutureOr<void> Function(ArgParser parser)? argsConfigBuilder,
+  FutureOr<Map<String, dynamic>> Function(ArgResults args)? onLoadArgs,
+  required List<ScheduledJobBuilder> jobs,
+  Map<String, dynamic> sharedParameters = const {},
+  LogConfiguration? logConfig,
+}) =>
+    // TODO:The following lines should be removed after making the BatchApplication class private.
+    // ignore: deprecated_member_use_from_same_package
+    BatchApplication(
+      args: args,
+      argsConfigBuilder: argsConfigBuilder,
+      onLoadArgs: onLoadArgs,
+      jobs: jobs,
+      sharedParameters: sharedParameters,
+      logConfig: logConfig,
+    )..run();
+
+@Deprecated(
+    'This class will be private in the future. Use runWorkflow instead.')
+abstract class BatchApplication {
   /// Returns the new instance of [BatchApplication].
   factory BatchApplication({
     List<String> args = const [],
@@ -91,8 +91,12 @@ abstract class BatchApplication implements Runner {
         sharedParameters: sharedParameters,
         logConfig: logConfig,
       );
+
+  void run();
 }
 
+// TODO: The following lines should be removed after making the BatchApplication class private.
+// ignore: deprecated_member_use_from_same_package
 class _BatchApplication implements BatchApplication {
   /// Returns the new instance of [_BatchApplication].
   _BatchApplication({

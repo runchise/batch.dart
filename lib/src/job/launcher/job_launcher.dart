@@ -22,7 +22,6 @@ class JobLauncher extends Launcher<Job> {
   /// The job
   final Job _job;
 
-  @override
   Future<void> run() async => await super.executeRecursively(
         event: _job,
         execute: (job) async {

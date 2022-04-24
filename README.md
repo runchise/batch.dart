@@ -119,9 +119,9 @@ It is also easy to define a scheduled job: define a process to generate a `Sched
 ```dart
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication(
+void main() => runWorkflow(
       jobs: [SayHelloWorldJob()],
-    )..run();
+    );
 
 
 class SayHelloWorldJob implements ScheduledJobBuilder {
@@ -163,9 +163,9 @@ import 'dart:async';
 
 import 'package:batch/batch.dart';
 
-void main() => BatchApplication(
+void main() => runWorkflow(
       jobs: [DoHeavyProcessJob()],
-    )..run();
+    );
 
 class DoHeavyProcessJob implements ScheduledJobBuilder {
   @override
@@ -277,7 +277,7 @@ Instead, use the following methods in classes that extend `ParallelTask` for par
 ```dart
 class TestParallelTask extends ParallelTask<TestParallelTask> {
   @override
-  FutureOr<void> invoke() {
+  FutureOr<void> execute() {
     super.sendMessageAsTrace('Trace');
     super.sendMessageAsDebug('Debug');
     super.sendMessageAsInfo('Info');
@@ -364,7 +364,7 @@ Owner will respond to issues and review pull requests as quickly as possible.
 
 The simplest way to show us your support is by giving the project a star at [here](https://github.com/batch-dart/batch.dart).
 
-And I'm always looking for sponsors to support this project. I'm not asking for royalties for use in providing this framework, but I do need support to continue ongoing open source development.
+And I'm always looking for sponsors to support this project. I do need support to continue ongoing open source development.
 
 Sponsors can be individuals or corporations, and the amount is optional.
 

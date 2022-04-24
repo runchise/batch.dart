@@ -7,7 +7,7 @@ import 'dart:io';
 
 import 'package:batch/batch.dart';
 
-void main(List<String> args) => BatchApplication(
+void main(List<String> args) => runWorkflow(
       args: args,
       argsConfigBuilder: (parser) {
         // The well-known "args" library can be used as standard.
@@ -48,7 +48,7 @@ void main(List<String> args) => BatchApplication(
         ),
         printLog: true,
       ),
-    )..run();
+    );
 
 class _SayHelloWorldJob implements ScheduledJobBuilder {
   @override

@@ -17,9 +17,8 @@ import 'package:batch/src/job/schedule/model/schedule.dart';
 import 'package:batch/src/job/schedule/scheduled_task.dart';
 import 'package:batch/src/log/logger.dart';
 import 'package:batch/src/log/logger_provider.dart';
-import 'package:batch/src/runner.dart';
 
-class JobScheduler implements Runner {
+class JobScheduler {
   /// Returns the new instance of [JobScheduler].
   JobScheduler(List<ScheduledJob> scheduledJobs)
       : _scheduledJobs = scheduledJobs;
@@ -33,7 +32,6 @@ class JobScheduler implements Runner {
   /// The timer
   Timer? _timer;
 
-  @override
   void run() {
     log.info('Started Job scheduling on startup');
     log.info('Detected ${_scheduledJobs.length} Jobs on the root');
