@@ -60,20 +60,24 @@ Or more documentations are available at: [Official Documents](https://github.com
 
 ## 1.1. Mission
 
-The goal of this project is to provide a **_high-performance_** and **_intuitive_** job scheduling framework in the Dart language ecosystem that anyone can use in the world.
+The goal of this project is to provide a **_high-performance_** and **_intuitive_** job scheduling in the Dart language.
+And to enable people around the world to automate their tasks more easily.
 
 And the development concept of this framework is "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)", "[KISS](https://en.wikipedia.org/wiki/KISS_principle)" and "[YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)", which has been said in software engineering circles for a long time.
 
+**_Do you need a scheduled and long-lived server-side processing? If so, this is the framework you are looking for!_**
+
 ## 1.2. Features
 
-- Easy and intuitive job scheduling.
+- **Easy** and **intuitive** job scheduling.
 - No complicated configuration files.
 - Supports scheduling in [Cron](https://en.wikipedia.org/wiki/Cron) format.
-- Supports powerful logging feature and it's customizable.
-- Supports easily define parallel processes.
-- Supports conditional branching of jobs and steps.
-- Supports extensive callback functions at each event.
-- Supports skipping and retrying according to user defined conditions.
+- Supports powerful **logging feature** and it's **customizable**.
+- Supports easily define **parallel processes**.
+- Supports **conditional branching** of jobs and steps.
+- Supports **convenient callback** functions at each event.
+- Supports **skipping** and **retrying** according to user defined conditions.
+- and etc...
 
 ## 1.3. Getting Started
 
@@ -84,7 +88,7 @@ And the development concept of this framework is "[DRY](https://en.wikipedia.org
 ```
 
 > Note:
-> In Pub.dev, the automatic determination at the time of release of this library labels it as usable in Flutter, but it is not suitable by any stretch of the imagination.
+> Pub.dev automatically labels this library as usable for Flutter, but the intended use of this library is long-lived server-side processing.
 
 ### 1.3.2. Import
 
@@ -110,9 +114,15 @@ And `Event` is composed of the following elements.
 
 #### 1.3.4.1. Sequential Process
 
-When defining a simple sequential process, all that is required is to define a class that extends `Task` and implements the `execute` method.
+Scheduling jobs using this framework is very easy.
 
-It is also easy to define a scheduled job: define a process to generate a `ScheduledJob` in a class that implements `ScheduledJobBuilder` and pass it to the `jobs` argument of `BatchApplication`.
+First, create a class that defines a class extends the `Task` class and define processes in `execute` method. The `execute` method can define any process and supports both **synchronous** and **asynchronous** processing.
+
+Second, you need to define a scheduled job. It is also easy to define a scheduled job by implementing the `build` method in a class that implements `ScheduledJobBuilder`, as in the following example. And `Batch.dart` supports standard `Cron` specifications.
+
+Finally, let's execute `runWorkflow` method on main method with scheduled jobs as arguments!
+
+When the `runWorkflow` method is executed, the scheduled batch process is started.
 
 **_Example_**
 
@@ -255,9 +265,9 @@ yyyy-MM-dd 19:25:10.597692 [info ] (JobScheduler.run:56:9         ) - Job schedu
 ```
 
 > Note:
-> The setup of the logger is done when executing the method `run` in `BatchApplication`.
+> The setup of the logger is done when executing the `runWorkflow`.
 > If you want to use the logging feature outside the life cycle of this library,
-> be sure to do so after executing the `run` method of the `BatchApplication`.
+> be sure to do so after executing the `runWorkflow`.
 
 #### 1.3.5.2. On Parallel Process
 
