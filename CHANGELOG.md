@@ -1,5 +1,9 @@
 # Release Note
 
+## v1.3.0
+
+- Added `runWorkflow` method as an application entry point and deprecated `BatchApplication`. ([#180](https://github.com/batch-dart/batch.dart/issues/180))
+
 ## v1.2.0
 
 - Eliminated the `addSchedule` method and added a `jobs` field to the `BatchApplication` constructor to specify the `ScheduledJobBuilder`. ([#171](https://github.com/batch-dart/batch.dart/issues/171))
