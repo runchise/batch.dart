@@ -27,8 +27,11 @@
 
 ---
 
-Implementation examples are available at: [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md) </br>
-Or more documentations are available at: [Official Documents](https://github.com/batch-dart/documents/blob/main/README.md)
+**_Do you need a scheduled and long-lived server-side processing?_**</br>
+**_If so, this is the framework you are looking for!_**
+
+- Implementation examples are available at: [Official Examples](https://github.com/batch-dart/examples/blob/main/README.md) </br>
+- Or more documentations are available at: [Official Documents](https://github.com/batch-dart/documents/blob/main/README.md)
 
 ---
 
@@ -64,8 +67,6 @@ The goal of this project is to provide a **_high-performance_** and **_intuitive
 And to enable people around the world to automate their tasks more easily.
 
 And the development concept of this framework is "[DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)", "[KISS](https://en.wikipedia.org/wiki/KISS_principle)" and "[YAGNI](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it)", which has been said in software engineering circles for a long time.
-
-**_Do you need a scheduled and long-lived server-side processing? If so, this is the framework you are looking for!_**
 
 ## 1.2. Features
 
