@@ -13,7 +13,9 @@ import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/task/shutdown_task.dart';
 import 'package:batch/src/job/task/task.dart';
 
-/// This class represents the processing of each step that constitutes a job in batch processing.
+/// It represents the step responsible for the sequential process.
+///
+/// This step has a single [task] and is processed in sequential.
 class Step extends BaseStep {
   /// Returns the new instance of [Step].
   Step({

@@ -11,6 +11,14 @@ import 'package:batch/src/job/event/base_step.dart';
 import 'package:batch/src/job/event/job.dart';
 import 'package:batch/src/job/schedule/parser/schedule_parser.dart';
 
+/// This object represents the largest unit of events in the workflow.
+///
+/// This event must have multiple [steps] and the [schedule] is required. It is
+/// similar to [Job], but differs in that it **may** or **may not** be scheduled.
+///
+/// In addition, the [ScheduledJob] event can set [jobParameters] parameters that are shared
+/// in scope between [BaseStep]s associated with this [ScheduledJob]. This is a similar specification to
+/// `SharedParameters`, except that the scope in which the parameters are shared is different.
 class ScheduledJob extends Job {
   /// Returns the new instance of [ScheduledWorkflow].
   ScheduledJob({

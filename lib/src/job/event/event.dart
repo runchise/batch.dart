@@ -15,7 +15,7 @@ import 'package:batch/src/job/context/execution_context.dart';
 import 'package:batch/src/job/policy/retry_policy.dart';
 import 'package:batch/src/job/policy/skip_policy.dart';
 
-/// This is an abstract class that represents an event in Job execution.
+/// The base class with specifications common to all events.
 abstract class Event<T extends Event<T>> {
   /// Returns the new instance of [Event].
   Event({

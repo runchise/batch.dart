@@ -9,6 +9,10 @@ import 'dart:async';
 import 'package:batch/batch.dart';
 import 'package:batch/src/job/event/base_step.dart';
 
+/// It represents the step responsible for parallel processing.
+///
+/// It has multiple [tasks] that are processed in parallel, with a maximum number
+/// of parallelism equal to the number of [tasks].
 class ParallelStep extends BaseStep {
   /// Returns the new instance of [ParallelStep].
   ParallelStep({
