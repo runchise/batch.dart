@@ -2,7 +2,7 @@ name: Promotion
 
 on:
   schedule:
-    - cron: '0 20,3 * * *'
+    - cron: '0 20 */2 * *'
 
 jobs:
   publishing:
