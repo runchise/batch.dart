@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   clock: ^1.1.0
-  console_color: ^1.0.0
+  console_color: ^3.0.0
   http: ^0.13.4
   args: ^2.3.0
   async_task: ^1.0.18
