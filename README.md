@@ -25,6 +25,12 @@
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](https://github.com/batch-dart/batch.dart/blob/main/CODE_OF_CONDUCT.md)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbatch-dart%2Fbatch.dart.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbatch-dart%2Fbatch.dart?ref=badge_shield)
 
+<p>
+  <a href="https://github.com/sponsors/myconsciousness">
+    <img src="https://cdn.ko-fi.com/cdn/kofi3.png?v=3" height="50" width="210" alt="myconsciousness" />
+  </a>
+</p>
+
 ---
 
 **_Do you need a scheduled and long-lived server-side processing?_**</br>
@@ -375,7 +381,7 @@ Owner will respond to issues and review pull requests as quickly as possible.
 
 The simplest way to show us your support is by giving the project a star at [here](https://github.com/batch-dart/batch.dart).
 
-And I'm always looking for sponsors to support this project. I do need support to continue ongoing open source development.
+And I'm always looking for sponsors to support this project.
 
 Sponsors can be individuals or corporations, and the amount is optional.
 
