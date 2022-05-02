@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Promotion Tweet
-        uses: snow-actions/tweet@v1.1.2
+        uses: snow-actions/tweet@v1.2.0
         with:
           status: |
             Hi #developers, this is a #promotion #tweet via #GitHub Actions! 🐦
