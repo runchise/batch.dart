@@ -16,14 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: dart-lang/setup-dart@v1
+    - uses: subosito/flutter-action@v2.4.0
     - name: install dependencies
-      run: dart pub get
-    - name: run test
-      run: dart run test . --coverage=coverage
-    - name: coverage
-      run: dart run coverage:format_coverage --lcov --packages=.packages --in coverage --out lcov.info
+      run: flutter pub get
+    - name: run test with coverage
+      run: flutter test --coverage
     - uses: codecov/codecov-action@v3
       with:
         token: ${{secrets.CODECOV_TOKEN}}
-        file: lcov.info
+        file: ./coverage/lcov.info
